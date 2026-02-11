@@ -134,6 +134,15 @@
         </div>
 
         <div class="glass-card">
+            <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--success); text-align: left;">📢 Refer & Earn</h3>
+            <p style="font-size: 11px; color: #aaa; text-align: left; margin-bottom: 10px;">යාළුවන්ව ගෙන්වා ගන්න. එක් අයෙකුට 40 CP බැගින් ලබාගන්න!</p>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="referralLink" readonly style="font-size: 12px; padding: 12px; margin-bottom: 0; background: rgba(255,255,255,0.05);">
+                <button onclick="copyReferLink()" style="width: 80px; padding: 10px; background: var(--success); border: none; border-radius: 12px; color: white; cursor: pointer; font-size: 12px; font-weight: bold;">Copy</button>
+            </div>
+        </div>
+
+        <div class="glass-card">
             <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--primary); text-align: left;">🏆 Top 10 Leaders</h3>
             <div id="leaderList">Loading...</div>
         </div>
@@ -191,12 +200,43 @@
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = user.displayName;
+            
+            setupReferral(user.uid);
+            checkReferral(user.uid);
             startSync();
         } else {
             document.getElementById("loginScreen").style.display = "block";
             document.getElementById("mainDashboard").style.display = "none";
         }
     });
+
+    // --- Referral Logic ---
+    function setupReferral(uid) {
+        const refLink = window.location.origin + window.location.pathname + "?ref=" + uid;
+        document.getElementById("referralLink").value = refLink;
+    }
+
+    function copyReferLink() {
+        const copyText = document.getElementById("referralLink");
+        copyText.select();
+        document.execCommand("copy");
+        alert("Referral Link Copied! Share this to earn 40 CP.");
+    }
+
+    function checkReferral(newUserUID) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const refBy = urlParams.get('ref');
+
+        if (refBy && refBy !== newUserUID) {
+            db.ref('users/' + newUserUID).once('value', (s) => {
+                if (!s.exists()) {
+                    db.ref('users/' + refBy + '/points').transaction((cp) => {
+                        return (cp || 0) + 40;
+                    });
+                }
+            });
+        }
+    }
 
     function toggleView(view) {
         document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
@@ -205,7 +245,6 @@
     }
 
     function startSync() {
-        // --- Points & User Info Sync ---
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val();
             if (!data) {
@@ -236,20 +275,14 @@
             }
         });
 
-        // --- Top 10 Leaders Sync ---
+        // Leaderboard Update
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
-            let html = ""; 
-            let arr = [];
-            s.forEach(child => {
-                arr.push({n: child.val().name, p: child.val().points});
-            });
+            let html = ""; let arr = [];
+            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
             arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item">
-                            <span><b>${i+1}.</b> ${u.n}</span>
-                            <strong style="color:var(--primary)">${u.p} CP</strong>
-                         </div>`;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
             });
-            document.getElementById("leaderList").innerHTML = html || "No data available";
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
