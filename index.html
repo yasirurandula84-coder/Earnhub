@@ -144,14 +144,14 @@
 
         <div class="glass-card">
             <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--primary); text-align: left;">🏆 Top 10 Leaders</h3>
-            <div id="leaderList">Loading leaderboard...</div>
+            <div id="leaderList">Loading...</div>
         </div>
     </div>
 
     <div id="proofSection">
         <div class="glass-card">
             <h2 style="margin:0 0 10px 0; color:var(--success);">Verified Payouts</h2>
-            <div id="fullPayoutList">Loading proofs...</div>
+            <div id="fullPayoutList">Loading...</div>
             <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back to Dashboard</button>
         </div>
     </div>
@@ -162,7 +162,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
 <script>
-    // Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -185,7 +184,7 @@
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     const pointRate = 0.001;
 
-    // --- Authentication Logic ---
+    // --- Authentication ---
     function signIn() {
         auth.signInWithPopup(provider).catch(e => alert("Login Error: " + e.message));
     }
@@ -221,7 +220,7 @@
         const copyText = document.getElementById("referralLink");
         copyText.select();
         document.execCommand("copy");
-        alert("Referral Link Copied! Share this to earn 40 CP.");
+        alert("Referral Link Copied!");
     }
 
     function checkReferral(newUserUID) {
@@ -229,6 +228,7 @@
         const refBy = urlParams.get('ref');
 
         if (refBy && refBy !== newUserUID) {
+            // Check if user is actually new
             db.ref('users/' + newUserUID).once('value', (s) => {
                 if (!s.exists()) {
                     db.ref('users/' + refBy + '/points').transaction((cp) => {
@@ -239,7 +239,6 @@
         }
     }
 
-    // --- Core Functions ---
     function toggleView(view) {
         document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
         document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
@@ -247,7 +246,6 @@
     }
 
     function startSync() {
-        // User Data Sync
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val();
             if (!data) {
@@ -278,14 +276,25 @@
             }
         });
 
-        // Real-time Leaderboard Update
-        db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
-            let html = ""; let arr = [];
-            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
-            arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
+        // --- FIXED TOP 10 LEADERS SYNC (Shows all users correctly) ---
+        db.ref('users').on('value', (s) => {
+            let html = ""; 
+            let arr = [];
+            s.forEach(child => {
+                let val = child.val();
+                arr.push({n: val.name || "User", p: val.points || 0});
             });
-            document.getElementById("leaderList").innerHTML = html || "No leaders yet.";
+            
+            // Sort by points descending
+            arr.sort((a, b) => b.p - a.p);
+            
+            arr.slice(0, 10).forEach((u, i) => {
+                html += `<div class="list-item">
+                            <span><b>${i+1}.</b> ${u.n}</span>
+                            <strong style="color:var(--primary)">${u.p} CP</strong>
+                         </div>`;
+            });
+            document.getElementById("leaderList").innerHTML = html || "No data available";
         });
     }
 
@@ -315,12 +324,8 @@
             isProcessing = true;
             document.getElementById("successSnd").play();
             document.getElementById("submitBtn").disabled = true;
-            
-            // Adsterra Smartlink
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            
             await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
-            
             document.getElementById("userInput").value = "";
             setTimeout(() => {
                 isProcessing = false;
@@ -360,7 +365,6 @@
         hideWithdraw();
     }
 
-    // Initialize Captcha
     genCaptcha();
 </script>
 </body>
