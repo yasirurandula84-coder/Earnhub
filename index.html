@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnHub Elite | Google Secured</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script async="async" data-cfasync="false" src="https://pl28695899.effectivegatecpm.com/d3b86a7a6ea6805fd2c9c7532410ddf5/invoke.js"></script>
+
     <style>
         :root { --primary: #00d2ff; --secondary: #3a7bd5; --success: #2ecc71; --dark: #0f0c29; --glass: rgba(255, 255, 255, 0.07); }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -24,13 +27,12 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.4); text-align: center; margin-bottom: 20px;
         }
 
-        /* Login Button Styling */
+        /* Google Login Button */
         .btn-google {
             background: white; color: #333; border: none; padding: 14px; border-radius: 12px;
             font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 10px; width: 100%; margin-top: 20px; transition: 0.3s;
         }
-        .btn-google:hover { transform: scale(1.02); background: #f0f0f0; }
 
         .header h1 { font-size: 26px; font-weight: 700; margin: 0; background: linear-gradient(to right, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
@@ -67,7 +69,6 @@
             border-radius: 12px; margin-bottom: 8px; font-size: 13px; text-align: left;
         }
 
-        /* Sections Toggle */
         #loginScreen { display: block; }
         #mainDashboard, #proofSection, #withdrawPanel, #lockScreen { display: none; }
     </style>
@@ -80,7 +81,7 @@
 
     <div id="loginScreen" class="glass-card">
         <h1>EarnHub Elite</h1>
-        <p style="color:#aaa; font-size: 13px; margin: 15px 0;">දින 7ක අභියෝගයට සහභාගී වී මුදල් උපයන්න. ආරම්භ කිරීමට Google හරහා ලොග් වන්න.</p>
+        <p style="color:#aaa; font-size: 13px; margin: 15px 0;">Google හරහා ලොග් වී වැඩ ආරම්භ කරන්න.</p>
         <button class="btn-google" onclick="signIn()">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
             Sign in with Google
@@ -109,6 +110,9 @@
                 <div class="captcha-display" id="captchaBox">----</div>
                 <input type="number" id="userInput" placeholder="Security Code" autocomplete="off">
                 <button id="submitBtn" class="btn-action" onclick="handleTask()">Submit & Earn</button>
+                
+                <div id="container-d3b86a7a6ea6805fd2c9c7532410ddf5" style="margin-top: 20px;"></div>
+
                 <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
                     <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer; text-decoration: underline;">Withdrawal</span>
                     <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer; text-decoration: underline;">Payout Proofs</span>
@@ -118,7 +122,6 @@
 
             <div id="lockScreen" style="padding: 20px; border: 2px dashed var(--success); border-radius: 15px;">
                 <h3 style="color:var(--success); margin-top:0;">Challenge Complete! 🏆</h3>
-                <p style="font-size:12px; color:#ddd;">ඔබගේ සතියේ කාලය අවසන්. කරුණාකර දැන් Withdraw කරන්න.</p>
                 <button class="btn-action" style="background:var(--success);" onclick="showWithdraw()">Request Payout Now</button>
             </div>
 
@@ -196,7 +199,6 @@
         }
     });
 
-    // --- UI Controls ---
     function toggleView(view) {
         document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
         document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
@@ -207,9 +209,12 @@
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val();
             if (!data) {
-                // New User Registration
-                data = { points: 0, joinedAt: firebase.database.ServerValue.TIMESTAMP, name: auth.currentUser.displayName, email: auth.currentUser.email };
-                db.ref('users/' + currentUID).set(data);
+                db.ref('users/' + currentUID).set({ 
+                    points: 0, 
+                    joinedAt: firebase.database.ServerValue.TIMESTAMP, 
+                    name: auth.currentUser.displayName, 
+                    email: auth.currentUser.email 
+                });
                 return;
             }
             currentPoints = data.points || 0;
@@ -225,21 +230,17 @@
                 document.getElementById("timeStatus").innerText = "Challenge Complete! 🏆";
                 document.getElementById("weekProgress").style.width = "100%";
             } else {
-                document.getElementById("workSection").style.display = "block";
-                document.getElementById("lockScreen").style.display = "none";
                 const percent = Math.min((elapsed / sevenDays) * 100, 100);
                 document.getElementById("weekProgress").style.width = percent + "%";
                 document.getElementById("timeStatus").innerText = `Challenge Active: Day ${Math.max(1, 8-daysLeft)}`;
             }
         });
 
-        // Leaderboard Sync
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
             let html = ""; let arr = [];
             s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
             arr.reverse().forEach((u, i) => {
-                const usd = (u.p * pointRate).toFixed(2);
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>$${usd}</strong></div>`;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>$${(u.p * pointRate).toFixed(2)}</strong></div>`;
             });
             document.getElementById("leaderList").innerHTML = html;
         });
@@ -252,7 +253,7 @@
             arr.reverse().forEach(p => {
                 html += `<div class="list-item" style="border-left:3px solid var(--success)">
                     <div><b>${p.name}</b><br><small>${p.date}</small></div>
-                    <div style="text-align:right;"><b style="color:var(--success)">$${(p.amount * pointRate).toFixed(2)} Paid</b><br><small>${p.method}</small></div>
+                    <div style="text-align:right;"><b style="color:var(--success)">$${(p.amount * pointRate).toFixed(2)} Paid</b></div>
                 </div>`;
             });
             document.getElementById("fullPayoutList").innerHTML = html || "No payouts yet.";
@@ -272,8 +273,8 @@
             document.getElementById("successSnd").play();
             document.getElementById("submitBtn").disabled = true;
             
-            // Adsterra Link Opening
-            window.open('https://www.effectiveratecpm.com/ඔබේ_ලින්ක්_එක', '_blank');
+            // Smartlink ඇඩ් එක (ඔයා පරණ එකේ දීපු ලින්ක් එක)
+            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
             
             await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
             
@@ -291,19 +292,10 @@
 
     async function showWithdraw() {
         db.ref('users/' + currentUID).once('value', (s) => {
-            const data = s.val();
-            const elapsed = new Date().getTime() - data.joinedAt;
+            const elapsed = new Date().getTime() - s.val().joinedAt;
             if (elapsed < sevenDays) return alert("සල්ලි ලබාගත හැක්කේ දින 7ක් සම්පූර්ණ වූ පසුවයි.");
-
-            db.ref('users').orderByChild('points').limitToLast(10).once('value', (ss) => {
-                let isTop = false;
-                ss.forEach(c => { if(c.key === currentUID) isTop = true; });
-                if(isTop) {
-                    document.getElementById("workSection").style.display = "none";
-                    document.getElementById("lockScreen").style.display = "none";
-                    document.getElementById("withdrawPanel").style.display = "block";
-                } else { alert("මුදල් ලබා ගැනීමට ලීඩර්බෝඩ් එකේ Top 10 අතර සිටිය යුතුය."); }
-            });
+            document.getElementById("workSection").style.display = "none";
+            document.getElementById("withdrawPanel").style.display = "block";
         });
     }
 
@@ -316,16 +308,12 @@
         const m = document.getElementById("payMethod").value;
         const d = document.getElementById("payDetails").value;
         if(!m || !d) return alert("All details required!");
-        
         await db.ref('requests/' + currentUID).set({ 
             name: auth.currentUser.displayName,
-            email: auth.currentUser.email,
             points: currentPoints, 
-            method: m, 
-            details: d, 
-            date: new Date().toLocaleDateString() 
+            method: m, details: d, date: new Date().toLocaleDateString() 
         });
-        alert("Request Sent! Admin පරීක්ෂා කරන තුරු රැඳී සිටින්න.");
+        alert("Request Sent!");
         hideWithdraw();
     }
 
