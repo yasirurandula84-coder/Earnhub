@@ -27,7 +27,6 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.4); text-align: center; margin-bottom: 20px;
         }
 
-        /* Google Login Button */
         .btn-google {
             background: white; color: #333; border: none; padding: 14px; border-radius: 12px;
             font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -206,6 +205,7 @@
     }
 
     function startSync() {
+        // --- Points & User Info Sync ---
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val();
             if (!data) {
@@ -236,13 +236,20 @@
             }
         });
 
+        // --- Top 10 Leaders Sync ---
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
-            let html = ""; let arr = [];
-            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
-            arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>$${(u.p * pointRate).toFixed(2)}</strong></div>`;
+            let html = ""; 
+            let arr = [];
+            s.forEach(child => {
+                arr.push({n: child.val().name, p: child.val().points});
             });
-            document.getElementById("leaderList").innerHTML = html;
+            arr.reverse().forEach((u, i) => {
+                html += `<div class="list-item">
+                            <span><b>${i+1}.</b> ${u.n}</span>
+                            <strong style="color:var(--primary)">${u.p} CP</strong>
+                         </div>`;
+            });
+            document.getElementById("leaderList").innerHTML = html || "No data available";
         });
     }
 
@@ -273,7 +280,6 @@
             document.getElementById("successSnd").play();
             document.getElementById("submitBtn").disabled = true;
             
-            // Smartlink ඇඩ් එක (ඔයා පරණ එකේ දීපු ලින්ක් එක)
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
             
             await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
