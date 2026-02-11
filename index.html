@@ -134,15 +134,6 @@
         </div>
 
         <div class="glass-card">
-            <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--success); text-align: left;">📢 Refer & Earn</h3>
-            <p style="font-size: 11px; color: #aaa; text-align: left; margin-bottom: 10px;">යාළුවන්ව ගෙන්වා ගන්න. එක් අයෙකුට 40 CP බැගින් ලබාගන්න!</p>
-            <div style="display: flex; gap: 5px;">
-                <input type="text" id="referralLink" readonly style="font-size: 12px; padding: 12px; margin-bottom: 0; background: rgba(255,255,255,0.05);">
-                <button onclick="copyReferLink()" style="width: 80px; padding: 10px; background: var(--success); border: none; border-radius: 12px; color: white; cursor: pointer; font-size: 12px; font-weight: bold;">Copy</button>
-            </div>
-        </div>
-
-        <div class="glass-card">
             <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--primary); text-align: left;">🏆 Top 10 Leaders</h3>
             <div id="leaderList">Loading...</div>
         </div>
@@ -162,6 +153,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
 <script>
+    // Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -177,6 +169,10 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
+    // TELEGRAM INFO (Update with your values)
+    const tgToken = "8574341147:AAGpefhFDUo5bLugLtmb9K9b9vLmyyzFb8g";
+    const tgChatId = "8391614042";
+
     let currentUID = null;
     let currentPoints = 0;
     let captchaCode;
@@ -184,7 +180,6 @@
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     const pointRate = 0.001;
 
-    // --- Authentication ---
     function signIn() {
         auth.signInWithPopup(provider).catch(e => alert("Login Error: " + e.message));
     }
@@ -200,50 +195,12 @@
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = user.displayName;
-            
-            setupReferral(user.uid);
-            checkReferral(user.uid);
             startSync();
         } else {
             document.getElementById("loginScreen").style.display = "block";
             document.getElementById("mainDashboard").style.display = "none";
         }
     });
-
-    // --- Referral Logic ---
-    function setupReferral(uid) {
-        const refLink = window.location.origin + window.location.pathname + "?ref=" + uid;
-        document.getElementById("referralLink").value = refLink;
-    }
-
-    function copyReferLink() {
-        const copyText = document.getElementById("referralLink");
-        copyText.select();
-        document.execCommand("copy");
-        alert("Referral Link Copied!");
-    }
-
-    function checkReferral(newUserUID) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const refBy = urlParams.get('ref');
-
-        if (refBy && refBy !== newUserUID) {
-            // Check if user is actually new
-            db.ref('users/' + newUserUID).once('value', (s) => {
-                if (!s.exists()) {
-                    db.ref('users/' + refBy + '/points').transaction((cp) => {
-                        return (cp || 0) + 40;
-                    });
-                }
-            });
-        }
-    }
-
-    function toggleView(view) {
-        document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
-        document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
-        if(view === 'proofs') loadProofs();
-    }
 
     function startSync() {
         db.ref('users/' + currentUID).on('value', (s) => {
@@ -262,54 +219,60 @@
             document.getElementById("usdVal").innerText = "$" + (currentPoints * pointRate).toFixed(3);
             
             const elapsed = new Date().getTime() - data.joinedAt;
-            const daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
+            const percent = Math.min((elapsed / sevenDays) * 100, 100);
+            document.getElementById("weekProgress").style.width = percent + "%";
 
             if (elapsed >= sevenDays) {
                 document.getElementById("workSection").style.display = "none";
                 document.getElementById("lockScreen").style.display = "block";
                 document.getElementById("timeStatus").innerText = "Challenge Complete! 🏆";
-                document.getElementById("weekProgress").style.width = "100%";
             } else {
-                const percent = Math.min((elapsed / sevenDays) * 100, 100);
-                document.getElementById("weekProgress").style.width = percent + "%";
+                let daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
                 document.getElementById("timeStatus").innerText = `Challenge Active: Day ${Math.max(1, 8-daysLeft)}`;
             }
         });
 
-        // --- FIXED TOP 10 LEADERS SYNC (Shows all users correctly) ---
+        // Fixed Leaderboard
         db.ref('users').on('value', (s) => {
-            let html = ""; 
-            let arr = [];
-            s.forEach(child => {
-                let val = child.val();
-                arr.push({n: val.name || "User", p: val.points || 0});
+            let html = ""; let arr = [];
+            s.forEach(c => {
+                let val = c.val();
+                arr.push({n: val.name || "Worker", p: val.points || 0});
             });
-            
-            // Sort by points descending
-            arr.sort((a, b) => b.p - a.p);
-            
+            arr.sort((a,b) => b.p - a.p);
             arr.slice(0, 10).forEach((u, i) => {
-                html += `<div class="list-item">
-                            <span><b>${i+1}.</b> ${u.n}</span>
-                            <strong style="color:var(--primary)">${u.p} CP</strong>
-                         </div>`;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
             });
-            document.getElementById("leaderList").innerHTML = html || "No data available";
+            document.getElementById("leaderList").innerHTML = html || "No data.";
         });
     }
 
-    function loadProofs() {
-        db.ref('payoutHistory').limitToLast(10).on('value', (s) => {
-            let html = ""; let arr = [];
-            s.forEach(c => arr.push(c.val()));
-            arr.reverse().forEach(p => {
-                html += `<div class="list-item" style="border-left:3px solid var(--success)">
-                    <div><b>${p.name}</b><br><small>${p.date}</small></div>
-                    <div style="text-align:right;"><b style="color:var(--success)">$${(p.amount * pointRate).toFixed(2)} Paid</b></div>
-                </div>`;
+    async function submitReq() {
+        const m = document.getElementById("payMethod").value;
+        const d = document.getElementById("payDetails").value;
+        if(!m || !d) return alert("Fill all details!");
+
+        const msg = `🚀 *New Withdrawal!*%0A👤 Name: ${auth.currentUser.displayName}%0A💰 Points: ${currentPoints}%0A💵 Value: $${(currentPoints * pointRate).toFixed(2)}%0A💳 Method: ${m}%0A📌 Detail: ${d}`;
+
+        try {
+            await db.ref('requests/' + currentUID).set({ 
+                name: auth.currentUser.displayName,
+                points: currentPoints, 
+                method: m, details: d, date: new Date().toLocaleDateString() 
             });
-            document.getElementById("fullPayoutList").innerHTML = html || "No payouts yet.";
-        });
+
+            // Telegram Notification
+            await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage?chat_id=${tgChatId}&text=${msg}&parse_mode=Markdown`);
+            
+            alert("Request Sent! Admin will check Telegram.");
+            hideWithdraw();
+        } catch (e) { alert("Error sending request."); }
+    }
+
+    function toggleView(view) {
+        document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
+        document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
+        if(view === 'proofs') loadProofs();
     }
 
     function genCaptcha() {
@@ -319,51 +282,21 @@
 
     async function handleTask() {
         if (isProcessing || !currentUID) return;
-        const input = document.getElementById("userInput").value;
-        if (input == captchaCode) {
+        if (document.getElementById("userInput").value == captchaCode) {
             isProcessing = true;
             document.getElementById("successSnd").play();
-            document.getElementById("submitBtn").disabled = true;
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
             await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
             document.getElementById("userInput").value = "";
-            setTimeout(() => {
-                isProcessing = false;
-                document.getElementById("submitBtn").disabled = false;
-                genCaptcha();
-            }, 3000);
+            setTimeout(() => { isProcessing = false; genCaptcha(); }, 3000);
         } else {
             document.getElementById("errorSnd").play();
-            alert("Security Code Mismatch!");
+            alert("Wrong Code!");
         }
     }
 
-    async function showWithdraw() {
-        db.ref('users/' + currentUID).once('value', (s) => {
-            const elapsed = new Date().getTime() - s.val().joinedAt;
-            if (elapsed < sevenDays) return alert("සල්ලි ලබාගත හැක්කේ දින 7ක් සම්පූර්ණ වූ පසුවයි.");
-            document.getElementById("workSection").style.display = "none";
-            document.getElementById("withdrawPanel").style.display = "block";
-        });
-    }
-
-    function hideWithdraw() {
-        document.getElementById("withdrawPanel").style.display = "none";
-        document.getElementById("workSection").style.display = "block";
-    }
-
-    async function submitReq() {
-        const m = document.getElementById("payMethod").value;
-        const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("All details required!");
-        await db.ref('requests/' + currentUID).set({ 
-            name: auth.currentUser.displayName,
-            points: currentPoints, 
-            method: m, details: d, date: new Date().toLocaleDateString() 
-        });
-        alert("Request Sent!");
-        hideWithdraw();
-    }
+    function showWithdraw() { document.getElementById("withdrawPanel").style.display = "block"; document.getElementById("workSection").style.display = "none"; }
+    function hideWithdraw() { document.getElementById("withdrawPanel").style.display = "none"; document.getElementById("workSection").style.display = "block"; }
 
     genCaptcha();
 </script>
