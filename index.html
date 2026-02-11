@@ -134,15 +134,6 @@
         </div>
 
         <div class="glass-card">
-            <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--success); text-align: left;">📢 Refer & Earn</h3>
-            <p style="font-size: 11px; color: #aaa; text-align: left; margin-bottom: 10px;">යාළුවන්ව ගෙන්වා ගන්න. එක් අයෙකුට 40 CP බැගින් ලබාගන්න!</p>
-            <div style="display: flex; gap: 5px;">
-                <input type="text" id="referralLink" readonly style="font-size: 12px; padding: 12px; margin-bottom: 0; background: rgba(255,255,255,0.05);">
-                <button onclick="copyReferLink()" style="width: 80px; padding: 10px; background: var(--success); border: none; border-radius: 12px; color: white; cursor: pointer; font-size: 12px; font-weight: bold;">Copy</button>
-            </div>
-        </div>
-
-        <div class="glass-card">
             <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--primary); text-align: left;">🏆 Top 10 Leaders</h3>
             <div id="leaderList">Loading...</div>
         </div>
@@ -194,76 +185,18 @@
         location.reload();
     }
 
-    auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        try {
-            // යූසර්ගේ IP Address එක ලබා ගැනීම
-            const response = await fetch('https://api.ipify.org?format=json');
-            const ipData = await response.json();
-            const userIP = ipData.ip.replace(/\./g, '_'); // Firebase වලට තිත් (.) දාන්න බැරි නිසා (_) කරනවා
-
-            // මෙම IP එක දැනටමත් වෙනත් අයෙක් පාවිච්චි කරනවාදැයි බැලීම
-            const ipSnapshot = await db.ref('ip_locks/' + userIP).once('value');
-            const existingUID = ipSnapshot.val();
-
-            if (existingUID && existingUID !== user.uid) {
-                alert("ආරක්ෂිත හේතූන් මත එකම Network එකකින් ගිණුම් කිහිපයක් භාවිතා කළ නොහැක!");
-                auth.signOut();
-                return;
-            }
-
-            // IP එක යූසර්ට ලොක් කිරීම
-            await db.ref('ip_locks/' + userIP).set(user.uid);
-            
+    auth.onAuthStateChanged(user => {
+        if (user) {
             currentUID = user.uid;
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = user.displayName;
-            
-            setupReferral(user.uid);
-            checkReferral(user.uid);
             startSync();
-            
-        } catch (error) {
-            console.error("Security Check Failed", error);
-            // IP එක ගන්න බැරි වුණොත් ආරක්ෂාව සඳහා ලොග් වීම නවත්වනවා
-            alert("අන්තර්ජාල සබඳතාවයේ දෝෂයකි. නැවත උත්සාහ කරන්න.");
-            auth.signOut();
+        } else {
+            document.getElementById("loginScreen").style.display = "block";
+            document.getElementById("mainDashboard").style.display = "none";
         }
-    } else {
-        document.getElementById("loginScreen").style.display = "block";
-        document.getElementById("mainDashboard").style.display = "none";
-    }
-});
-
-    // --- Referral Logic ---
-    function setupReferral(uid) {
-        const refLink = window.location.origin + window.location.pathname + "?ref=" + uid;
-        document.getElementById("referralLink").value = refLink;
-    }
-
-    function copyReferLink() {
-        const copyText = document.getElementById("referralLink");
-        copyText.select();
-        document.execCommand("copy");
-        alert("Referral Link Copied!");
-    }
-
-    function checkReferral(newUserUID) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const refBy = urlParams.get('ref');
-
-        if (refBy && refBy !== newUserUID) {
-            // Check if user is actually new
-            db.ref('users/' + newUserUID).once('value', (s) => {
-                if (!s.exists()) {
-                    db.ref('users/' + refBy + '/points').transaction((cp) => {
-                        return (cp || 0) + 40;
-                    });
-                }
-            });
-        }
-    }
+    });
 
     function toggleView(view) {
         document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
@@ -272,6 +205,7 @@
     }
 
     function startSync() {
+        // --- Points & User Info Sync ---
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val();
             if (!data) {
@@ -302,19 +236,14 @@
             }
         });
 
-        // --- FIXED TOP 10 LEADERS SYNC (Shows all users correctly) ---
-        db.ref('users').on('value', (s) => {
+        // --- Top 10 Leaders Sync ---
+        db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
             let html = ""; 
             let arr = [];
             s.forEach(child => {
-                let val = child.val();
-                arr.push({n: val.name || "User", p: val.points || 0});
+                arr.push({n: child.val().name, p: child.val().points});
             });
-            
-            // Sort by points descending
-            arr.sort((a, b) => b.p - a.p);
-            
-            arr.slice(0, 10).forEach((u, i) => {
+            arr.reverse().forEach((u, i) => {
                 html += `<div class="list-item">
                             <span><b>${i+1}.</b> ${u.n}</span>
                             <strong style="color:var(--primary)">${u.p} CP</strong>
@@ -350,8 +279,11 @@
             isProcessing = true;
             document.getElementById("successSnd").play();
             document.getElementById("submitBtn").disabled = true;
+            
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
+            
             await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
+            
             document.getElementById("userInput").value = "";
             setTimeout(() => {
                 isProcessing = false;
