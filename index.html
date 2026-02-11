@@ -35,13 +35,10 @@
 
         .header h1 { font-size: 26px; font-weight: 700; margin: 0; background: linear-gradient(to right, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .progress-container { margin: 15px 0; background: rgba(0,0,0,0.3); border-radius: 10px; height: 8px; overflow: hidden; }
-        .progress-bar { background: linear-gradient(to right, var(--primary), var(--secondary)); height: 100%; width: 0%; transition: 1s ease-in-out; }
-
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; margin-top: 15px; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .stat-box small { font-size: 10px; color: #aaa; text-transform: uppercase; }
-        .stat-box strong { display: block; font-size: 14px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .stat-box strong { display: block; font-size: 14px; color: var(--primary); }
         .usd-val { font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-top: 2px; }
 
         .captcha-display { 
@@ -58,18 +55,19 @@
         .btn-action {
             width: 100%; padding: 16px; border: none; border-radius: 12px;
             background: linear-gradient(45deg, var(--secondary), var(--primary));
-            color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
+            color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-bottom: 10px;
         }
+        .btn-bonus { background: linear-gradient(45deg, #f39c12, #e67e22); margin-bottom: 15px; }
         .btn-action:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
 
         .list-item { 
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; background: rgba(255,255,255,0.03); 
-            border-radius: 12px; margin-bottom: 8px; font-size: 13px; text-align: left;
+            border-radius: 12px; margin-bottom: 8px; font-size: 13px;
         }
 
         #loginScreen { display: block; }
-        #mainDashboard, #proofSection, #withdrawPanel, #lockScreen { display: none; }
+        #mainDashboard, #proofSection, #withdrawPanel { display: none; }
     </style>
 </head>
 <body>
@@ -91,10 +89,10 @@
         <div class="glass-card">
             <div class="header">
                 <h1>EarnHub Elite</h1>
-                <p id="timeStatus" style="font-size: 11px; color: #aaa; margin-top:5px;">Syncing Dashboard...</p>
+                <p style="font-size: 11px; color: var(--success); margin-top:5px;">● Online & Secured</p>
             </div>
 
-            <div class="progress-container"><div id="weekProgress" class="progress-bar"></div></div>
+            <button id="dailyBtn" class="btn-action btn-bonus" onclick="claimDaily()">🎁 Claim Daily Bonus (+20 CP)</button>
 
             <div class="stat-grid">
                 <div class="stat-box"><small>Worker</small><strong id="uNameDisp">...</strong></div>
@@ -112,24 +110,28 @@
                 
                 <div id="container-d3b86a7a6ea6805fd2c9c7532410ddf5" style="margin-top: 20px;"></div>
 
-                <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
-                    <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer; text-decoration: underline;">Withdrawal</span>
-                    <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer; text-decoration: underline;">Payout Proofs</span>
-                    <span onclick="signOut()" style="font-size:11px; color:#ff4757; cursor:pointer; text-decoration: underline;">Logout</span>
+                <div style="margin-top: 15px; display: flex; gap: 15px; justify-content: center;">
+                    <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer; font-weight:bold;">Withdraw</span>
+                    <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer;">Payout Proofs</span>
+                    <span onclick="signOut()" style="font-size:11px; color:#ff4757; cursor:pointer;">Logout</span>
                 </div>
             </div>
 
-            <div id="lockScreen" style="padding: 20px; border: 2px dashed var(--success); border-radius: 15px;">
-                <h3 style="color:var(--success); margin-top:0;">Challenge Complete! 🏆</h3>
-                <button class="btn-action" style="background:var(--success);" onclick="showWithdraw()">Request Payout Now</button>
-            </div>
-
             <div id="withdrawPanel">
-                <h3 style="color:var(--primary); margin-top:0;">Secure Payout</h3>
+                <h3 style="color:var(--primary); margin-top:0;">Request Payout</h3>
+                <p style="font-size:11px; color:#aaa;">Minimum Withdrawal: 1000 CP</p>
                 <input type="text" id="payMethod" placeholder="Method (EzCash/Reload)">
                 <input type="text" id="payDetails" placeholder="Phone / Account No">
-                <button class="btn-action" style="background: var(--success);" onclick="submitReq()">Confirm Request</button>
-                <p onclick="hideWithdraw()" style="margin-top:12px; font-size:11px; color:#aaa; cursor:pointer;">Cancel</p>
+                <button class="btn-action" style="background: var(--success);" onclick="submitReq()">Confirm Withdrawal</button>
+                <p onclick="hideWithdraw()" style="margin-top:12px; font-size:11px; color:#aaa; cursor:pointer;">Back to Work</p>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--success); text-align: left;">📢 Refer & Earn</h3>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="referralLink" readonly style="font-size: 12px; padding: 12px; margin-bottom: 0;">
+                <button onclick="copyReferLink()" style="width: 80px; background: var(--success); border: none; border-radius: 12px; color: white; cursor: pointer; font-size: 11px;">Copy</button>
             </div>
         </div>
 
@@ -143,7 +145,7 @@
         <div class="glass-card">
             <h2 style="margin:0 0 10px 0; color:var(--success);">Verified Payouts</h2>
             <div id="fullPayoutList">Loading...</div>
-            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back to Dashboard</button>
+            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back</button>
         </div>
     </div>
 </div>
@@ -153,7 +155,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
 <script>
-    // Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -169,25 +170,17 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // TELEGRAM INFO (Update with your values)
     const tgToken = "8574341147:AAGpefhFDUo5bLugLtmb9K9b9vLmyyzFb8g";
     const tgChatId = "8391614042";
+    const minWithdraw = 1000; // මෙතනින් අවම ලකුණු වෙනස් කරන්න
 
     let currentUID = null;
     let currentPoints = 0;
     let captchaCode;
     let isProcessing = false;
-    const sevenDays = 7 * 24 * 60 * 60 * 1000;
-    const pointRate = 0.001;
 
-    function signIn() {
-        auth.signInWithPopup(provider).catch(e => alert("Login Error: " + e.message));
-    }
-
-    function signOut() {
-        auth.signOut();
-        location.reload();
-    }
+    function signIn() { auth.signInWithPopup(provider); }
+    function signOut() { auth.signOut(); location.reload(); }
 
     auth.onAuthStateChanged(user => {
         if (user) {
@@ -195,93 +188,62 @@
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = user.displayName;
+            setupReferral(user.uid);
+            checkReferral(user.uid);
             startSync();
-        } else {
-            document.getElementById("loginScreen").style.display = "block";
-            document.getElementById("mainDashboard").style.display = "none";
         }
     });
 
+    function setupReferral(uid) {
+        document.getElementById("referralLink").value = window.location.origin + window.location.pathname + "?ref=" + uid;
+    }
+
+    function copyReferLink() {
+        const copyText = document.getElementById("referralLink");
+        copyText.select();
+        document.execCommand("copy");
+        alert("Link Copied!");
+    }
+
+    function checkReferral(newUserUID) {
+        const refBy = new URLSearchParams(window.location.search).get('ref');
+        if (refBy && refBy !== newUserUID) {
+            db.ref('users/' + newUserUID).once('value', s => {
+                if (!s.exists()) db.ref('users/' + refBy + '/points').transaction(p => (p || 0) + 40);
+            });
+        }
+    }
+
     function startSync() {
         db.ref('users/' + currentUID).on('value', (s) => {
-            let data = s.val();
-            if (!data) {
-                db.ref('users/' + currentUID).set({ 
-                    points: 0, 
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP, 
-                    name: auth.currentUser.displayName, 
-                    email: auth.currentUser.email 
-                });
-                return;
-            }
+            let data = s.val() || { points: 0 };
             currentPoints = data.points || 0;
             document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
-            document.getElementById("usdVal").innerText = "$" + (currentPoints * pointRate).toFixed(3);
+            document.getElementById("usdVal").innerText = "$" + (currentPoints * 0.001).toFixed(3);
             
-            const elapsed = new Date().getTime() - data.joinedAt;
-            const percent = Math.min((elapsed / sevenDays) * 100, 100);
-            document.getElementById("weekProgress").style.width = percent + "%";
-
-            if (elapsed >= sevenDays) {
-                document.getElementById("workSection").style.display = "none";
-                document.getElementById("lockScreen").style.display = "block";
-                document.getElementById("timeStatus").innerText = "Challenge Complete! 🏆";
-            } else {
-                let daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
-                document.getElementById("timeStatus").innerText = `Challenge Active: Day ${Math.max(1, 8-daysLeft)}`;
+            if(data.lastBonus === new Date().toDateString()) {
+                document.getElementById("dailyBtn").disabled = true;
+                document.getElementById("dailyBtn").innerText = "Bonus Claimed ✅";
             }
         });
 
-        // Fixed Leaderboard
         db.ref('users').on('value', (s) => {
             let html = ""; let arr = [];
-            s.forEach(c => {
-                let val = c.val();
-                arr.push({n: val.name || "Worker", p: val.points || 0});
-            });
-            arr.sort((a,b) => b.p - a.p);
-            arr.slice(0, 10).forEach((u, i) => {
+            s.forEach(c => arr.push({n: c.val().name || "User", p: c.val().points || 0}));
+            arr.sort((a,b) => b.p - a.p).slice(0, 10).forEach((u, i) => {
                 html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
             });
-            document.getElementById("leaderList").innerHTML = html || "No data.";
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
-    async function submitReq() {
-        const m = document.getElementById("payMethod").value;
-        const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("Fill all details!");
-
-        const msg = `🚀 *New Withdrawal!*%0A👤 Name: ${auth.currentUser.displayName}%0A💰 Points: ${currentPoints}%0A💵 Value: $${(currentPoints * pointRate).toFixed(2)}%0A💳 Method: ${m}%0A📌 Detail: ${d}`;
-
-        try {
-            await db.ref('requests/' + currentUID).set({ 
-                name: auth.currentUser.displayName,
-                points: currentPoints, 
-                method: m, details: d, date: new Date().toLocaleDateString() 
-            });
-
-            // Telegram Notification
-            await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage?chat_id=${tgChatId}&text=${msg}&parse_mode=Markdown`);
-            
-            alert("Request Sent! Admin will check Telegram.");
-            hideWithdraw();
-        } catch (e) { alert("Error sending request."); }
-    }
-
-    function toggleView(view) {
-        document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
-        document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
-        if(view === 'proofs') loadProofs();
-    }
-
-    function genCaptcha() {
-        captchaCode = Math.floor(1000 + Math.random() * 9000);
-        document.getElementById("captchaBox").innerText = captchaCode;
+    async function claimDaily() {
+        await db.ref('users/' + currentUID).update({ points: currentPoints + 20, lastBonus: new Date().toDateString() });
+        document.getElementById("successSnd").play();
     }
 
     async function handleTask() {
-        if (isProcessing || !currentUID) return;
+        if (isProcessing) return;
         if (document.getElementById("userInput").value == captchaCode) {
             isProcessing = true;
             document.getElementById("successSnd").play();
@@ -295,8 +257,27 @@
         }
     }
 
+    async function submitReq() {
+        if (currentPoints < minWithdraw) return alert(`ඔයාට Withdraw කරන්න අවම වශයෙන් ${minWithdraw} CP අවශ්‍යයි!`);
+        const m = document.getElementById("payMethod").value;
+        const d = document.getElementById("payDetails").value;
+        if(!m || !d) return alert("Fill details!");
+
+        const msg = `🚀 *New Withdrawal!*%0A👤 Name: ${auth.currentUser.displayName}%0A💰 Points: ${currentPoints}%0A💳 Method: ${m}%0A📌 Detail: ${d}`;
+        await db.ref('requests/' + currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, date: new Date().toLocaleDateString() });
+        await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage?chat_id=${tgChatId}&text=${msg}&parse_mode=Markdown`);
+        alert("Success! Admin notified on Telegram.");
+        hideWithdraw();
+    }
+
+    function genCaptcha() {
+        captchaCode = Math.floor(1000 + Math.random() * 9000);
+        document.getElementById("captchaBox").innerText = captchaCode;
+    }
+
     function showWithdraw() { document.getElementById("withdrawPanel").style.display = "block"; document.getElementById("workSection").style.display = "none"; }
     function hideWithdraw() { document.getElementById("withdrawPanel").style.display = "none"; document.getElementById("workSection").style.display = "block"; }
+    function toggleView(v) { document.getElementById('mainDashboard').style.display = v === 'proofs' ? 'none' : 'block'; document.getElementById('proofSection').style.display = v === 'proofs' ? 'block' : 'none'; }
 
     genCaptcha();
 </script>
