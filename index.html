@@ -194,8 +194,27 @@
         location.reload();
     }
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
+    auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        try {
+            // යූසර්ගේ IP Address එක ලබා ගැනීම
+            const response = await fetch('https://api.ipify.org?format=json');
+            const ipData = await response.json();
+            const userIP = ipData.ip.replace(/\./g, '_'); // Firebase වලට තිත් (.) දාන්න බැරි නිසා (_) කරනවා
+
+            // මෙම IP එක දැනටමත් වෙනත් අයෙක් පාවිච්චි කරනවාදැයි බැලීම
+            const ipSnapshot = await db.ref('ip_locks/' + userIP).once('value');
+            const existingUID = ipSnapshot.val();
+
+            if (existingUID && existingUID !== user.uid) {
+                alert("ආරක්ෂිත හේතූන් මත එකම Network එකකින් ගිණුම් කිහිපයක් භාවිතා කළ නොහැක!");
+                auth.signOut();
+                return;
+            }
+
+            // IP එක යූසර්ට ලොක් කිරීම
+            await db.ref('ip_locks/' + userIP).set(user.uid);
+            
             currentUID = user.uid;
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
@@ -204,11 +223,18 @@
             setupReferral(user.uid);
             checkReferral(user.uid);
             startSync();
-        } else {
-            document.getElementById("loginScreen").style.display = "block";
-            document.getElementById("mainDashboard").style.display = "none";
+            
+        } catch (error) {
+            console.error("Security Check Failed", error);
+            // IP එක ගන්න බැරි වුණොත් ආරක්ෂාව සඳහා ලොග් වීම නවත්වනවා
+            alert("අන්තර්ජාල සබඳතාවයේ දෝෂයකි. නැවත උත්සාහ කරන්න.");
+            auth.signOut();
         }
-    });
+    } else {
+        document.getElementById("loginScreen").style.display = "block";
+        document.getElementById("mainDashboard").style.display = "none";
+    }
+});
 
     // --- Referral Logic ---
     function setupReferral(uid) {
