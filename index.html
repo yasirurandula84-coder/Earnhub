@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Pro Terminal</title>
+    <title>EarnHub Elite | Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -15,7 +15,7 @@
     <style>
         :root { 
             --bg: #05050a; 
-            --surface: rgba(15, 17, 26, 0.85); 
+            --surface: rgba(15, 17, 26, 0.9); 
             --accent: #00d2ff; 
             --success: #00ffa3; 
             --error: #ff4d4d; 
@@ -36,11 +36,24 @@
 
         .glass-card { 
             background: var(--surface); 
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             border-radius: 28px; 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
             padding: 24px; margin-bottom: 20px; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Start Earn Card Styling */
+        .earn-card {
+            border: 2px solid rgba(0, 210, 255, 0.2);
+            background: linear-gradient(145deg, rgba(15, 17, 26, 0.9), rgba(30, 34, 53, 0.5));
+            cursor: pointer;
+            text-align: center;
+        }
+        .earn-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
         }
 
         .hero-title { 
@@ -53,6 +66,18 @@
             width: 100%; padding: 16px; border-radius: 16px; border: none; 
             background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
             color: #fff; font-weight: 700; cursor: pointer; font-size: 15px;
+        }
+
+        .btn-outline {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 15px;
+            display: inline-block;
         }
 
         .balance-card { 
@@ -104,11 +129,12 @@
             </div>
         </div>
 
-        <div class="glass-card" style="text-align:center; cursor:pointer;" onclick="openJob('typing')">
-            <span class="section-label">Active Job</span>
-            <div style="font-size:30px; margin: 10px 0;">⌨️</div>
-            <h3 style="margin:0;">Typing Verification</h3>
-            <p style="color:var(--success); font-size:12px; font-weight:600;">+10 CP Reward</p>
+        <div class="glass-card earn-card" onclick="openJob('typing')">
+            <span class="section-label">Main Mission</span>
+            <div style="font-size:35px; margin: 10px 0;">⌨️</div>
+            <h2 style="margin:0; font-weight: 800;">Start Earn</h2>
+            <p style="color:var(--success); font-size:12px; font-weight:600;">Get +10 CP per validation</p>
+            <div class="btn-outline">Click to Start Work</div>
         </div>
 
         <div class="glass-card">
@@ -117,7 +143,7 @@
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Leaderboard</span>
+            <span class="section-label">Elite Rankings</span>
             <div id="leaderboardList"></div>
         </div>
 
@@ -128,12 +154,12 @@
     </div>
 
     <div id="typingJob" class="hide">
-        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px;">← Dashboard</button>
+        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px; font-weight: 700;">← Back to Home</button>
         <div class="glass-card" style="text-align:center;">
-            <span class="section-label">Enter Code</span>
+            <span class="section-label">Enter the Code</span>
             <div class="captcha-display" id="capBox">----</div>
             <input type="number" id="capInput" placeholder="0000">
-            <button id="capBtn" class="btn-main" onclick="doTyping()">Verify & Claim</button>
+            <button id="capBtn" class="btn-main" onclick="doTyping()">Verify Task</button>
         </div>
     </div>
 
@@ -179,7 +205,6 @@
 
             const s = await db.ref('users/'+currentUID).once('value');
             if(!s.exists()) {
-                // New User Logged In
                 const refBy = new URLSearchParams(window.location.search).get('ref');
                 if(refBy && refBy !== currentUID) db.ref('users/'+refBy+'/points').transaction(p => (p||0)+40);
                 
@@ -190,16 +215,14 @@
                     joinedAt: firebase.database.ServerValue.TIMESTAMP 
                 });
 
-                // --- NEW LOGIN EMAIL NOTIFICATION ---
                 emailjs.send('service_6awotbe', 'template_ky1u766', { 
                     user_name: user.displayName, 
-                    message: `A new user has joined: ${user.displayName} (${user.email})` 
+                    message: `New user: ${user.displayName} (${user.email})` 
                 });
             } else {
-                // Returning User Login Notification (Optional)
                 emailjs.send('service_6awotbe', 'template_ky1u766', { 
                     user_name: user.displayName, 
-                    message: `User Logged In: ${user.displayName}` 
+                    message: `User logged back in: ${user.displayName}` 
                 });
             }
             startSync();
@@ -214,7 +237,7 @@
             document.getElementById("balDisp").innerText = currentPoints + " CP";
             const elapsed = Date.now() - joinedDate;
             const days = Math.floor(elapsed / (24*60*60*1000)) + 1;
-            document.getElementById("dayCounter").innerText = "Day " + days;
+            document.getElementById("dayCounter").innerText = "Activity: Day " + days;
         });
 
         db.ref('users').orderByChild('points').limitToLast(10).on('value', snap => {
@@ -242,7 +265,7 @@
                     await db.ref('users/'+currentUID+'/points').transaction(p => (p||0) + 10);
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     document.getElementById("successSnd").play();
-                    b.disabled = false; b.innerText = "Verify & Claim"; 
+                    b.disabled = false; b.innerText = "Verify Task"; 
                     document.getElementById("capInput").value=""; isWorking = false; genCap();
                 }
             }, 1000);
@@ -257,10 +280,10 @@
 
     async function sendReq() {
         const m = document.getElementById("pMeth").value, d = document.getElementById("pDet").value;
-        if(!m || !d) return alert("විස්තර ඇතුළත් කරන්න.");
+        if(!m || !d) return alert("Please fill details.");
         await db.ref('requests/'+currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, time: new Date().toISOString() });
         emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, message: `Withdrawal: ${currentPoints} CP via ${m}` });
-        alert("සාර්ථකයි!"); backToLobby();
+        alert("Success!"); backToLobby();
     }
 
     function openJob(t) { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("typingJob").classList.remove("hide"); genCap(); }
