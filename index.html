@@ -244,19 +244,47 @@
         if (isProcessing) return;
         if (document.getElementById("userInput").value == captchaCode) {
             isProcessing = true;
+            
+            // මුලින්ම Ad එක open කරනවා
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
+            
             let btn = document.getElementById("submitBtn"), t = 15;
             btn.disabled = true;
+            
             let timer = setInterval(async () => {
                 btn.innerText = `Validating... ${t}s`;
                 if (t-- < 0) {
                     clearInterval(timer);
+                    
+                    // ලකුණු එකතු කිරීම
                     await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
+                    
+                    // සද්දය සහ Animation එක මෙතනදී පටන් ගන්නවා
                     document.getElementById("successSnd").play();
-                    btn.disabled = false; btn.innerText = "Submit Verification"; document.getElementById("userInput").value = ""; isProcessing = false; genCaptcha();
+                    
+                    // යූසර් ආපහු මේ tab එකට ආවම confetti පේනවා
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        zIndex: 9999 // Dashboard එකට උඩින්ම පේන්න
+                    });
+
+                    btn.disabled = false; 
+                    btn.innerText = "Success! +10 CP";
+                    
+                    setTimeout(() => { 
+                        btn.innerText = "Submit Verification"; 
+                        document.getElementById("userInput").value = ""; 
+                        isProcessing = false; 
+                        genCaptcha(); 
+                    }, 3000);
                 }
             }, 1000);
-        } else { document.getElementById("errorSnd").play(); alert("Verification code incorrect!"); }
+        } else { 
+            document.getElementById("errorSnd").play(); 
+            alert("Verification code incorrect!"); 
+        }
     }
 
     function toggleView(v) {
