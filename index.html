@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Official</title>
+    <title>EarnHub Elite | Official Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -44,6 +44,13 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
+        .balance-card { 
+            background: linear-gradient(135deg, #1e2235 0%, #0b0d14 100%); 
+            border-left: 5px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
         .earn-card {
             border: 2px solid rgba(0, 210, 255, 0.2);
             background: linear-gradient(145deg, rgba(15, 17, 26, 0.9), rgba(30, 34, 53, 0.5));
@@ -69,12 +76,6 @@
             background: var(--whatsapp); color: #fff; font-weight: 700;
             display: flex; align-items: center; justify-content: center; gap: 10px;
             text-decoration: none; font-size: 14px; cursor: pointer;
-        }
-
-        .btn-outline {
-            background: rgba(0, 210, 255, 0.1); border: 1px solid var(--accent);
-            color: var(--accent); padding: 10px 20px; border-radius: 12px;
-            font-size: 13px; font-weight: 700; margin-top: 15px; display: inline-block;
         }
 
         .section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
@@ -108,15 +109,16 @@
     </div>
 
     <div id="mainLobby" class="hide">
-        <div class="glass-card" style="background: linear-gradient(135deg, #1e2235 0%, #0b0d14 100%); border-left: 5px solid var(--accent);">
-            <div style="display:flex; justify-content:space-between; align-items: flex-end;">
+        <div class="glass-card balance-card">
+            <div style="display:flex; justify-content:space-between; align-items: flex-start;">
                 <div>
-                    <span class="section-label">CP Balance</span>
-                    <div style="font-size:36px; font-weight:800;" id="balDisp">0 CP</div>
+                    <span class="section-label">Total Balance</span>
+                    <div style="font-size:36px; font-weight:800; line-height: 1;" id="balDisp">0 CP</div>
+                    <div style="font-size:18px; color: var(--success); font-weight: 700; margin-top: 5px;" id="usdDisp">$0.00</div>
                 </div>
                 <div style="text-align:right;">
                     <div id="uName" style="font-weight:700; color:var(--accent); font-size: 13px;">User</div>
-                    <div id="dayCounter" style="font-size:10px; color:var(--success);">Day 1</div>
+                    <div id="dayCounter" style="font-size:10px; color:var(--success); font-weight: 600;">Day 1</div>
                 </div>
             </div>
         </div>
@@ -125,31 +127,29 @@
             <span class="section-label">Main Mission</span>
             <div style="font-size:30px; margin: 10px 0;">⌨️</div>
             <h2 style="margin:0; font-weight: 800;">Start Earn</h2>
-            <div class="btn-outline">Click to Start Work</div>
+            <div style="background: rgba(0, 210, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-top: 15px; display: inline-block;">Click to Start Work</div>
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Invite Friends (+40 CP)</span>
+            <span class="section-label">Referral Link (+40 CP)</span>
             <input type="text" id="refLink" readonly onclick="copyRef()">
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Top 10 Workers</span>
+            <span class="section-label">Top Workers</span>
             <div id="leaderboardList"></div>
         </div>
 
         <div class="glass-card" style="text-align: center;">
-            <span class="section-label">Need Help?</span>
-            <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 15px;">Contact us for any payment issues or help.</p>
-            <a href="https://wa.me/94783938367?text=Hello%20EarnHub%20Support" target="_blank" class="btn-whatsapp">
-                <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12.031 6.172c-2.32 0-4.218 1.902-4.218 4.218 0 2.32 1.902 4.218 4.218 4.218 2.32 0 4.218-1.902 4.218-4.218 0-2.32-1.902-4.218-4.218-4.218zm0 13.56c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm.031-15c-5.523 0-10 4.477-10 10 0 1.765.459 3.414 1.258 4.847L2.031 22l5.441-1.305c1.391.758 2.977 1.18 4.654 1.18 5.523 0 10-4.477 10-10s-4.477-10-10-10z"/></svg>
+            <span class="section-label">Help & Support</span>
+            <a href="https://wa.me/94701234567?text=Hello%20EarnHub%20Support" target="_blank" class="btn-whatsapp">
                 Contact via WhatsApp
             </a>
         </div>
 
         <div style="text-align:center; padding-bottom:30px;">
             <button onclick="showWithdraw()" class="btn-main" style="opacity: 0.9;">Withdraw Earnings</button>
-            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:12px;">Sign Out</p>
+            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:12px; font-weight: 600;">Sign Out</p>
         </div>
     </div>
 
@@ -164,16 +164,15 @@
     </div>
 
     <div id="withdrawPanel" class="hide glass-card">
-        <span class="section-label">Payment Details</span>
-        <input type="text" id="pMeth" placeholder="Payment Method">
-        <input type="text" id="pDet" placeholder="Account Info">
-        <button class="btn-main" onclick="sendReq()">Confirm Request</button>
+        <span class="section-label">Request Payment</span>
+        <input type="text" id="pMeth" placeholder="Method (EzCash/Binance)">
+        <input type="text" id="pDet" placeholder="Account Number">
+        <button class="btn-main" onclick="sendReq()">Submit Request</button>
         <p onclick="backToLobby()" style="text-align:center; margin-top:15px; cursor:pointer; font-size:12px; color:var(--text-dim);">Cancel</p>
     </div>
 </div>
 
 <script>
-    // --- CONFIG ---
     const firebaseConfig = { apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", authDomain: "earn-money-600d9.firebaseapp.com", databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", projectId: "earn-money-600d9", storageBucket: "earn-money-600d9.firebasestorage.app", messagingSenderId: "12987052490", appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
@@ -216,7 +215,12 @@
             const data = s.val();
             currentPoints = data.points || 0;
             joinedDate = data.joinedAt || Date.now();
+            
+            // --- POINT & USD DISPLAY ---
             document.getElementById("balDisp").innerText = currentPoints + " CP";
+            let usdValue = (currentPoints / 1000).toFixed(2); // $1 = 1000 CP
+            document.getElementById("usdDisp").innerText = "$" + usdValue;
+
             const elapsed = Date.now() - joinedDate;
             const days = Math.floor(elapsed / (24*60*60*1000)) + 1;
             document.getElementById("dayCounter").innerText = "Day " + days;
@@ -229,7 +233,7 @@
             document.getElementById("leaderboardList").innerHTML = users.map((u, i) => `
                 <div class="leader-item">
                     <span><span class="rank-circle">${i+1}</span>${u.name}</span>
-                    <b style="color:var(--accent);">${u.points || 0} CP</b>
+                    <b style="color:var(--accent); font-size:12px;">${u.points || 0} CP</b>
                 </div>`).join("");
         });
     }
