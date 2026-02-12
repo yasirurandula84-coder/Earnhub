@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Official Professional</title>
+    <title>EarnHub Elite | Pro Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
@@ -14,7 +15,7 @@
     <style>
         :root { 
             --bg: #05050a; 
-            --surface: rgba(15, 17, 26, 0.8); 
+            --surface: rgba(15, 17, 26, 0.85); 
             --accent: #00d2ff; 
             --success: #00ffa3; 
             --error: #ff4d4d; 
@@ -33,11 +34,10 @@
 
         .app-container { width: 100%; max-width: 450px; }
 
-        /* Professional Glass Cards */
         .glass-card { 
             background: var(--surface); 
             backdrop-filter: blur(15px);
-            border-radius: 24px; 
+            border-radius: 28px; 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             padding: 24px; margin-bottom: 20px; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
@@ -49,38 +49,33 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* Buttons */
         .btn-main { 
             width: 100%; padding: 16px; border-radius: 16px; border: none; 
             background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
             color: #fff; font-weight: 700; cursor: pointer; font-size: 15px;
         }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3); }
 
-        /* Balance Section */
         .balance-card { 
             background: linear-gradient(135deg, #1e2235 0%, #0b0d14 100%); 
             border-left: 5px solid var(--accent);
         }
 
-        /* Typography & Inputs */
-        .section-label { font-size: 11px; color: var(--text-dim); letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
         
         input { 
             width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
             background: rgba(0,0,0,0.3); color: #fff; text-align: center; margin-bottom: 15px;
         }
 
-        /* Leaderboard Styling */
         .leader-item { 
             display: flex; align-items: center; justify-content: space-between; 
-            padding: 14px; background: rgba(255,255,255,0.03); margin-bottom: 10px; border-radius: 16px; 
+            padding: 12px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 16px; 
         }
 
-        .rank-circle { width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-right: 10px; }
+        .rank-circle { width: 22px; height: 22px; background: var(--accent); color: #000; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; margin-right: 10px; }
 
         .hide { display: none; }
-        .captcha-display { font-size: 42px; font-weight: 800; letter-spacing: 10px; color: var(--accent); margin: 20px 0; text-shadow: 0 0 20px rgba(0,210,255,0.4); }
+        .captcha-display { font-size: 42px; font-weight: 800; letter-spacing: 12px; color: var(--accent); margin: 20px 0; text-shadow: 0 0 20px rgba(0,210,255,0.4); }
     </style>
 </head>
 <body onclick="handleGlobalClick()">
@@ -91,66 +86,76 @@
     <div id="loginScreen" class="glass-card" style="text-align:center; padding: 50px 20px;">
         <div style="font-size: 50px; margin-bottom: 15px;">💎</div>
         <h1 class="hero-title">EarnHub Elite</h1>
-        <p style="color:var(--text-dim); font-size: 14px; margin-bottom: 30px;">Premium Micro-Tasking Platform</p>
-        <button class="btn-main" style="background: #fff; color: #000;" onclick="signIn()">Sign in with Google</button>
+        <p style="color:var(--text-dim); font-size: 14px; margin-bottom: 30px;">Premium Tasking Terminal</p>
+        <button class="btn-main" style="background: #fff; color: #000;" onclick="signIn()">Continue with Google</button>
     </div>
 
     <div id="mainLobby" class="hide">
         <div class="glass-card balance-card">
             <div style="display:flex; justify-content:space-between; align-items: flex-end;">
                 <div>
-                    <span class="section-label">Current Balance</span>
-                    <div style="font-size:38px; font-weight:800;" id="balDisp">0 CP</div>
+                    <span class="section-label">CP Balance</span>
+                    <div style="font-size:36px; font-weight:800;" id="balDisp">0 CP</div>
                 </div>
                 <div style="text-align:right;">
-                    <div id="uName" style="font-weight:700; color:var(--accent); font-size: 14px;">User</div>
-                    <div id="dayCounter" style="font-size:11px; color:var(--success); font-weight: 600;">Day 1</div>
+                    <div id="uName" style="font-weight:700; color:var(--accent); font-size: 13px;">User</div>
+                    <div id="dayCounter" style="font-size:10px; color:var(--success);">Day 1</div>
                 </div>
             </div>
         </div>
 
         <div class="glass-card" style="text-align:center; cursor:pointer;" onclick="openJob('typing')">
-            <span class="section-label">Active Tasks</span>
-            <div style="font-size:35px; margin: 10px 0;">⌨️</div>
-            <h3 style="margin:0;">Data Verification</h3>
-            <p style="color:var(--success); font-size:12px; font-weight:600; margin-top:5px;">+10 CP per session</p>
+            <span class="section-label">Active Job</span>
+            <div style="font-size:30px; margin: 10px 0;">⌨️</div>
+            <h3 style="margin:0;">Typing Verification</h3>
+            <p style="color:var(--success); font-size:12px; font-weight:600;">+10 CP Reward</p>
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Affiliate Link (+40 CP)</span>
+            <span class="section-label">Referral Link (+40 CP)</span>
             <input type="text" id="refLink" readonly onclick="copyRef()">
-            <p style="font-size:10px; color:var(--text-dim); text-align:center; margin:0;">Share this link to earn bonus points</p>
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Elite Rankings (Top 10)</span>
+            <span class="section-label">Leaderboard</span>
             <div id="leaderboardList"></div>
         </div>
 
         <div style="text-align:center; padding-bottom:30px;">
-            <button onclick="showWithdraw()" class="btn-main" style="opacity: 0.8;">Request Withdrawal</button>
-            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:12px; font-weight:600;">Sign Out</p>
+            <button onclick="showWithdraw()" class="btn-main" style="opacity: 0.9;">Withdraw Earnings</button>
+            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:12px;">Sign Out</p>
         </div>
     </div>
 
     <div id="typingJob" class="hide">
-        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px; font-weight:600;">← Back to Dashboard</button>
+        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px;">← Dashboard</button>
         <div class="glass-card" style="text-align:center;">
-            <span class="section-label">Verification Code</span>
+            <span class="section-label">Enter Code</span>
             <div class="captcha-display" id="capBox">----</div>
             <input type="number" id="capInput" placeholder="0000">
-            <button id="capBtn" class="btn-main" onclick="doTyping()">Verify Task</button>
+            <button id="capBtn" class="btn-main" onclick="doTyping()">Verify & Claim</button>
         </div>
+    </div>
+
+    <div id="withdrawPanel" class="hide glass-card">
+        <span class="section-label">Payment Request</span>
+        <input type="text" id="pMeth" placeholder="Method (e.g. EzCash)">
+        <input type="text" id="pDet" placeholder="Account Number">
+        <button class="btn-main" onclick="sendReq()">Submit Request</button>
+        <p onclick="backToLobby()" style="text-align:center; margin-top:15px; cursor:pointer; font-size:12px; color:var(--text-dim);">Cancel</p>
     </div>
 </div>
 
 <script>
-    // --- FIREBASE CONFIGURATION ---
+    // --- FIREBASE & EMAILJS CONFIG ---
     const firebaseConfig = { apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", authDomain: "earn-money-600d9.firebaseapp.com", databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", projectId: "earn-money-600d9", storageBucket: "earn-money-600d9.firebasestorage.app", messagingSenderId: "12987052490", appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
+    
+    // Initialize EmailJS
+    (function(){ emailjs.init("CpK7Sb10QnKQlsqJa"); })();
 
-    let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, lastAdTime = 0;
+    let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, lastAdTime = 0, joinedDate = 0;
 
     // --- 30s AD LOGIC ---
     function handleGlobalClick() {
@@ -161,7 +166,6 @@
         }
     }
 
-    // --- AUTHENTICATION ---
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
 
@@ -175,23 +179,42 @@
 
             const s = await db.ref('users/'+currentUID).once('value');
             if(!s.exists()) {
+                // New User Logged In
                 const refBy = new URLSearchParams(window.location.search).get('ref');
                 if(refBy && refBy !== currentUID) db.ref('users/'+refBy+'/points').transaction(p => (p||0)+40);
-                await db.ref('users/'+currentUID).set({ points:0, name: user.displayName, joinedAt: firebase.database.ServerValue.TIMESTAMP });
+                
+                await db.ref('users/'+currentUID).set({ 
+                    points:0, 
+                    name: user.displayName, 
+                    email: user.email,
+                    joinedAt: firebase.database.ServerValue.TIMESTAMP 
+                });
+
+                // --- NEW LOGIN EMAIL NOTIFICATION ---
+                emailjs.send('service_6awotbe', 'template_ky1u766', { 
+                    user_name: user.displayName, 
+                    message: `A new user has joined: ${user.displayName} (${user.email})` 
+                });
+            } else {
+                // Returning User Login Notification (Optional)
+                emailjs.send('service_6awotbe', 'template_ky1u766', { 
+                    user_name: user.displayName, 
+                    message: `User Logged In: ${user.displayName}` 
+                });
             }
             startSync();
         }
     });
 
-    // --- DATA SYNC ---
     function startSync() {
         db.ref('users/'+currentUID).on('value', s => {
             const data = s.val();
             currentPoints = data.points || 0;
+            joinedDate = data.joinedAt || Date.now();
             document.getElementById("balDisp").innerText = currentPoints + " CP";
-            const elapsed = Date.now() - (data.joinedAt || Date.now());
+            const elapsed = Date.now() - joinedDate;
             const days = Math.floor(elapsed / (24*60*60*1000)) + 1;
-            document.getElementById("dayCounter").innerText = "Activity: Day " + days;
+            document.getElementById("dayCounter").innerText = "Day " + days;
         });
 
         db.ref('users').orderByChild('points').limitToLast(10).on('value', snap => {
@@ -201,12 +224,11 @@
             document.getElementById("leaderboardList").innerHTML = users.map((u, i) => `
                 <div class="leader-item">
                     <span><span class="rank-circle">${i+1}</span>${u.name}</span>
-                    <b style="color:var(--accent); font-size:13px;">${u.points || 0} CP</b>
+                    <b style="color:var(--accent); font-size:12px;">${u.points || 0} CP</b>
                 </div>`).join("");
         });
     }
 
-    // --- TASK LOGIC ---
     async function doTyping() {
         if(isWorking) return;
         if(document.getElementById("capInput").value == captchaCode) {
@@ -220,18 +242,31 @@
                     await db.ref('users/'+currentUID+'/points').transaction(p => (p||0) + 10);
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     document.getElementById("successSnd").play();
-                    b.disabled = false; b.innerText = "Verify Task"; 
+                    b.disabled = false; b.innerText = "Verify & Claim"; 
                     document.getElementById("capInput").value=""; isWorking = false; genCap();
                 }
             }, 1000);
-        } else alert("වැරදි කේතයකි!");
+        } else alert("Invalid Code!");
+    }
+
+    function showWithdraw() {
+        if (Date.now() - joinedDate < 7*24*60*60*1000) return alert("Withdrawal unlocks after 7 days of activity.");
+        document.getElementById("mainLobby").classList.add("hide");
+        document.getElementById("withdrawPanel").classList.remove("hide");
+    }
+
+    async function sendReq() {
+        const m = document.getElementById("pMeth").value, d = document.getElementById("pDet").value;
+        if(!m || !d) return alert("විස්තර ඇතුළත් කරන්න.");
+        await db.ref('requests/'+currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, time: new Date().toISOString() });
+        emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, message: `Withdrawal: ${currentPoints} CP via ${m}` });
+        alert("සාර්ථකයි!"); backToLobby();
     }
 
     function openJob(t) { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("typingJob").classList.remove("hide"); genCap(); }
     function backToLobby() { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("mainLobby").classList.remove("hide"); }
     function genCap() { captchaCode = Math.floor(1000 + Math.random()*9000); document.getElementById("capBox").innerText = captchaCode; }
-    function copyRef() { document.getElementById("refLink").select(); document.execCommand('copy'); alert('Link Copied!'); }
-    function showWithdraw() { alert("Withdrawal opens after Day 7."); }
+    function copyRef() { document.getElementById("refLink").select(); document.execCommand('copy'); alert('Copied!'); }
 </script>
 </body>
 </html>
