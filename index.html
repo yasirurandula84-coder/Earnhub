@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Revenue Max</title>
+    <title>EarnHub Elite | Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -28,12 +28,6 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.4); text-align: center; margin-bottom: 20px;
         }
 
-        .btn-google {
-            background: white; color: #333; border: none; padding: 14px; border-radius: 12px;
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 10px; width: 100%; margin-top: 20px;
-        }
-
         .header h1 { font-size: 26px; font-weight: 700; margin: 0; background: linear-gradient(to right, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .progress-container { margin: 15px 0; background: rgba(0,0,0,0.3); border-radius: 10px; height: 8px; overflow: hidden; }
@@ -42,32 +36,19 @@
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .stat-box small { font-size: 10px; color: #aaa; text-transform: uppercase; }
-        .stat-box strong { display: block; font-size: 14px; color: var(--primary); }
+        .stat-box strong { display: block; font-size: 14px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .usd-val { font-size: 11px; color: var(--success); font-weight: 600; display: block; }
 
-        .captcha-display { 
-            font-size: 40px; font-weight: 800; letter-spacing: 10px; margin: 20px 0;
-            color: #fff; text-shadow: 0 0 15px rgba(0,210,255,0.4); font-family: 'Courier New', monospace;
-        }
+        .captcha-display { font-size: 40px; font-weight: 800; letter-spacing: 10px; margin: 20px 0; color: #fff; text-shadow: 0 0 15px rgba(0,210,255,0.4); font-family: 'Courier New', monospace; }
 
-        input {
-            width: 100%; padding: 14px; border: none; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.08); color: #fff;
-            font-size: 18px; text-align: center; outline: none; margin-bottom: 15px;
-        }
+        input { width: 100%; padding: 14px; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 18px; text-align: center; outline: none; margin-bottom: 15px; }
 
-        .btn-action {
-            width: 100%; padding: 16px; border: none; border-radius: 12px;
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-            color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
+        .btn-action { width: 100%; padding: 16px; border: none; border-radius: 12px; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .btn-action:disabled { filter: grayscale(1); opacity: 0.7; cursor: not-allowed; }
 
-        .list-item { 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 15px; background: rgba(255,255,255,0.03); 
-            border-radius: 12px; margin-bottom: 8px; font-size: 13px;
-        }
+        .btn-google { background: white; color: #333; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 20px; }
+
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 8px; font-size: 13px; text-align: left; }
 
         #loginScreen { display: block; }
         #mainDashboard, #proofSection, #withdrawPanel, #lockScreen { display: none; }
@@ -81,7 +62,7 @@
 
     <div id="loginScreen" class="glass-card">
         <h1>EarnHub Elite</h1>
-        <p style="color:#aaa; font-size: 13px; margin: 15px 0;">Google හරහා ලොග් වී වැඩ ආරම්භ කරන්න.</p>
+        <p style="color:#aaa; font-size: 13px; margin: 15px 0;">Google හරහා ලොග් වන්න.</p>
         <button class="btn-google" onclick="signIn()">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Sign in with Google
         </button>
@@ -132,20 +113,20 @@
         <div class="glass-card" style="text-align: left;">
             <h3 style="font-size: 16px; margin: 0 0 5px 0; color: var(--success);">📢 Invite & Earn</h3>
             <div style="display: flex; gap: 5px; margin-top:10px;">
-                <input type="text" id="referralLink" readonly style="margin-bottom:0; font-size:12px; flex:1;">
+                <input type="text" id="referralLink" readonly style="margin-bottom:0; font-size:12px; background:rgba(255,255,255,0.05); flex:1;">
                 <button onclick="copyLink()" style="padding:10px 15px; background:var(--success); border:none; border-radius:12px; color:white; cursor:pointer;">Copy</button>
             </div>
         </div>
 
         <div class="glass-card">
             <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--primary); text-align: left;">🏆 Top 10 Leaders</h3>
-            <div id="leaderList">Loading...</div>
+            <div id="leaderList">Loading Top Workers...</div>
         </div>
     </div>
 
     <div id="proofSection">
         <div class="glass-card">
-            <h2 style="color:var(--success);">Verified Payouts</h2>
+            <h2 style="color:var(--success); margin-top:0;">Verified Payouts</h2>
             <div id="fullPayoutList">Loading...</div>
             <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back</button>
         </div>
@@ -178,8 +159,17 @@
     let currentPoints = 0;
     let captchaCode;
     let isProcessing = false;
+    let userJoinedAt = 0;
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     const pointRate = 0.001;
+
+    function sendEmail(subject, msg) {
+        emailjs.send('service_6awotbe', 'template_ky1u766', {
+            user_name: auth.currentUser.displayName,
+            user_email: auth.currentUser.email,
+            subject: subject, message: msg
+        });
+    }
 
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
@@ -207,6 +197,7 @@
                     points: 0, joinedAt: firebase.database.ServerValue.TIMESTAMP, 
                     name: user.displayName, email: user.email 
                 });
+                sendEmail("New Registration", "A new worker joined.");
             }
             startSync();
         }
@@ -216,64 +207,60 @@
         db.ref('users/' + currentUID).on('value', (s) => {
             let data = s.val(); if (!data) return;
             currentPoints = data.points || 0;
+            userJoinedAt = data.joinedAt;
             document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
             document.getElementById("usdVal").innerText = "$" + (currentPoints * pointRate).toFixed(3);
-            const elapsed = new Date().getTime() - data.joinedAt;
+            const elapsed = new Date().getTime() - userJoinedAt;
             const percent = Math.min((elapsed / sevenDays) * 100, 100);
             document.getElementById("weekProgress").style.width = percent + "%";
             if (percent >= 100) {
                 document.getElementById("workSection").style.display = "none";
                 document.getElementById("lockScreen").style.display = "block";
+            } else {
+                const daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
+                document.getElementById("timeStatus").innerText = `Challenge: Day ${Math.max(1, 8-daysLeft)}`;
             }
         });
 
+        // Top 10 Leaders Logic (Corrected)
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
             let html = ""; let arr = [];
-            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
-            arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
+            s.forEach(c => {
+                arr.push({n: c.val().name, p: c.val().points});
             });
-            document.getElementById("leaderList").innerHTML = html;
+            arr.sort((a, b) => b.p - a.p); // වැඩිම එකා මුලට
+            arr.forEach((u, i) => {
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong style="color:var(--primary)">${u.p} CP</strong></div>`;
+            });
+            document.getElementById("leaderList").innerHTML = html || "No rankings yet.";
         });
     }
 
-    // --- REVENUE MAXIMIZED TASK LOGIC ---
     async function handleTask() {
         if (isProcessing) return;
-        let userInput = document.getElementById("userInput").value;
-
-        if (userInput == captchaCode) {
+        if (document.getElementById("userInput").value == captchaCode) {
             isProcessing = true;
-            let btn = document.getElementById("submitBtn");
-            
-            // 1. Open Ad immediately
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-
-            // 2. Start 15 Second Lock (This forces Ad engagement time)
+            let btn = document.getElementById("submitBtn");
             let timeLeft = 15;
             btn.disabled = true;
-            
             let timer = setInterval(async () => {
                 btn.innerText = `Verifying... ${timeLeft}s`;
                 timeLeft--;
-
                 if (timeLeft < 0) {
                     clearInterval(timer);
-                    // 3. Add Points only after timer ends
                     await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
                     document.getElementById("successSnd").play();
-                    
-                    btn.innerText = "Wait...";
+                    btn.innerText = "Success!";
                     setTimeout(() => {
                         btn.disabled = false;
                         btn.innerText = "Submit & Earn";
                         document.getElementById("userInput").value = "";
                         isProcessing = false;
                         genCaptcha();
-                    }, 2000); // 2s Anti-bot cooldown
+                    }, 2000);
                 }
             }, 1000);
-
         } else {
             document.getElementById("errorSnd").play();
             alert("Security Code Mismatch!");
@@ -283,16 +270,23 @@
     function toggleView(v) {
         document.getElementById('mainDashboard').style.display = v === 'proofs' ? 'none' : 'block';
         document.getElementById('proofSection').style.display = v === 'proofs' ? 'block' : 'none';
+        if(v === 'proofs') {
+            db.ref('payoutHistory').limitToLast(10).once('value', (s) => {
+                let html = ""; s.forEach(c => {
+                    const p = c.val();
+                    html += `<div class="list-item"><div><b>${p.name}</b><br><small>${p.date}</small></div><b style="color:var(--success)">Paid</b></div>`;
+                });
+                document.getElementById("fullPayoutList").innerHTML = html || "No payouts yet.";
+            });
+        }
     }
 
     async function showWithdraw() {
-        db.ref('users/' + currentUID).once('value', (s) => {
-            const elapsed = new Date().getTime() - s.val().joinedAt;
-            if (elapsed < sevenDays) return alert("සල්ලි ලබාගත හැක්කේ දින 7ක් සම්පූර්ණ වූ පසුවයි.");
-            document.getElementById("workSection").style.display = "none";
-            document.getElementById("lockScreen").style.display = "none";
-            document.getElementById("withdrawPanel").style.display = "block";
-        });
+        const elapsed = new Date().getTime() - userJoinedAt;
+        if (elapsed < sevenDays) return alert("සල්ලි ලබාගත හැක්කේ දින 7ක් සම්පූර්ණ වූ පසුවයි.");
+        document.getElementById("workSection").style.display = "none";
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("withdrawPanel").style.display = "block";
     }
 
     function hideWithdraw() {
@@ -303,10 +297,11 @@
     async function submitReq() {
         const m = document.getElementById("payMethod").value;
         const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("Details required!");
+        if(!m || !d) return alert("All details required!");
         await db.ref('requests/' + currentUID).set({ 
             name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, date: new Date().toLocaleDateString() 
         });
+        sendEmail("Withdrawal Request", `User: ${auth.currentUser.displayName}\nPoints: ${currentPoints}`);
         alert("Request Sent!"); hideWithdraw();
     }
 
