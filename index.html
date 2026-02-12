@@ -19,6 +19,7 @@
             --accent: #00d2ff; 
             --success: #00ffa3; 
             --error: #ff4d4d; 
+            --whatsapp: #25D366;
             --text-main: #ffffff;
             --text-dim: #8892b0; 
         }
@@ -43,18 +44,13 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* Start Earn Card Styling */
         .earn-card {
             border: 2px solid rgba(0, 210, 255, 0.2);
             background: linear-gradient(145deg, rgba(15, 17, 26, 0.9), rgba(30, 34, 53, 0.5));
             cursor: pointer;
             text-align: center;
         }
-        .earn-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
-        }
+        .earn-card:hover { border-color: var(--accent); transform: translateY(-3px); }
 
         .hero-title { 
             font-size: 32px; font-weight: 800; margin: 10px 0;
@@ -68,21 +64,17 @@
             color: #fff; font-weight: 700; cursor: pointer; font-size: 15px;
         }
 
-        .btn-outline {
-            background: rgba(0, 210, 255, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 15px;
-            display: inline-block;
+        .btn-whatsapp {
+            width: 100%; padding: 14px; border-radius: 16px; border: none;
+            background: var(--whatsapp); color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none; font-size: 14px; cursor: pointer;
         }
 
-        .balance-card { 
-            background: linear-gradient(135deg, #1e2235 0%, #0b0d14 100%); 
-            border-left: 5px solid var(--accent);
+        .btn-outline {
+            background: rgba(0, 210, 255, 0.1); border: 1px solid var(--accent);
+            color: var(--accent); padding: 10px 20px; border-radius: 12px;
+            font-size: 13px; font-weight: 700; margin-top: 15px; display: inline-block;
         }
 
         .section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
@@ -111,12 +103,12 @@
     <div id="loginScreen" class="glass-card" style="text-align:center; padding: 50px 20px;">
         <div style="font-size: 50px; margin-bottom: 15px;">💎</div>
         <h1 class="hero-title">EarnHub Elite</h1>
-        <p style="color:var(--text-dim); font-size: 14px; margin-bottom: 30px;">Premium Tasking Terminal</p>
+        <p style="color:var(--text-dim); font-size: 14px; margin-bottom: 30px;">Premium Micro-Task Terminal</p>
         <button class="btn-main" style="background: #fff; color: #000;" onclick="signIn()">Continue with Google</button>
     </div>
 
     <div id="mainLobby" class="hide">
-        <div class="glass-card balance-card">
+        <div class="glass-card" style="background: linear-gradient(135deg, #1e2235 0%, #0b0d14 100%); border-left: 5px solid var(--accent);">
             <div style="display:flex; justify-content:space-between; align-items: flex-end;">
                 <div>
                     <span class="section-label">CP Balance</span>
@@ -131,20 +123,28 @@
 
         <div class="glass-card earn-card" onclick="openJob('typing')">
             <span class="section-label">Main Mission</span>
-            <div style="font-size:35px; margin: 10px 0;">⌨️</div>
+            <div style="font-size:30px; margin: 10px 0;">⌨️</div>
             <h2 style="margin:0; font-weight: 800;">Start Earn</h2>
-            <p style="color:var(--success); font-size:12px; font-weight:600;">Get +10 CP per validation</p>
             <div class="btn-outline">Click to Start Work</div>
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Referral Link (+40 CP)</span>
+            <span class="section-label">Invite Friends (+40 CP)</span>
             <input type="text" id="refLink" readonly onclick="copyRef()">
         </div>
 
         <div class="glass-card">
-            <span class="section-label">Elite Rankings</span>
+            <span class="section-label">Top 10 Workers</span>
             <div id="leaderboardList"></div>
+        </div>
+
+        <div class="glass-card" style="text-align: center;">
+            <span class="section-label">Need Help?</span>
+            <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 15px;">Contact us for any payment issues or help.</p>
+            <a href="https://wa.me/94701234567?text=Hello%20EarnHub%20Support" target="_blank" class="btn-whatsapp">
+                <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12.031 6.172c-2.32 0-4.218 1.902-4.218 4.218 0 2.32 1.902 4.218 4.218 4.218 2.32 0 4.218-1.902 4.218-4.218 0-2.32-1.902-4.218-4.218-4.218zm0 13.56c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm.031-15c-5.523 0-10 4.477-10 10 0 1.765.459 3.414 1.258 4.847L2.031 22l5.441-1.305c1.391.758 2.977 1.18 4.654 1.18 5.523 0 10-4.477 10-10s-4.477-10-10-10z"/></svg>
+                Contact via WhatsApp
+            </a>
         </div>
 
         <div style="text-align:center; padding-bottom:30px;">
@@ -154,9 +154,9 @@
     </div>
 
     <div id="typingJob" class="hide">
-        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px; font-weight: 700;">← Back to Home</button>
+        <button onclick="backToLobby()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; margin-bottom:15px; font-weight:700;">← Back</button>
         <div class="glass-card" style="text-align:center;">
-            <span class="section-label">Enter the Code</span>
+            <span class="section-label">Verification Code</span>
             <div class="captcha-display" id="capBox">----</div>
             <input type="number" id="capInput" placeholder="0000">
             <button id="capBtn" class="btn-main" onclick="doTyping()">Verify Task</button>
@@ -164,26 +164,23 @@
     </div>
 
     <div id="withdrawPanel" class="hide glass-card">
-        <span class="section-label">Payment Request</span>
-        <input type="text" id="pMeth" placeholder="Method (e.g. EzCash)">
-        <input type="text" id="pDet" placeholder="Account Number">
-        <button class="btn-main" onclick="sendReq()">Submit Request</button>
+        <span class="section-label">Payment Details</span>
+        <input type="text" id="pMeth" placeholder="Payment Method">
+        <input type="text" id="pDet" placeholder="Account Info">
+        <button class="btn-main" onclick="sendReq()">Confirm Request</button>
         <p onclick="backToLobby()" style="text-align:center; margin-top:15px; cursor:pointer; font-size:12px; color:var(--text-dim);">Cancel</p>
     </div>
 </div>
 
 <script>
-    // --- FIREBASE & EMAILJS CONFIG ---
+    // --- CONFIG ---
     const firebaseConfig = { apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", authDomain: "earn-money-600d9.firebaseapp.com", databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", projectId: "earn-money-600d9", storageBucket: "earn-money-600d9.firebasestorage.app", messagingSenderId: "12987052490", appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
-    
-    // Initialize EmailJS
     (function(){ emailjs.init("CpK7Sb10QnKQlsqJa"); })();
 
     let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, lastAdTime = 0, joinedDate = 0;
 
-    // --- 30s AD LOGIC ---
     function handleGlobalClick() {
         const now = Date.now();
         if (now - lastAdTime > 30000) {
@@ -207,23 +204,8 @@
             if(!s.exists()) {
                 const refBy = new URLSearchParams(window.location.search).get('ref');
                 if(refBy && refBy !== currentUID) db.ref('users/'+refBy+'/points').transaction(p => (p||0)+40);
-                
-                await db.ref('users/'+currentUID).set({ 
-                    points:0, 
-                    name: user.displayName, 
-                    email: user.email,
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP 
-                });
-
-                emailjs.send('service_6awotbe', 'template_ky1u766', { 
-                    user_name: user.displayName, 
-                    message: `New user: ${user.displayName} (${user.email})` 
-                });
-            } else {
-                emailjs.send('service_6awotbe', 'template_ky1u766', { 
-                    user_name: user.displayName, 
-                    message: `User logged back in: ${user.displayName}` 
-                });
+                await db.ref('users/'+currentUID).set({ points:0, name: user.displayName, email: user.email, joinedAt: firebase.database.ServerValue.TIMESTAMP });
+                emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: user.displayName, message: "New Registration" });
             }
             startSync();
         }
@@ -237,7 +219,7 @@
             document.getElementById("balDisp").innerText = currentPoints + " CP";
             const elapsed = Date.now() - joinedDate;
             const days = Math.floor(elapsed / (24*60*60*1000)) + 1;
-            document.getElementById("dayCounter").innerText = "Activity: Day " + days;
+            document.getElementById("dayCounter").innerText = "Day " + days;
         });
 
         db.ref('users').orderByChild('points').limitToLast(10).on('value', snap => {
@@ -247,7 +229,7 @@
             document.getElementById("leaderboardList").innerHTML = users.map((u, i) => `
                 <div class="leader-item">
                     <span><span class="rank-circle">${i+1}</span>${u.name}</span>
-                    <b style="color:var(--accent); font-size:12px;">${u.points || 0} CP</b>
+                    <b style="color:var(--accent);">${u.points || 0} CP</b>
                 </div>`).join("");
         });
     }
@@ -269,21 +251,21 @@
                     document.getElementById("capInput").value=""; isWorking = false; genCap();
                 }
             }, 1000);
-        } else alert("Invalid Code!");
+        } else alert("වැරදි කේතයකි!");
     }
 
     function showWithdraw() {
-        if (Date.now() - joinedDate < 7*24*60*60*1000) return alert("Withdrawal unlocks after 7 days of activity.");
+        if (Date.now() - joinedDate < 7*24*60*60*1000) return alert("Withdrawal unlocks after 7 days.");
         document.getElementById("mainLobby").classList.add("hide");
         document.getElementById("withdrawPanel").classList.remove("hide");
     }
 
     async function sendReq() {
         const m = document.getElementById("pMeth").value, d = document.getElementById("pDet").value;
-        if(!m || !d) return alert("Please fill details.");
+        if(!m || !d) return alert("විස්තර පුරවන්න.");
         await db.ref('requests/'+currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, time: new Date().toISOString() });
-        emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, message: `Withdrawal: ${currentPoints} CP via ${m}` });
-        alert("Success!"); backToLobby();
+        emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, message: `Withdrawal: ${currentPoints} CP` });
+        alert("සාර්ථකයි!"); backToLobby();
     }
 
     function openJob(t) { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("typingJob").classList.remove("hide"); genCap(); }
