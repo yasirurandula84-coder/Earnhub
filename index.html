@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Auto-Back & Top 10 Edition</title>
+    <title>EarnHub Elite | 100% Fixed Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -14,42 +14,27 @@
 
     <style>
         :root { --bg: #05050a; --surface: #0f111a; --accent: #00d2ff; --success: #00ffa3; --error: #ff4d4d; --text-dim: #8892b0; }
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); background-image: radial-gradient(circle at 50% -20%, #1a1f35, var(--bg)); min-height: 100vh; margin: 0; color: #fff; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); margin: 0; color: #fff; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .app-container { width: 100%; max-width: 450px; }
         .glass-card { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 25px; margin-bottom: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        
-        /* Job Selection Styles */
         .job-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .job-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .job-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-        .job-card span { font-size: 30px; display: block; margin-bottom: 10px; }
-        
+        .job-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; }
         .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: #fff; font-weight: 700; cursor: pointer; }
+        .btn-main:disabled { background: #333; cursor: not-allowed; opacity: 0.6; }
         .btn-back { background: none; border: 1px solid #444; color: #aaa; padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; }
-        
-        /* Leaderboard Styles */
-        .leader-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
+        .leader-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px; margin-bottom: 8px; }
         .rank-badge { width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-right: 12px; }
-        
-        .progress-bg { background: rgba(255,255,255,0.05); height: 6px; border-radius: 10px; overflow: hidden; margin-top: 10px; }
-        .progress-fill { background: var(--accent); height: 100%; width: 0%; transition: 1s ease; }
-        
         .captcha-display { font-size: 40px; font-weight: 800; letter-spacing: 8px; color: var(--accent); margin: 20px 0; }
         input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 15px; }
-        
         .hide { display: none; }
-
-        /* Auto-back Popup Overlay */
         #adOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: none; flex-direction: column; }
     </style>
 </head>
-<body onclick="playSurpriseAd()">
+<body>
 
 <div id="adOverlay">
-    <div style="background:#1a1a1a; padding:15px; text-align:center; border-bottom:1px solid #333;">
-        <div id="adTimerHead" style="color:var(--success); font-weight:bold; font-size:14px;">Loading Premium Task...</div>
-    </div>
+    <div style="background:#1a1a1a; padding:15px; text-align:center;"><div id="adTimerHead" style="color:var(--success); font-weight:bold;">Loading Task...</div></div>
     <iframe id="adIframe" style="width:100%; flex-grow:1; border:none;"></iframe>
 </div>
 
@@ -57,48 +42,27 @@
     <audio id="successSnd" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
 
     <div id="loginScreen" class="glass-card" style="text-align:center;">
-        <img src="https://cdn-icons-png.flaticon.com/512/625/625599.png" width="70" style="margin-bottom:15px;">
-        <h1 style="margin:0; font-weight:800; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EarnHub Elite</h1>
-        <p style="color:var(--text-dim); font-size:14px;">Official Work Terminal v5.0</p>
-        <button onclick="signIn()" style="width:100%; padding:16px; border-radius:15px; border:none; background:#fff; font-weight:800; margin-top:25px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Continue with Google
-        </button>
+        <h1 style="margin:0; font-weight:800;">EarnHub Elite</h1>
+        <button onclick="signIn()" style="width:100%; padding:16px; border-radius:15px; background:#fff; font-weight:800; margin-top:25px; cursor:pointer;">Sign in with Google</button>
     </div>
 
     <div id="mainLobby" class="hide">
-        <div class="glass-card" style="background: linear-gradient(135deg, #1e2235 0%, #0f111a 100%);">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                    <span style="font-size:11px; color:var(--text-dim);">TOTAL BALANCE</span>
-                    <div style="font-size:34px; font-weight:800;" id="balDisp">0 CP</div>
-                    <div id="usdVal" style="color:var(--success); font-weight:600; font-size:14px;">$0.000</div>
-                </div>
-                <div style="text-align:right;">
-                    <div id="uName" style="font-weight:800; color:var(--accent);">User</div>
-                    <span id="dayLabel" style="font-size:10px; color:var(--text-dim);">Syncing...</span>
-                </div>
-            </div>
-            <div class="progress-bg"><div id="weekProgress" class="progress-fill"></div></div>
+        <div class="glass-card" style="background: linear-gradient(135deg, #1e2235, #0f111a);">
+            <span style="font-size:11px; color:var(--text-dim);">TOTAL BALANCE</span>
+            <div style="font-size:34px; font-weight:800;" id="balDisp">0 CP</div>
+            <div id="uName" style="font-weight:800; color:var(--accent); margin-top:5px;">User</div>
         </div>
 
         <div class="job-grid">
-            <div class="job-card" onclick="openJob('typing')"><span>⌨️</span><h4 style="margin:0;">Typing</h4><small>10 CP</small></div>
-            <div class="job-card" onclick="openJob('ads')"><span>🎬</span><h4 style="margin:0;">Video Ads</h4><small>50 CP</small></div>
+            <div class="job-card" onclick="openJob('typing')"><span>⌨️</span><h4>Typing</h4><small>10 CP</small></div>
+            <div class="job-card" onclick="openJob('ads')"><span>🎬</span><h4>Video Ads</h4><small>50 CP</small></div>
         </div>
 
-        <div class="glass-card">
-            <h4 style="margin:0 0 15px 0; font-size:13px; color:var(--accent);">TOP 10 WORKERS</h4>
-            <div id="leaderboardList"></div>
-        </div>
-
-        <div class="glass-card" style="padding:15px; text-align:center;">
-            <span style="font-size:11px; color:var(--text-dim);">REFERRAL LINK (40 CP)</span>
-            <input type="text" id="refLink" readonly style="font-size:11px; margin-top:8px;">
-        </div>
+        <div class="glass-card"><h4 style="margin:0 0 15px 0; font-size:13px; color:var(--accent);">TOP 10 WORKERS</h4><div id="leaderboardList"></div></div>
 
         <div style="text-align:center; padding-bottom:30px;">
             <button onclick="showWithdraw()" class="btn-main">Withdraw Earnings</button>
-            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:13px; font-weight:600;">Sign Out</p>
+            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:13px;">Sign Out</p>
         </div>
     </div>
 
@@ -115,34 +79,20 @@
     <div id="adsJob" class="hide">
         <button class="btn-back" onclick="backToLobby()">← Back</button>
         <div class="glass-card" style="text-align:center;">
-            <h3>Premium Ad Task</h3>
+            <h3>Video Ad Task</h3>
             <div style="font-size:50px; margin:20px 0;">🎥</div>
-            <p style="color:var(--text-dim); margin-bottom:20px;">Stay on the ad page for 20 seconds. It will auto-back when finished.</p>
             <button id="adBtn" class="btn-main" onclick="doVideoAd()" style="background:var(--success); color:#000;">Watch Ad (50 CP)</button>
         </div>
-    </div>
-
-    <div id="withdrawPanel" class="hide glass-card">
-        <h3>Withdrawal</h3>
-        <input type="text" id="pMeth" placeholder="Method (EzCash/Reload)">
-        <input type="text" id="pDet" placeholder="Account Details">
-        <button class="btn-main" onclick="sendReq()">Confirm Withdrawal</button>
-        <p onclick="backToLobby()" style="text-align:center; cursor:pointer; margin-top:20px; color:var(--text-dim);">Cancel</p>
     </div>
 </div>
 
 <script>
-    // Config
     const firebaseConfig = { apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", authDomain: "earn-money-600d9.firebaseapp.com", databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", projectId: "earn-money-600d9", storageBucket: "earn-money-600d9.firebasestorage.app", messagingSenderId: "12987052490", appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
-    (function(){ emailjs.init("CpK7Sb10QnKQlsqJa"); })();
 
-    let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, lastAd = 0, joinedDate = 0;
+    let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, joinedDate = 0;
 
-    // Background Surprise Ad
-    function playSurpriseAd() { if(Date.now() - lastAd > 50000) { window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f','_blank'); lastAd = Date.now(); } }
-    
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
 
@@ -152,12 +102,9 @@
             document.getElementById("loginScreen").classList.add("hide");
             document.getElementById("mainLobby").classList.remove("hide");
             document.getElementById("uName").innerText = user.displayName;
-            document.getElementById("refLink").value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
             
             const s = await db.ref('users/'+currentUID).once('value');
             if(!s.exists()) {
-                const refBy = new URLSearchParams(window.location.search).get('ref');
-                if(refBy && refBy !== currentUID) db.ref('users/'+refBy+'/points').transaction(p => (p||0)+40);
                 await db.ref('users/'+currentUID).set({ points:0, joinedAt: firebase.database.ServerValue.TIMESTAMP, name: user.displayName });
             }
             startSync();
@@ -165,15 +112,10 @@
     });
 
     function startSync() {
-        db.ref('users/'+currentUID).on('value', s => {
-            let d = s.val(); currentPoints = d.points || 0; joinedDate = d.joinedAt;
+        db.ref('users/'+currentUID+'/points').on('value', s => {
+            currentPoints = s.val() || 0;
             document.getElementById("balDisp").innerText = currentPoints + " CP";
-            document.getElementById("usdVal").innerText = "$" + (currentPoints * 0.001).toFixed(3);
-            let prg = Math.min(((Date.now() - joinedDate) / (7*24*60*60*1000)) * 100, 100);
-            document.getElementById("weekProgress").style.width = prg + "%";
-            document.getElementById("dayLabel").innerText = prg >= 100 ? "Active Account" : `Day ${Math.ceil(prg/14.28)}`;
         });
-
         db.ref('users').on('value', snap => {
             let users = []; snap.forEach(u => { users.push({ name: u.val().name, pts: u.val().points || 0 }); });
             users.sort((a,b) => b.pts - a.pts);
@@ -185,66 +127,73 @@
         });
     }
 
-    function openJob(t) { document.getElementById("mainLobby").classList.add("hide"); if(t==='typing'){ document.getElementById("typingJob").classList.remove("hide"); genCap(); } else { document.getElementById("adsJob").classList.remove("hide"); } }
-    function backToLobby() { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("mainLobby").classList.remove("hide"); }
+    function openJob(t) { 
+        document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide"));
+        if(t==='typing'){ document.getElementById("typingJob").classList.remove("hide"); genCap(); } 
+        else { document.getElementById("adsJob").classList.remove("hide"); } 
+    }
+    
+    function backToLobby() { 
+        document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide"));
+        document.getElementById("mainLobby").classList.remove("hide"); 
+    }
 
     async function doTyping() {
         if(isWorking) return;
-        if(document.getElementById("capInput").value == captchaCode) {
+        const inputVal = document.getElementById("capInput").value;
+        if(inputVal == captchaCode) {
             isWorking = true;
+            const b = document.getElementById("capBtn");
+            b.disabled = true;
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f','_blank');
-            let b = document.getElementById("capBtn"), t=15;
+            
+            let t = 15;
             let iv = setInterval(async () => {
-                b.innerText = `Verifying... ${t}s`;
+                b.innerText = `Validating... ${t}s`;
                 if(t-- <= 0) {
                     clearInterval(iv);
+                    // Point addition
                     await db.ref('users/'+currentUID+'/points').transaction(p => (p||0)+10);
                     confetti(); document.getElementById("successSnd").play();
-                    b.innerText = "Submit & Earn"; document.getElementById("capInput").value=""; isWorking=false; genCap();
+                    b.disabled = false; b.innerText = "Submit & Earn"; 
+                    document.getElementById("capInput").value=""; 
+                    isWorking = false; genCap();
                 }
             }, 1000);
         } else { alert("Wrong Code!"); }
     }
 
-    // AUTO-BACK VIDEO AD SYSTEM
     async function doVideoAd() {
         if(isWorking) return;
         isWorking = true;
         
-        // Setup Overlay
         const overlay = document.getElementById("adOverlay");
         const iframe = document.getElementById("adIframe");
         const timerHead = document.getElementById("adTimerHead");
+        const b = document.getElementById("adBtn");
         
         iframe.src = "https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f";
         overlay.style.display = "flex";
+        b.disabled = true;
         
         let t = 20;
         let iv = setInterval(async () => {
             t--;
-            timerHead.innerText = `Premium Ad Task: ${t}s remaining (Auto-back when done)`;
-            
+            timerHead.innerText = `Premium Ad Task: ${t}s remaining`;
             if(t <= 0) {
                 clearInterval(iv);
-                overlay.style.display = "none"; // Auto-back effect
+                overlay.style.display = "none";
                 iframe.src = "";
                 
+                // point update
                 await db.ref('users/'+currentUID+'/points').transaction(p => (p||0)+50);
-                confetti({particleCount: 150}); 
-                document.getElementById("successSnd").play();
-                isWorking = false;
+                
+                confetti(); document.getElementById("successSnd").play();
+                b.disabled = false; isWorking = false;
             }
         }, 1000);
     }
 
-    function showWithdraw() { if(Date.now()-joinedDate < 7*24*60*60*1000) return alert("Account needs 7 days to withdraw."); document.getElementById("mainLobby").classList.add("hide"); document.getElementById("withdrawPanel").classList.remove("hide"); }
-    async function sendReq() {
-        const m = document.getElementById("pMeth").value, d = document.getElementById("pDet").value;
-        if(!m || !d) return alert("Fill all details!");
-        await db.ref('requests/'+currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, date: new Date().toLocaleDateString() });
-        emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, message: `Withdraw CP: ${currentPoints}` });
-        alert("Request Sent!"); backToLobby();
-    }
     function genCap() { captchaCode = Math.floor(1000 + Math.random()*9000); document.getElementById("capBox").innerText = captchaCode; }
 </script>
 </body>
