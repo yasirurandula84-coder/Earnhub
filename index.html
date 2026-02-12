@@ -41,10 +41,9 @@
         .progress-bar { background: linear-gradient(to right, var(--primary), var(--secondary)); height: 100%; width: 0%; transition: 1s ease-in-out; }
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .stat-box small { font-size: 10px; color: #aaa; text-transform: uppercase; }
         .stat-box strong { display: block; font-size: 14px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .usd-val { font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-top: 2px; }
 
         .captcha-display { 
             font-size: 40px; font-weight: 800; letter-spacing: 10px; margin: 20px 0;
@@ -62,12 +61,11 @@
             background: linear-gradient(45deg, var(--secondary), var(--primary));
             color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
         }
-        .btn-action:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
 
         .list-item { 
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; background: rgba(255,255,255,0.03); 
-            border-radius: 12px; margin-bottom: 8px; font-size: 13px; text-align: left;
+            border-radius: 12px; margin-bottom: 8px; font-size: 13px;
         }
 
         #loginScreen { display: block; }
@@ -95,43 +93,43 @@
                 <h1>EarnHub Elite</h1>
                 <p id="timeStatus" style="font-size: 11px; color: #aaa; margin-top:5px;">Syncing Dashboard...</p>
             </div>
-
             <div class="progress-container"><div id="weekProgress" class="progress-bar"></div></div>
-
             <div class="stat-grid">
                 <div class="stat-box"><small>Worker</small><strong id="uNameDisp">...</strong></div>
-                <div class="stat-box">
-                    <small>Balance</small>
-                    <strong id="uPointsDisp">0 CP</strong>
-                    <span id="usdVal" class="usd-val">$0.000</span>
-                </div>
+                <div class="stat-box"><small>Balance</small><strong id="uPointsDisp">0 CP</strong></div>
             </div>
 
             <div id="workSection">
                 <div class="captcha-display" id="captchaBox">----</div>
                 <input type="number" id="userInput" placeholder="Security Code" autocomplete="off">
                 <button id="submitBtn" class="btn-action" onclick="handleTask()">Submit & Earn</button>
-                
-                <div id="container-d3b86a7a6ea6805fd2c9c7532410ddf5" style="margin-top: 20px;"></div>
-
                 <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
-                    <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer; text-decoration: underline;">Withdrawal</span>
-                    <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer; text-decoration: underline;">Payout Proofs</span>
-                    <span onclick="signOut()" style="font-size:11px; color:#ff4757; cursor:pointer; text-decoration: underline;">Logout</span>
+                    <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer;">Withdrawal</span>
+                    <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer;">Proofs</span>
+                    <span onclick="signOut()" style="font-size:11px; color:#ff4757; cursor:pointer;">Logout</span>
                 </div>
             </div>
 
-            <div id="lockScreen" style="padding: 20px; border: 2px dashed var(--success); border-radius: 15px;">
-                <h3 style="color:var(--success); margin-top:0;">Challenge Complete! 🏆</h3>
+            <div id="lockScreen">
+                <h3 style="color:var(--success);">Challenge Complete! 🏆</h3>
                 <button class="btn-action" style="background:var(--success);" onclick="showWithdraw()">Request Payout Now</button>
             </div>
 
             <div id="withdrawPanel">
-                <h3 style="color:var(--primary); margin-top:0;">Secure Payout</h3>
+                <h3 style="color:var(--primary);">Secure Payout</h3>
                 <input type="text" id="payMethod" placeholder="Method (EzCash/Reload)">
                 <input type="text" id="payDetails" placeholder="Phone / Account No">
                 <button class="btn-action" style="background: var(--success);" onclick="submitReq()">Confirm Request</button>
                 <p onclick="hideWithdraw()" style="margin-top:12px; font-size:11px; color:#aaa; cursor:pointer;">Cancel</p>
+            </div>
+        </div>
+
+        <div class="glass-card" style="text-align: left;">
+            <h3 style="font-size: 16px; margin: 0 0 5px 0; color: var(--success);">📢 Invite & Earn</h3>
+            <p style="font-size: 11px; color: #aaa; margin-bottom: 10px;">යාළුවෙකුට 40 CP බැගින් ලබාගන්න!</p>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="referralLink" readonly style="margin-bottom:0; font-size:12px; background:rgba(255,255,255,0.05);">
+                <button onclick="copyLink()" style="padding:10px 15px; background:var(--success); border:none; border-radius:12px; color:white; cursor:pointer; font-size:12px;">Copy</button>
             </div>
         </div>
 
@@ -143,9 +141,9 @@
 
     <div id="proofSection">
         <div class="glass-card">
-            <h2 style="margin:0 0 10px 0; color:var(--success);">Verified Payouts</h2>
+            <h2 style="color:var(--success);">Verified Payouts</h2>
             <div id="fullPayoutList">Loading...</div>
-            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back to Dashboard</button>
+            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back</button>
         </div>
     </div>
 </div>
@@ -170,116 +168,103 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // --- EmailJS Initialization ---
-    (function(){
-        emailjs.init("CpK7Sb10QnKQlsqJa");
-    })();
+    // Initialize EmailJS
+    (function(){ emailjs.init("CpK7Sb10QnKQlsqJa"); })();
 
     let currentUID = null;
     let currentPoints = 0;
     let captchaCode;
-    let isProcessing = false;
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
-    const pointRate = 0.001;
 
-    // --- Notification Function ---
-    function sendMail(subject, bodyText) {
-        const templateParams = {
+    function sendEmail(subject, msg) {
+        emailjs.send('service_6awotbe', 'template_ky1u766', {
             user_name: auth.currentUser.displayName,
             user_email: auth.currentUser.email,
             subject: subject,
-            message: bodyText
-        };
-        emailjs.send('service_6awotbe', 'template_ky1u766', templateParams)
-            .then(() => console.log('Mail Sent!'))
-            .catch((err) => console.log('Mail Error', err));
+            message: msg
+        });
     }
 
-    // --- Authentication ---
-    function signIn() {
-        auth.signInWithPopup(provider).catch(e => alert("Login Error: " + e.message));
-    }
+    function signIn() { auth.signInWithPopup(provider); }
+    function signOut() { auth.signOut(); location.reload(); }
 
-    function signOut() {
-        auth.signOut();
-        location.reload();
+    function copyLink() {
+        const link = document.getElementById("referralLink");
+        link.select();
+        document.execCommand("copy");
+        alert("Referral Link Copied!");
     }
 
     auth.onAuthStateChanged(async user => {
         if (user) {
             currentUID = user.uid;
+            const snapshot = await db.ref('users/' + currentUID).once('value');
+            
+            if (!snapshot.exists()) {
+                // Referral Check
+                const urlParams = new URLSearchParams(window.location.search);
+                const refBy = urlParams.get('ref');
+                if (refBy && refBy !== currentUID) {
+                    await db.ref('users/' + refBy + '/points').transaction(p => (p || 0) + 40);
+                }
+
+                await db.ref('users/' + currentUID).set({ 
+                    points: 0, joinedAt: firebase.database.ServerValue.TIMESTAMP, 
+                    name: user.displayName, email: user.email 
+                });
+                sendEmail("Welcome to EarnHub", "සාර්ථකව ලියාපදිංචි විය!");
+            }
+
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = user.displayName;
-
-            const snapshot = await db.ref('users/' + currentUID).once('value');
-            if (!snapshot.exists()) {
-                await db.ref('users/' + currentUID).set({ 
-                    points: 0, 
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP, 
-                    name: user.displayName, 
-                    email: user.email 
-                });
-                sendMail("Welcome to EarnHub", "ඔබ සාර්ථකව EarnHub Elite සමඟ ලියාපදිංචි විය. දැන් ඔබට Captcha විසඳා මුදල් සෙවිය හැක.");
-            }
+            document.getElementById("referralLink").value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
             startSync();
-        } else {
-            document.getElementById("loginScreen").style.display = "block";
-            document.getElementById("mainDashboard").style.display = "none";
         }
     });
 
-    function toggleView(view) {
-        document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
-        document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
-        if(view === 'proofs') loadProofs();
-    }
-
     function startSync() {
         db.ref('users/' + currentUID).on('value', (s) => {
-            let data = s.val();
-            if (!data) return;
+            let data = s.val(); if (!data) return;
             currentPoints = data.points || 0;
             document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
-            document.getElementById("usdVal").innerText = "$" + (currentPoints * pointRate).toFixed(3);
-            
             const elapsed = new Date().getTime() - data.joinedAt;
-            const daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
-
-            if (elapsed >= sevenDays) {
+            const percent = Math.min((elapsed / sevenDays) * 100, 100);
+            document.getElementById("weekProgress").style.width = percent + "%";
+            if (percent >= 100) {
                 document.getElementById("workSection").style.display = "none";
                 document.getElementById("lockScreen").style.display = "block";
-                document.getElementById("timeStatus").innerText = "Challenge Complete! 🏆";
-                document.getElementById("weekProgress").style.width = "100%";
-            } else {
-                const percent = Math.min((elapsed / sevenDays) * 100, 100);
-                document.getElementById("weekProgress").style.width = percent + "%";
-                document.getElementById("timeStatus").innerText = `Challenge Active: Day ${Math.max(1, 8-daysLeft)}`;
             }
         });
 
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
             let html = ""; let arr = [];
-            s.forEach(child => { arr.push({n: child.val().name, p: child.val().points}); });
+            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
             arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong style="color:var(--primary)">${u.p} CP</strong></div>`;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
             });
-            document.getElementById("leaderList").innerHTML = html || "No data available";
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
-    function loadProofs() {
-        db.ref('payoutHistory').limitToLast(10).on('value', (s) => {
-            let html = ""; let arr = [];
-            s.forEach(c => arr.push(c.val()));
-            arr.reverse().forEach(p => {
-                html += `<div class="list-item" style="border-left:3px solid var(--success)">
-                    <div><b>${p.name}</b><br><small>${p.date}</small></div>
-                    <div style="text-align:right;"><b style="color:var(--success)">$${(p.amount * pointRate).toFixed(2)} Paid</b></div>
-                </div>`;
-            });
-            document.getElementById("fullPayoutList").innerHTML = html || "No payouts yet.";
-        });
+    async function handleTask() {
+        if (document.getElementById("userInput").value == captchaCode) {
+            document.getElementById("successSnd").play();
+            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
+            await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
+            document.getElementById("userInput").value = ""; genCaptcha();
+        } else {
+            document.getElementById("errorSnd").play(); alert("වැරදියි!");
+        }
+    }
+
+    async function submitReq() {
+        const m = document.getElementById("payMethod").value;
+        const d = document.getElementById("payDetails").value;
+        if(!m || !d) return alert("Required!");
+        await db.ref('requests/' + currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d });
+        sendEmail("Withdrawal Request", `යූසර්: ${auth.currentUser.displayName}\nලකුණු: ${currentPoints}\nක්‍රමය: ${m}\nගිණුම: ${d}`);
+        alert("Request Sent!"); hideWithdraw();
     }
 
     function genCaptcha() {
@@ -287,59 +272,9 @@
         document.getElementById("captchaBox").innerText = captchaCode;
     }
 
-    async function handleTask() {
-        if (isProcessing || !currentUID) return;
-        const input = document.getElementById("userInput").value;
-        if (input == captchaCode) {
-            isProcessing = true;
-            document.getElementById("successSnd").play();
-            document.getElementById("submitBtn").disabled = true;
-            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            await db.ref('users/' + currentUID).update({ points: currentPoints + 10 });
-            document.getElementById("userInput").value = "";
-            setTimeout(() => {
-                isProcessing = false;
-                document.getElementById("submitBtn").disabled = false;
-                genCaptcha();
-            }, 3000);
-        } else {
-            document.getElementById("errorSnd").play();
-            alert("Security Code Mismatch!");
-        }
-    }
-
-    async function showWithdraw() {
-        db.ref('users/' + currentUID).once('value', (s) => {
-            const elapsed = new Date().getTime() - s.val().joinedAt;
-            if (elapsed < sevenDays) return alert("සල්ලි ලබාගත හැක්කේ දින 7ක් සම්පූර්ණ වූ පසුවයි.");
-            document.getElementById("workSection").style.display = "none";
-            document.getElementById("withdrawPanel").style.display = "block";
-        });
-    }
-
-    function hideWithdraw() {
-        document.getElementById("withdrawPanel").style.display = "none";
-        document.getElementById("workSection").style.display = "block";
-    }
-
-    async function submitReq() {
-        const m = document.getElementById("payMethod").value;
-        const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("All details required!");
-        
-        const reqData = { 
-            name: auth.currentUser.displayName,
-            points: currentPoints, 
-            method: m, details: d, date: new Date().toLocaleDateString() 
-        };
-
-        await db.ref('requests/' + currentUID).set(reqData);
-        
-        // Withdrawal Alert
-        sendMail("New Withdrawal Request", `යූසර්: ${reqData.name}\nලකුණු: ${reqData.points}\nක්‍රමය: ${reqData.method}\nවිස්තර: ${reqData.details}`);
-
-        alert("Request Sent!");
-        hideWithdraw();
+    function toggleView(v) {
+        document.getElementById('mainDashboard').style.display = v === 'proofs' ? 'none' : 'block';
+        document.getElementById('proofSection').style.display = v === 'proofs' ? 'block' : 'none';
     }
 
     genCaptcha();
