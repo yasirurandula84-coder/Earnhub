@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Google Secured</title>
+    <title>EarnHub Elite | Revenue Max</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
     <script async="async" data-cfasync="false" src="https://pl28695899.effectivegatecpm.com/d3b86a7a6ea6805fd2c9c7532410ddf5/invoke.js"></script>
 
     <style>
@@ -32,7 +31,7 @@
         .btn-google {
             background: white; color: #333; border: none; padding: 14px; border-radius: 12px;
             font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 10px; width: 100%; margin-top: 20px; transition: 0.3s;
+            gap: 10px; width: 100%; margin-top: 20px;
         }
 
         .header h1 { font-size: 26px; font-weight: 700; margin: 0; background: linear-gradient(to right, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -41,10 +40,10 @@
         .progress-bar { background: linear-gradient(to right, var(--primary), var(--secondary)); height: 100%; width: 0%; transition: 1s ease-in-out; }
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .stat-box small { font-size: 10px; color: #aaa; text-transform: uppercase; }
-        .stat-box strong { display: block; font-size: 14px; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .usd-val { font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-top: 2px; }
+        .stat-box strong { display: block; font-size: 14px; color: var(--primary); }
+        .usd-val { font-size: 11px; color: var(--success); font-weight: 600; display: block; }
 
         .captcha-display { 
             font-size: 40px; font-weight: 800; letter-spacing: 10px; margin: 20px 0;
@@ -62,12 +61,12 @@
             background: linear-gradient(45deg, var(--secondary), var(--primary));
             color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;
         }
-        .btn-action:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+        .btn-action:disabled { filter: grayscale(1); opacity: 0.7; cursor: not-allowed; }
 
         .list-item { 
             display: flex; justify-content: space-between; align-items: center;
             padding: 10px 15px; background: rgba(255,255,255,0.03); 
-            border-radius: 12px; margin-bottom: 8px; font-size: 13px; text-align: left;
+            border-radius: 12px; margin-bottom: 8px; font-size: 13px;
         }
 
         #loginScreen { display: block; }
@@ -84,8 +83,7 @@
         <h1>EarnHub Elite</h1>
         <p style="color:#aaa; font-size: 13px; margin: 15px 0;">Google හරහා ලොග් වී වැඩ ආරම්භ කරන්න.</p>
         <button class="btn-google" onclick="signIn()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-            Sign in with Google
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Sign in with Google
         </button>
     </div>
 
@@ -110,8 +108,6 @@
                 <input type="number" id="userInput" placeholder="Security Code" autocomplete="off">
                 <button id="submitBtn" class="btn-action" onclick="handleTask()">Submit & Earn</button>
                 
-                <div id="container-d3b86a7a6ea6805fd2c9c7532410ddf5" style="margin-top: 20px;"></div>
-
                 <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
                     <span onclick="showWithdraw()" style="font-size:11px; color:var(--primary); cursor:pointer; text-decoration: underline;">Withdrawal</span>
                     <span onclick="toggleView('proofs')" style="font-size:11px; color:var(--success); cursor:pointer; text-decoration: underline;">Payout Proofs</span>
@@ -119,7 +115,7 @@
                 </div>
             </div>
 
-            <div id="lockScreen" style="padding: 20px; border: 2px dashed var(--success); border-radius: 15px;">
+            <div id="lockScreen">
                 <h3 style="color:var(--success); margin-top:0;">Challenge Complete! 🏆</h3>
                 <button class="btn-action" style="background:var(--success);" onclick="showWithdraw()">Request Payout Now</button>
             </div>
@@ -135,10 +131,9 @@
 
         <div class="glass-card" style="text-align: left;">
             <h3 style="font-size: 16px; margin: 0 0 5px 0; color: var(--success);">📢 Invite & Earn</h3>
-            <p style="font-size: 11px; color: #aaa; margin-bottom: 10px;">යාළුවෙකුට 40 CP බැගින් ලබාගන්න!</p>
-            <div style="display: flex; gap: 5px;">
-                <input type="text" id="referralLink" readonly style="margin-bottom:0; font-size:12px; background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.1); border-radius:10px; flex:1;">
-                <button onclick="copyLink()" style="padding:10px 15px; background:var(--success); border:none; border-radius:12px; color:white; cursor:pointer; font-size:12px;">Copy</button>
+            <div style="display: flex; gap: 5px; margin-top:10px;">
+                <input type="text" id="referralLink" readonly style="margin-bottom:0; font-size:12px; flex:1;">
+                <button onclick="copyLink()" style="padding:10px 15px; background:var(--success); border:none; border-radius:12px; color:white; cursor:pointer;">Copy</button>
             </div>
         </div>
 
@@ -150,9 +145,9 @@
 
     <div id="proofSection">
         <div class="glass-card">
-            <h2 style="margin:0 0 10px 0; color:var(--success);">Verified Payouts</h2>
+            <h2 style="color:var(--success);">Verified Payouts</h2>
             <div id="fullPayoutList">Loading...</div>
-            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back to Dashboard</button>
+            <button class="btn-action" style="margin-top:20px; background:rgba(255,255,255,0.1);" onclick="toggleView('main')">Back</button>
         </div>
     </div>
 </div>
@@ -186,23 +181,11 @@
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     const pointRate = 0.001;
 
-    function sendEmail(subject, msg) {
-        emailjs.send('service_6awotbe', 'template_ky1u766', {
-            user_name: auth.currentUser.displayName,
-            user_email: auth.currentUser.email,
-            subject: subject,
-            message: msg
-        }).catch(err => console.log("Email Error:", err));
-    }
-
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
-
     function copyLink() {
         const link = document.getElementById("referralLink");
-        link.select();
-        document.execCommand("copy");
-        alert("Referral Link Copied!");
+        link.select(); document.execCommand("copy"); alert("Copied!");
     }
 
     auth.onAuthStateChanged(async user => {
@@ -215,103 +198,91 @@
 
             const snapshot = await db.ref('users/' + currentUID).once('value');
             if (!snapshot.exists()) {
-                // Referral logic
                 const urlParams = new URLSearchParams(window.location.search);
                 const refBy = urlParams.get('ref');
                 if (refBy && refBy !== currentUID) {
                     await db.ref('users/' + refBy + '/points').transaction(p => (p || 0) + 40);
                 }
-
                 await db.ref('users/' + currentUID).set({ 
-                    points: 0, 
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP, 
-                    name: user.displayName, 
-                    email: user.email 
+                    points: 0, joinedAt: firebase.database.ServerValue.TIMESTAMP, 
+                    name: user.displayName, email: user.email 
                 });
-                sendEmail("New Registration", "ඔබ සාර්ථකව EarnHub Elite සමඟ සම්බන්ධ විය.");
             }
             startSync();
-        } else {
-            document.getElementById("loginScreen").style.display = "block";
-            document.getElementById("mainDashboard").style.display = "none";
         }
     });
 
-    function toggleView(view) {
-        document.getElementById('mainDashboard').style.display = view === 'proofs' ? 'none' : 'block';
-        document.getElementById('proofSection').style.display = view === 'proofs' ? 'block' : 'none';
-        if(view === 'proofs') loadProofs();
-    }
-
     function startSync() {
         db.ref('users/' + currentUID).on('value', (s) => {
-            let data = s.val();
-            if (!data) return;
+            let data = s.val(); if (!data) return;
             currentPoints = data.points || 0;
             document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
             document.getElementById("usdVal").innerText = "$" + (currentPoints * pointRate).toFixed(3);
-            
             const elapsed = new Date().getTime() - data.joinedAt;
             const percent = Math.min((elapsed / sevenDays) * 100, 100);
             document.getElementById("weekProgress").style.width = percent + "%";
-
-            if (elapsed >= sevenDays) {
+            if (percent >= 100) {
                 document.getElementById("workSection").style.display = "none";
                 document.getElementById("lockScreen").style.display = "block";
-                document.getElementById("timeStatus").innerText = "Challenge Complete! 🏆";
-            } else {
-                const daysLeft = Math.ceil((sevenDays - elapsed) / (1000 * 60 * 60 * 24));
-                document.getElementById("timeStatus").innerText = `Challenge Active: Day ${Math.max(1, 8-daysLeft)}`;
             }
         });
 
         db.ref('users').orderByChild('points').limitToLast(10).on('value', (s) => {
             let html = ""; let arr = [];
-            s.forEach(child => { arr.push({n: child.val().name, p: child.val().points}); });
+            s.forEach(c => arr.push({n: c.val().name, p: c.val().points}));
             arr.reverse().forEach((u, i) => {
-                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong style="color:var(--primary)">${u.p} CP</strong></div>`;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
             });
-            document.getElementById("leaderList").innerHTML = html || "No data available";
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
-    function loadProofs() {
-        db.ref('payoutHistory').limitToLast(10).on('value', (s) => {
-            let html = ""; let arr = [];
-            s.forEach(c => arr.push(c.val()));
-            arr.reverse().forEach(p => {
-                html += `<div class="list-item" style="border-left:3px solid var(--success)">
-                    <div><b>${p.name}</b><br><small>${p.date}</small></div>
-                    <div style="text-align:right;"><b style="color:var(--success)">$${(p.amount * pointRate).toFixed(2)} Paid</b></div>
-                </div>`;
-            });
-            document.getElementById("fullPayoutList").innerHTML = html || "No payouts yet.";
-        });
-    }
-
-    function genCaptcha() {
-        captchaCode = Math.floor(1000 + Math.random() * 9000);
-        document.getElementById("captchaBox").innerText = captchaCode;
-    }
-
+    // --- REVENUE MAXIMIZED TASK LOGIC ---
     async function handleTask() {
-        if (isProcessing || !currentUID) return;
-        if (document.getElementById("userInput").value == captchaCode) {
+        if (isProcessing) return;
+        let userInput = document.getElementById("userInput").value;
+
+        if (userInput == captchaCode) {
             isProcessing = true;
-            document.getElementById("successSnd").play();
-            document.getElementById("submitBtn").disabled = true;
+            let btn = document.getElementById("submitBtn");
+            
+            // 1. Open Ad immediately
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
-            document.getElementById("userInput").value = "";
-            setTimeout(() => {
-                isProcessing = false;
-                document.getElementById("submitBtn").disabled = false;
-                genCaptcha();
-            }, 3000);
+
+            // 2. Start 15 Second Lock (This forces Ad engagement time)
+            let timeLeft = 15;
+            btn.disabled = true;
+            
+            let timer = setInterval(async () => {
+                btn.innerText = `Verifying... ${timeLeft}s`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    // 3. Add Points only after timer ends
+                    await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
+                    document.getElementById("successSnd").play();
+                    
+                    btn.innerText = "Wait...";
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerText = "Submit & Earn";
+                        document.getElementById("userInput").value = "";
+                        isProcessing = false;
+                        genCaptcha();
+                    }, 2000); // 2s Anti-bot cooldown
+                }
+            }, 1000);
+
         } else {
             document.getElementById("errorSnd").play();
             alert("Security Code Mismatch!");
         }
+    }
+
+    function toggleView(v) {
+        document.getElementById('mainDashboard').style.display = v === 'proofs' ? 'none' : 'block';
+        document.getElementById('proofSection').style.display = v === 'proofs' ? 'block' : 'none';
     }
 
     async function showWithdraw() {
@@ -332,21 +303,17 @@
     async function submitReq() {
         const m = document.getElementById("payMethod").value;
         const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("All details required!");
-        
+        if(!m || !d) return alert("Details required!");
         await db.ref('requests/' + currentUID).set({ 
-            name: auth.currentUser.displayName, 
-            points: currentPoints, 
-            method: m, 
-            details: d, 
-            date: new Date().toLocaleDateString() 
+            name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, date: new Date().toLocaleDateString() 
         });
-        
-        sendEmail("Withdrawal Request", `User: ${auth.currentUser.displayName}\nPoints: ${currentPoints}\nMethod: ${m}\nDetails: ${d}`);
-        alert("Request Sent!");
-        hideWithdraw();
+        alert("Request Sent!"); hideWithdraw();
     }
 
+    function genCaptcha() {
+        captchaCode = Math.floor(1000 + Math.random() * 9000);
+        document.getElementById("captchaBox").innerText = captchaCode;
+    }
     genCaptcha();
 </script>
 </body>
