@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | 100% Fixed Edition</title>
+    <title>EarnHub Elite | Official Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -15,18 +15,68 @@
     <style>
         :root { --bg: #05050a; --surface: #0f111a; --accent: #00d2ff; --success: #00ffa3; --error: #ff4d4d; --text-dim: #8892b0; }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg); margin: 0; color: #fff; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        body { 
+            background-color: var(--bg); 
+            background-image: radial-gradient(circle at 50% -20%, #1a1f35, var(--bg));
+            margin: 0; color: #fff; padding: 20px; 
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
         .app-container { width: 100%; max-width: 450px; }
-        .glass-card { background: var(--surface); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 25px; margin-bottom: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+
+        .glass-card { 
+            background: rgba(15, 17, 26, 0.8); 
+            backdrop-filter: blur(10px);
+            border-radius: 28px; 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 30px; margin-bottom: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .hero-title { 
+            font-size: 32px; font-weight: 800; margin: 10px 0;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .google-btn {
+            width: 100%; padding: 16px; border-radius: 18px; border: none;
+            background: #fff; color: #000; font-weight: 800; font-size: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            cursor: pointer; transition: 0.3s; margin-top: 30px;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #1e2235 0%, #0f111a 100%);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
+        .progress-container { background: rgba(255,255,255,0.05); height: 6px; border-radius: 10px; margin-top: 15px; overflow: hidden; }
+        .progress-bar { background: var(--accent); height: 100%; width: 0%; transition: 1.5s ease; }
+
         .job-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .job-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; }
-        .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: #fff; font-weight: 700; cursor: pointer; }
-        .btn-main:disabled { background: #333; cursor: not-allowed; opacity: 0.6; }
-        .btn-back { background: none; border: 1px solid #444; color: #aaa; padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; }
-        .leader-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px; margin-bottom: 8px; }
-        .rank-badge { width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; margin-right: 12px; }
+        .job-card { 
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); 
+            border-radius: 22px; padding: 22px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .job-card:hover { border-color: var(--accent); background: rgba(0, 210, 255, 0.05); }
+
+        .btn-main { 
+            width: 100%; padding: 18px; border-radius: 18px; border: none; 
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
+            color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .leader-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 12px; background: rgba(255,255,255,0.02); margin-bottom: 8px; border-radius: 16px; 
+        }
+
         .captcha-display { font-size: 40px; font-weight: 800; letter-spacing: 8px; color: var(--accent); margin: 20px 0; }
         input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; text-align: center; margin-bottom: 15px; }
+
         .hide { display: none; }
         #adOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: none; flex-direction: column; }
     </style>
@@ -34,55 +84,83 @@
 <body>
 
 <div id="adOverlay">
-    <div style="background:#1a1a1a; padding:15px; text-align:center;"><div id="adTimerHead" style="color:var(--success); font-weight:bold;">Loading Task...</div></div>
+    <div style="background:#111; padding:15px; text-align:center;"><div id="adTimerHead" style="color:var(--success); font-weight:800;">LOADING TASK...</div></div>
     <iframe id="adIframe" style="width:100%; flex-grow:1; border:none;"></iframe>
 </div>
 
 <div class="app-container">
     <audio id="successSnd" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
 
-    <div id="loginScreen" class="glass-card" style="text-align:center;">
-        <h1 style="margin:0; font-weight:800;">EarnHub Elite</h1>
-        <button onclick="signIn()" style="width:100%; padding:16px; border-radius:15px; background:#fff; font-weight:800; margin-top:25px; cursor:pointer;">Sign in with Google</button>
+    <div id="loginScreen" class="glass-card" style="text-align:center; padding: 50px 30px;">
+        <div style="width: 80px; height: 80px; background: rgba(0,210,255,0.1); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/625/625599.png" width="45">
+        </div>
+        <h1 class="hero-title">EarnHub Elite</h1>
+        <p style="color:var(--text-dim); font-size: 14px;">Verify. Work. Earn CP.</p>
+        <button class="google-btn" onclick="signIn()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+            Sign in with Google
+        </button>
     </div>
 
     <div id="mainLobby" class="hide">
-        <div class="glass-card" style="background: linear-gradient(135deg, #1e2235, #0f111a);">
-            <span style="font-size:11px; color:var(--text-dim);">TOTAL BALANCE</span>
-            <div style="font-size:34px; font-weight:800;" id="balDisp">0 CP</div>
-            <div id="uName" style="font-weight:800; color:var(--accent); margin-top:5px;">User</div>
+        <div class="glass-card balance-card">
+            <div style="display:flex; justify-content:space-between;">
+                <div>
+                    <span style="font-size:11px; color:var(--text-dim);">BALANCE</span>
+                    <div style="font-size:36px; font-weight:800;" id="balDisp">0 CP</div>
+                </div>
+                <div style="text-align:right;">
+                    <div id="uName" style="font-weight:700; color:var(--accent);">User</div>
+                    <div id="dayCounter" style="font-size:11px; color:var(--text-dim);">Day 1</div>
+                </div>
+            </div>
+            <div class="progress-container"><div id="weekProgress" class="progress-bar"></div></div>
         </div>
 
         <div class="job-grid">
-            <div class="job-card" onclick="openJob('typing')"><span>⌨️</span><h4>Typing</h4><small>10 CP</small></div>
-            <div class="job-card" onclick="openJob('ads')"><span>🎬</span><h4>Video Ads</h4><small>50 CP</small></div>
+            <div class="job-card" onclick="openJob('typing')"><span>⌨️</span><h4>Typing</h4><small>+10 CP</small></div>
+            <div class="job-card" onclick="openJob('ads')"><span>🎬</span><h4>Video Ads</h4><small>+50 CP</small></div>
         </div>
 
-        <div class="glass-card"><h4 style="margin:0 0 15px 0; font-size:13px; color:var(--accent);">TOP 10 WORKERS</h4><div id="leaderboardList"></div></div>
+        <div class="glass-card">
+            <span style="font-size:11px; color:var(--text-dim);">REFERRAL LINK</span>
+            <input type="text" id="refLink" readonly style="font-size:10px; margin-top:10px;" onclick="this.select(); document.execCommand('copy'); alert('Copied!');">
+        </div>
+
+        <div class="glass-card">
+            <h4 style="margin:0 0 10px 0; font-size:12px; color:var(--accent);">TOP WORKERS</h4>
+            <div id="leaderboardList"></div>
+        </div>
 
         <div style="text-align:center; padding-bottom:30px;">
             <button onclick="showWithdraw()" class="btn-main">Withdraw Earnings</button>
-            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:13px;">Sign Out</p>
+            <p onclick="signOut()" style="color:var(--error); margin-top:20px; cursor:pointer; font-size:13px;">Logout Session</p>
         </div>
     </div>
 
     <div id="typingJob" class="hide">
-        <button class="btn-back" onclick="backToLobby()">← Back</button>
+        <button onclick="backToLobby()" style="background:none; border:none; color:#aaa; cursor:pointer; margin-bottom:10px;">← Back</button>
         <div class="glass-card" style="text-align:center;">
-            <h3>Typing Verification</h3>
             <div class="captcha-display" id="capBox">----</div>
-            <input type="number" id="capInput" placeholder="Enter code">
-            <button id="capBtn" class="btn-main" onclick="doTyping()">Submit & Earn</button>
+            <input type="number" id="capInput" placeholder="Enter Code">
+            <button id="capBtn" class="btn-main" onclick="doTyping()">Claim 10 CP</button>
         </div>
     </div>
 
     <div id="adsJob" class="hide">
-        <button class="btn-back" onclick="backToLobby()">← Back</button>
+        <button onclick="backToLobby()" style="background:none; border:none; color:#aaa; cursor:pointer; margin-bottom:10px;">← Back</button>
         <div class="glass-card" style="text-align:center;">
-            <h3>Video Ad Task</h3>
-            <div style="font-size:50px; margin:20px 0;">🎥</div>
+            <div style="font-size:50px; margin-bottom:20px;">🎬</div>
             <button id="adBtn" class="btn-main" onclick="doVideoAd()" style="background:var(--success); color:#000;">Watch Ad (50 CP)</button>
         </div>
+    </div>
+
+    <div id="withdrawPanel" class="hide glass-card">
+        <h3>Withdrawal</h3>
+        <input type="text" id="pMeth" placeholder="Method (EzCash/Reload)">
+        <input type="text" id="pDet" placeholder="Details">
+        <button class="btn-main" onclick="sendReq()">Submit Request</button>
     </div>
 </div>
 
@@ -90,6 +168,7 @@
     const firebaseConfig = { apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", authDomain: "earn-money-600d9.firebaseapp.com", databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", projectId: "earn-money-600d9", storageBucket: "earn-money-600d9.firebasestorage.app", messagingSenderId: "12987052490", appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
+    (function(){ emailjs.init("CpK7Sb10QnKQlsqJa"); })();
 
     let currentUID = null, currentPoints = 0, captchaCode, isWorking = false, joinedDate = 0;
 
@@ -102,29 +181,44 @@
             document.getElementById("loginScreen").classList.add("hide");
             document.getElementById("mainLobby").classList.remove("hide");
             document.getElementById("uName").innerText = user.displayName;
-            
+            document.getElementById("refLink").value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
+
             const s = await db.ref('users/'+currentUID).once('value');
             if(!s.exists()) {
-                await db.ref('users/'+currentUID).set({ points:0, joinedAt: firebase.database.ServerValue.TIMESTAMP, name: user.displayName });
+                const refBy = new URLSearchParams(window.location.search).get('ref');
+                if(refBy && refBy !== currentUID) db.ref('users/'+refBy+'/points').transaction(p => (p||0)+40);
+                await db.ref('users/'+currentUID).set({ points:0, name: user.displayName, joinedAt: firebase.database.ServerValue.TIMESTAMP });
             }
             startSync();
         }
     });
 
     function startSync() {
-        db.ref('users/'+currentUID+'/points').on('value', s => {
-            currentPoints = s.val() || 0;
+        db.ref('users/'+currentUID).on('value', s => {
+            const data = s.val();
+            currentPoints = data.points || 0;
+            joinedDate = data.joinedAt || Date.now();
             document.getElementById("balDisp").innerText = currentPoints + " CP";
+
+            const elapsed = Date.now() - joinedDate;
+            const daysPassed = Math.floor(elapsed / (24*60*60*1000)) + 1;
+            document.getElementById("dayCounter").innerText = daysPassed >= 7 ? "✓ Verified" : "Day " + daysPassed;
+            document.getElementById("weekProgress").style.width = Math.min((elapsed/(7*24*60*60*1000))*100, 100) + "%";
         });
-        db.ref('users').on('value', snap => {
-            let users = []; snap.forEach(u => { users.push({ name: u.val().name, pts: u.val().points || 0 }); });
+
+        db.ref('users').limitToLast(10).on('value', snap => {
+            let users = [];
+            snap.forEach(u => { users.push({ name: u.val().name, pts: u.val().points || 0 }); });
             users.sort((a,b) => b.pts - a.pts);
-            document.getElementById("leaderboardList").innerHTML = users.slice(0, 10).map((u, i) => `
-                <div class="leader-item">
-                    <div style="display:flex; align-items:center;"><div class="rank-badge">${i+1}</div><b>${u.name}</b></div>
-                    <span style="color:var(--accent); font-weight:800;">${u.pts} CP</span>
-                </div>`).join("");
+            document.getElementById("leaderboardList").innerHTML = users.map((u, i) => `
+                <div class="leader-item"><span>${i+1}. ${u.name}</span><b>${u.pts} CP</b></div>`).join("");
         });
+    }
+
+    async function addPoints(amount) {
+        await db.ref('users/'+currentUID+'/points').transaction(p => (p||0) + amount);
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        document.getElementById("successSnd").play();
     }
 
     function openJob(t) { 
@@ -133,65 +227,52 @@
         else { document.getElementById("adsJob").classList.remove("hide"); } 
     }
     
-    function backToLobby() { 
-        document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide"));
-        document.getElementById("mainLobby").classList.remove("hide"); 
-    }
+    function backToLobby() { document.querySelectorAll(".app-container > div").forEach(d => d.classList.add("hide")); document.getElementById("mainLobby").classList.remove("hide"); }
 
     async function doTyping() {
         if(isWorking) return;
-        const inputVal = document.getElementById("capInput").value;
-        if(inputVal == captchaCode) {
-            isWorking = true;
-            const b = document.getElementById("capBtn");
-            b.disabled = true;
+        if(document.getElementById("capInput").value == captchaCode) {
+            isWorking = true; const b = document.getElementById("capBtn"); b.disabled = true;
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f','_blank');
-            
             let t = 15;
             let iv = setInterval(async () => {
-                b.innerText = `Validating... ${t}s`;
-                if(t-- <= 0) {
-                    clearInterval(iv);
-                    // Point addition
-                    await db.ref('users/'+currentUID+'/points').transaction(p => (p||0)+10);
-                    confetti(); document.getElementById("successSnd").play();
-                    b.disabled = false; b.innerText = "Submit & Earn"; 
-                    document.getElementById("capInput").value=""; 
-                    isWorking = false; genCap();
+                b.innerText = `Wait ${t--}s`;
+                if(t < 0) {
+                    clearInterval(iv); await addPoints(10);
+                    b.disabled = false; b.innerText = "Claim 10 CP"; 
+                    document.getElementById("capInput").value=""; isWorking = false; genCap();
                 }
             }, 1000);
-        } else { alert("Wrong Code!"); }
+        } else alert("වැරදියි!");
     }
 
     async function doVideoAd() {
         if(isWorking) return;
         isWorking = true;
-        
-        const overlay = document.getElementById("adOverlay");
-        const iframe = document.getElementById("adIframe");
-        const timerHead = document.getElementById("adTimerHead");
-        const b = document.getElementById("adBtn");
-        
+        const overlay = document.getElementById("adOverlay"), iframe = document.getElementById("adIframe"), b = document.getElementById("adBtn");
         iframe.src = "https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f";
-        overlay.style.display = "flex";
-        b.disabled = true;
-        
+        overlay.style.display = "flex"; b.disabled = true;
         let t = 20;
         let iv = setInterval(async () => {
-            t--;
-            timerHead.innerText = `Premium Ad Task: ${t}s remaining`;
-            if(t <= 0) {
-                clearInterval(iv);
-                overlay.style.display = "none";
-                iframe.src = "";
-                
-                // point update
-                await db.ref('users/'+currentUID+'/points').transaction(p => (p||0)+50);
-                
-                confetti(); document.getElementById("successSnd").play();
+            document.getElementById("adTimerHead").innerText = `TASK: ${t--}s`;
+            if(t < 0) {
+                clearInterval(iv); overlay.style.display = "none"; iframe.src = "";
+                await addPoints(50);
                 b.disabled = false; isWorking = false;
             }
         }, 1000);
+    }
+
+    function showWithdraw() {
+        if (Date.now() - joinedDate < 7*24*60*60*1000) return alert("දින 7ක් යනතුරු Withdrawal ලබාගත නොහැක.");
+        document.getElementById("mainLobby").classList.add("hide");
+        document.getElementById("withdrawPanel").classList.remove("hide");
+    }
+
+    async function sendReq() {
+        const m = document.getElementById("pMeth").value, d = document.getElementById("pDet").value;
+        await db.ref('requests/'+currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d });
+        alert("Sent!"); backToLobby();
     }
 
     function genCap() { captchaCode = Math.floor(1000 + Math.random()*9000); document.getElementById("capBox").innerText = captchaCode; }
