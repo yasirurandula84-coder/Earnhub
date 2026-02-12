@@ -8,6 +8,7 @@
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script async="async" data-cfasync="false" src="https://pl28695899.effectivegatecpm.com/d3b86a7a6ea6805fd2c9c7532410ddf5/invoke.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root { 
@@ -36,25 +37,21 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* --- LOGIN UI --- */
+        /* LOGIN UI */
         .login-hero img { width: 85px; height: 85px; border-radius: 22px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,210,255,0.3); }
         .login-hero h1 { font-size: 30px; font-weight: 800; margin: 0; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .btn-google {
             background: white; color: #111; border: none; padding: 18px; border-radius: 16px;
             font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 12px; width: 100%; margin: 25px 0 15px; font-size: 15px; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            gap: 12px; width: 100%; margin: 25px 0 15px; font-size: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .trust-badges { display: flex; justify-content: center; gap: 15px; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .badge-item { font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .badge-item { font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- DASHBOARD UI --- */
+        /* DASHBOARD UI */
         .balance-card { background: linear-gradient(135deg, #1e2235 0%, #0f111a 100%); border: 1px solid rgba(0, 210, 255, 0.2); }
-        .balance-label { color: var(--text-dim); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
-        .balance-amount { font-size: 38px; font-weight: 800; margin: 5px 0; }
-        
         .captcha-box { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 25px; margin: 20px 0; border: 1px dashed rgba(255,255,255,0.1); text-align: center; }
         .captcha-display { font-size: 45px; font-weight: 800; letter-spacing: 12px; color: var(--accent); text-shadow: 0 0 25px rgba(0,210,255,0.4); }
 
@@ -62,7 +59,8 @@
         .progress-fill { background: linear-gradient(90deg, #00d2ff, #3a7bd5); height: 100%; width: 0%; transition: 1.2s ease; }
 
         input { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #161925; color: #fff; font-size: 18px; text-align: center; margin-bottom: 15px; outline: none; }
-        .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: #fff; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        input:focus { border-color: var(--accent); }
+        .btn-main { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: #fff; font-weight: 700; font-size: 16px; cursor: pointer; }
         
         .leader-item { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: rgba(255,255,255,0.03); border-radius: 16px; margin-bottom: 8px; }
         .rank-circle { width: 24px; height: 24px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; margin-right: 12px; }
@@ -82,17 +80,13 @@
             <h1>EarnHub Elite</h1>
             <p style="color: #667085; font-size: 13px;">Official Verified Worker Portal v4.5</p>
         </div>
-
         <div style="background: rgba(0, 255, 163, 0.05); border: 1px solid rgba(0, 255, 163, 0.1); padding: 15px; border-radius: 15px; margin: 20px 0; text-align: left;">
             <div style="font-size: 12px; color: var(--success); font-weight: 600; margin-bottom: 5px;">✓ SECURE CLOUD TERMINAL</div>
             <div style="font-size: 12px; color: var(--success); font-weight: 600;">✓ VERIFIED PAYOUT SYSTEM</div>
         </div>
-
         <button class="btn-google" onclick="signIn()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="22">
-            Secure Sign in with Google
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="22"> Secure Sign in with Google
         </button>
-
         <div class="trust-badges">
             <div class="badge-item">🔒 SSL Secured</div>
             <div class="badge-item">🛡️ Safe System</div>
@@ -104,13 +98,12 @@
         <div class="glass-card balance-card">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <div>
-                    <span class="balance-label">Available Balance</span>
-                    <div class="balance-amount" id="uPointsDisp">0 CP</div>
+                    <span style="font-size:11px; color:var(--text-dim); text-transform:uppercase;">Balance</span>
+                    <div style="font-size:38px; font-weight:800;" id="uPointsDisp">0 CP</div>
                     <div style="color: var(--success); font-weight: 600; font-size: 14px;" id="usdVal">$0.000</div>
                 </div>
                 <div style="text-align: right;">
-                    <span id="uNameDisp" style="font-weight: 800; color: var(--accent);">User</span><br>
-                    <small style="color: var(--text-dim); font-size: 10px;">Partner ID: Active</small>
+                    <span id="uNameDisp" style="font-weight: 800; color: var(--accent);">User</span>
                 </div>
             </div>
             <div class="progress-bg"><div id="weekProgress" class="progress-fill"></div></div>
@@ -121,7 +114,6 @@
         </div>
 
         <div id="workSection" class="glass-card" style="text-align: center;">
-            <span class="balance-label">Security Validation</span>
             <div class="captcha-box"><div class="captcha-display" id="captchaBox">----</div></div>
             <input type="number" id="userInput" placeholder="Enter code">
             <button id="submitBtn" class="btn-main" onclick="handleTask()">Submit Verification</button>
@@ -134,12 +126,11 @@
 
         <div id="lockScreen" class="glass-card hide" style="text-align: center;">
             <h2 style="color: var(--success);">7-Day Cycle Ready 🏆</h2>
-            <p style="color: var(--text-dim); font-size: 13px;">Validation period complete. You can now request your payout.</p>
             <button class="btn-main" onclick="showWithdraw()">Request Payout</button>
         </div>
 
         <div class="glass-card">
-            <span class="balance-label">Partner Referral Link</span>
+            <span style="font-size:11px; color:var(--text-dim); text-transform:uppercase;">Referral Link</span>
             <div style="display: flex; gap: 10px; margin-top: 15px;">
                 <input type="text" id="referralLink" readonly style="margin: 0; font-size: 12px; text-align: left; flex:1;">
                 <button onclick="copyLink()" style="background: var(--accent); border: none; padding: 0 15px; border-radius: 15px; color: #000; font-weight: 800; cursor:pointer;">Copy</button>
@@ -147,7 +138,7 @@
         </div>
 
         <div class="glass-card">
-            <span class="balance-label">Top Global Leaders</span>
+            <span style="font-size:11px; color:var(--text-dim); text-transform:uppercase;">Top 10 Global Leaders</span>
             <div id="leaderList" style="margin-top: 20px;"></div>
         </div>
     </div>
@@ -155,9 +146,9 @@
     <div id="withdrawPanel" class="hide glass-card">
         <h2 style="margin-top:0;">Secure Payout</h2>
         <input type="text" id="payMethod" placeholder="Method (EzCash/Reload)">
-        <input type="text" id="payDetails" placeholder="Phone / Account No">
+        <input type="text" id="payDetails" placeholder="Details">
         <button class="btn-main" onclick="submitReq()">Confirm Request</button>
-        <p onclick="hideWithdraw()" style="text-align:center; cursor:pointer; margin-top:20px; color:var(--text-dim); font-size: 13px;">Return to Dashboard</p>
+        <p onclick="hideWithdraw()" style="text-align:center; cursor:pointer; margin-top:20px; color:var(--text-dim);">Back</p>
     </div>
 
     <div id="proofSection" class="hide glass-card">
@@ -172,14 +163,14 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
-        authDomain: "earn-money-600d9.firebaseapp.com",
-        databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com",
-        projectId: "earn-money-600d9",
-        storageBucket: "earn-money-600d9.firebasestorage.app",
-        messagingSenderId: "12987052490",
-        appId: "1:12987052490:web:4b349f2ad5a1812d9adf33"
+    const firebaseConfig = { 
+        apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0", 
+        authDomain: "earn-money-600d9.firebaseapp.com", 
+        databaseURL: "https://earn-money-600d9-default-rtdb.firebaseio.com", 
+        projectId: "earn-money-600d9", 
+        storageBucket: "earn-money-600d9.firebasestorage.app", 
+        messagingSenderId: "12987052490", 
+        appId: "1:12987052490:web:4b349f2ad5a1812d9adf33" 
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database(), auth = firebase.auth(), provider = new firebase.auth.GoogleAuthProvider();
@@ -190,12 +181,15 @@
 
     function playSurpriseAd() {
         const now = Date.now();
-        if (now - lastAdTime > 45000) { window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank'); lastAdTime = now; }
+        if (now - lastAdTime > 45000) { 
+            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank'); 
+            lastAdTime = now; 
+        }
     }
 
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
-    function copyLink() { const link = document.getElementById("referralLink"); link.select(); document.execCommand("copy"); alert("Referral link copied!"); }
+    function copyLink() { const link = document.getElementById("referralLink"); link.select(); document.execCommand("copy"); alert("Copied!"); }
 
     auth.onAuthStateChanged(async user => {
         if (user) {
@@ -204,8 +198,8 @@
             document.getElementById("mainDashboard").classList.remove("hide");
             document.getElementById("uNameDisp").innerText = user.displayName;
             document.getElementById("referralLink").value = window.location.origin + window.location.pathname + "?ref=" + user.uid;
-            const snapshot = await db.ref('users/' + currentUID).once('value');
-            if (!snapshot.exists()) {
+            const s = await db.ref('users/' + currentUID).once('value');
+            if (!s.exists()) {
                 const refBy = new URLSearchParams(window.location.search).get('ref');
                 if (refBy && refBy !== currentUID) db.ref('users/' + refBy + '/points').transaction(p => (p || 0) + 40);
                 await db.ref('users/' + currentUID).set({ points: 0, joinedAt: firebase.database.ServerValue.TIMESTAMP, name: user.displayName });
@@ -232,11 +226,11 @@
             uArr.sort((a, b) => b.points - a.points);
             let html = uArr.slice(0, 10).map((u, i) => `
                 <div class="leader-item">
-                    <div style="display:flex; align-items:center;"><div class="rank-circle">${i+1}</div><span style="font-weight:600; font-size:13px;">${u.name}</span></div>
-                    <span style="color:var(--accent); font-weight:800; font-size:12px;">${u.points} CP</span>
+                    <div style="display:flex; align-items:center;"><div class="rank-circle">${i+1}</div><b>${u.name}</b></div>
+                    <span style="color:var(--accent); font-weight:800;">${u.points} CP</span>
                 </div>
             `).join("");
-            document.getElementById("leaderList").innerHTML = html || "No rankings yet.";
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
@@ -244,47 +238,24 @@
         if (isProcessing) return;
         if (document.getElementById("userInput").value == captchaCode) {
             isProcessing = true;
-            
-            // මුලින්ම Ad එක open කරනවා
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            
             let btn = document.getElementById("submitBtn"), t = 15;
             btn.disabled = true;
-            
             let timer = setInterval(async () => {
                 btn.innerText = `Validating... ${t}s`;
                 if (t-- < 0) {
                     clearInterval(timer);
-                    
-                    // ලකුණු එකතු කිරීම
                     await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
                     
-                    // සද්දය සහ Animation එක මෙතනදී පටන් ගන්නවා
+                    // SUCCESS EFFECTS
                     document.getElementById("successSnd").play();
-                    
-                    // යූසර් ආපහු මේ tab එකට ආවම confetti පේනවා
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        zIndex: 9999 // Dashboard එකට උඩින්ම පේන්න
-                    });
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, zIndex: 9999 });
 
-                    btn.disabled = false; 
-                    btn.innerText = "Success! +10 CP";
-                    
-                    setTimeout(() => { 
-                        btn.innerText = "Submit Verification"; 
-                        document.getElementById("userInput").value = ""; 
-                        isProcessing = false; 
-                        genCaptcha(); 
-                    }, 3000);
+                    btn.disabled = false; btn.innerText = "Verified +10 CP";
+                    setTimeout(() => { btn.innerText = "Submit Verification"; document.getElementById("userInput").value = ""; isProcessing = false; genCaptcha(); }, 2500);
                 }
             }, 1000);
-        } else { 
-            document.getElementById("errorSnd").play(); 
-            alert("Verification code incorrect!"); 
-        }
+        } else { document.getElementById("errorSnd").play(); alert("Incorrect Security Code!"); }
     }
 
     function toggleView(v) {
@@ -298,15 +269,15 @@
         }
     }
 
-    function showWithdraw() { if (Date.now() - userJoinedAt < sevenDays) return alert("Withdrawal requires 7 days of validation."); document.getElementById("mainDashboard").classList.add("hide"); document.getElementById("withdrawPanel").classList.remove("hide"); }
+    function showWithdraw() { if (Date.now() - userJoinedAt < sevenDays) return alert("7-day validation required."); document.getElementById("mainDashboard").classList.add("hide"); document.getElementById("withdrawPanel").classList.remove("hide"); }
     function hideWithdraw() { document.getElementById("withdrawPanel").classList.add("hide"); document.getElementById("mainDashboard").classList.remove("hide"); }
 
     async function submitReq() {
         const m = document.getElementById("payMethod").value, d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("Required fields missing!");
+        if(!m || !d) return alert("Fill all details!");
         await db.ref('requests/' + currentUID).set({ name: auth.currentUser.displayName, points: currentPoints, method: m, details: d, date: new Date().toLocaleDateString() });
         emailjs.send('service_6awotbe', 'template_ky1u766', { user_name: auth.currentUser.displayName, subject: "Withdrawal", message: `CP: ${currentPoints}` });
-        alert("Request sent successfully!"); hideWithdraw();
+        alert("Request Logged!"); hideWithdraw();
     }
 
     function genCaptcha() { captchaCode = Math.floor(1000 + Math.random() * 9000); document.getElementById("captchaBox").innerText = captchaCode; }
