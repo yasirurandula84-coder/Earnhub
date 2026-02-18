@@ -225,18 +225,32 @@
     }
 
     async function loadUserHistory() {
-        const histDiv = document.getElementById("userHistoryList");
-        histDiv.innerHTML = "පූරණය වෙමින් පවතී...";
-        const snapshot = await db.ref('requests').orderByChild('uid').equalTo(currentUID).once('value');
-        if (snapshot.exists()) {
-            let html = "";
-            snapshot.forEach(child => {
-                const req = child.val();
-                html += `<div class="history-card"><small>${req.date}</small><div><b>${req.method}</b> - ${req.points} CP</div><small style="color:var(--success);">Status: Processing</small></div>`;
-            });
-            histDiv.innerHTML = html;
-        } else { histDiv.innerHTML = "කිසිදු වාර්තාවක් හමු නොවීය."; }
+    const histDiv = document.getElementById("userHistoryList");
+    histDiv.innerHTML = "පූරණය වෙමින් පවතී...";
+    
+    const snapshot = await db.ref('requests').orderByChild('uid').equalTo(currentUID).once('value');
+    
+    if (snapshot.exists()) {
+        let html = "";
+        snapshot.forEach(child => {
+            const req = child.val();
+            // Status එක 'Paid' නම් කොළ පාටින්ද, නැතිනම් 'Processing' ලෙසද පෙන්වයි
+            const statusText = req.status === "Paid" ? 
+                "<b style='color:#2ecc71;'>Status: Paid ✅</b>" : 
+                "<b style='color:#f1c40f;'>Status: Processing...</b>";
+
+            html += `
+                <div class="history-card">
+                    <small>${req.date}</small>
+                    <div style="margin: 5px 0;"><b>${req.method}</b> - ${req.points} CP</div>
+                    <small>${statusText}</small>
+                </div>`;
+        });
+        histDiv.innerHTML = html;
+    } else { 
+        histDiv.innerHTML = "කිසිදු වාර්තාවක් හමු නොවීය."; 
     }
+                         }
 
     function checkBankField() {
         const method = document.getElementById("payMethod").value;
