@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Premium Rewards</title>
+    <title>EarnHub Elite | Official Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -19,7 +19,8 @@
         
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); padding: 25px 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.4); text-align: center; margin-bottom: 20px; }
         
-        .btn-withdraw-main { width: 100%; padding: 18px; background: linear-gradient(45deg, #f1c40f, #e67e22); color: #000; font-size: 18px; font-weight: 800; border: none; border-radius: 15px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); }
+        /* Large Withdrawal Button */
+        .btn-withdraw-main { width: 100%; padding: 20px; background: linear-gradient(45deg, #f1c40f, #e67e22); color: #000; font-size: 18px; font-weight: 800; border: none; border-radius: 15px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); }
         
         .badge-container { display: flex; justify-content: center; gap: 20px; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
         .trust-badge { display: flex; flex-direction: column; align-items: center; font-size: 9px; color: #888; text-transform: uppercase; }
@@ -29,7 +30,10 @@
         .stat-box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
         
         .captcha-display { font-size: 36px; font-weight: 800; letter-spacing: 8px; margin: 15px 0; color: #fff; text-shadow: 0 0 10px var(--primary); font-family: 'Courier New', monospace; }
-        input { width: 100%; padding: 14px; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 18px; text-align: center; margin-bottom: 15px; outline: none; }
+        input, select { width: 100%; padding: 14px; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 16px; text-align: center; margin-bottom: 15px; outline: none; }
+        select { text-align-last: center; cursor: pointer; }
+        option { background: #1e1e2f; color: white; }
+        
         .btn-action { width: 100%; padding: 16px; border: none; border-radius: 12px; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; }
 
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 8px; font-size: 13px; border-left: 3px solid #f1c40f; }
@@ -46,13 +50,13 @@
         <div style="font-size: 45px;">🛡️</div>
         <h1>EarnHub Elite</h1>
         <div style="text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; margin: 15px 0; border-left: 4px solid var(--primary);">
-            <p style="font-size: 13px; color: #ccc; margin:0;">Welcome to the high-reward digital task portal. Secure your spot in the Top 5 to unlock withdrawals.</p>
+            <p style="font-size: 13px; color: #ccc; margin:0;">මුදල් ඉපයීමේ නවතම අත්දැකීම. Leaderboard හි මුල් 5 දෙනා අතරට පැමිණ ඔබේ මුදල් ලබාගන්න.</p>
         </div>
-        <button class="btn-google" onclick="signIn()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Sign in with Google
+        <button class="btn-action" style="background:white; color:#333;" onclick="signIn()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="vertical-align:middle; margin-right:8px;"> Sign in with Google
         </button>
         <div class="badge-container">
-            <div class="trust-badge"><img src="https://cdn-icons-png.flaticon.com/512/2716/2716612.png"><span>SSL</span></div>
+            <div class="trust-badge"><img src="https://cdn-icons-png.flaticon.com/512/2716/2716612.png"><span>SSL Secure</span></div>
             <div class="trust-badge"><img src="https://cdn-icons-png.flaticon.com/512/300/300221.png"><span>Verified</span></div>
             <div class="trust-badge"><img src="https://cdn-icons-png.flaticon.com/512/1162/1162250.png"><span>Safe</span></div>
         </div>
@@ -68,19 +72,37 @@
             </div>
 
             <div id="workSection">
-                <p style="font-size:11px; color:var(--primary); margin-bottom:5px;">ENTER SECURITY CODE TO EARN</p>
                 <div class="captcha-display" id="captchaBox">----</div>
-                <input type="number" id="userInput" placeholder="Code">
+                <input type="number" id="userInput" placeholder="Security Code">
                 <button class="btn-action" onclick="handleTask()">Submit & Earn 10 CP</button>
                 <div style="margin-top:20px; font-size:11px; color:#ff4757; cursor:pointer;" onclick="signOut()">Sign Out</div>
             </div>
 
             <div id="withdrawPanel">
-                <h3>Request Payout</h3>
-                <input type="text" id="payMethod" placeholder="Method (EzCash/Reload)">
-                <input type="text" id="payDetails" placeholder="Phone / Account No">
+                <h3 style="color:var(--primary); margin-top:0;">Request Payout</h3>
+                
+                <select id="payMethod" onchange="checkBankField()">
+                    <option value="" disabled selected>Select Payment Method</option>
+                    <option value="EzCash">EzCash / mCash</option>
+                    <option value="MobileReload">Mobile Reload</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                </select>
+
+                <select id="bankName" style="display:none;">
+                    <option value="" disabled selected>Select Your Bank</option>
+                    <option value="BOC">Bank of Ceylon (BOC)</option>
+                    <option value="Peoples">People's Bank</option>
+                    <option value="Commercial">Commercial Bank</option>
+                    <option value="Sampath">Sampath Bank</option>
+                    <option value="HNB">HNB</option>
+                    <option value="NSB">NSB</option>
+                    <option value="Seylan">Seylan Bank</option>
+                </select>
+
+                <input type="text" id="payDetails" placeholder="Phone No or Acc No">
+                
                 <button class="btn-action" style="background:var(--success);" onclick="submitReq()">Submit Request</button>
-                <p onclick="hideWithdraw()" style="margin-top:15px; font-size:12px; color:#aaa; cursor:pointer;">Cancel</p>
+                <p onclick="hideWithdraw()" style="margin-top:15px; font-size:12px; color:#aaa; cursor:pointer;">Back to Dashboard</p>
             </div>
         </div>
 
@@ -114,12 +136,11 @@
 
     let currentUID, currentPoints, uName, uEmail, userRank = 99;
     let lastAdTime = 0;
-    const adCooldown = 45000; // 45 seconds in milliseconds
+    const adCooldown = 45000;
 
-    // --- Global Click Ad System ---
+    // Global Click Ad System
     function triggerGlobalAd() {
         const now = Date.now();
-        // Check if user is logged in AND 45 seconds passed since last ad
         if (currentUID && (now - lastAdTime > adCooldown)) {
             lastAdTime = now;
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
@@ -135,6 +156,15 @@
             document.getElementById("loginScreen").style.display = "none";
             document.getElementById("mainDashboard").style.display = "block";
             document.getElementById("uNameDisp").innerText = uName;
+
+            const s = await db.ref('users/' + currentUID).once('value');
+            if (!s.exists()) {
+                await db.ref('users/' + currentUID).set({ points: 0, lastWithdraw: 0, name: uName, email: uEmail });
+                emailjs.send('service_6awotbe', 'template_ky1u766', { 
+                    to_email: uEmail, user_name: uName, subject: "Welcome to EarnHub!", 
+                    message: "ඔබ සාර්ථකව ලියාපදිංචි විය! දැන් වැඩ කර මුදල් උපයන්න පටන් ගන්න." 
+                });
+            }
             startSync();
         }
     });
@@ -158,9 +188,14 @@
         });
     }
 
+    function checkBankField() {
+        const method = document.getElementById("payMethod").value;
+        document.getElementById("bankName").style.display = (method === "BankTransfer") ? "block" : "none";
+    }
+
     function handleWithdrawClick() {
         if (currentPoints < 500) alert("අවම වශයෙන් 500 CP තිබිය යුතුය.");
-        else if (userRank > 5) alert("Withdrawal කළ හැක්කේ Top 5 අයට පමණි.");
+        else if (userRank > 5) alert("මුදල් ලබාගත හැක්කේ Top 5 අයට පමණි. ඔබගේ ස්ථානය: " + userRank);
         else {
             document.getElementById("workSection").style.display = "none";
             document.getElementById("withdrawPanel").style.display = "block";
@@ -174,15 +209,38 @@
 
     async function submitReq() {
         const m = document.getElementById("payMethod").value;
+        const b = document.getElementById("bankName").value;
         const d = document.getElementById("payDetails").value;
-        if(!m || !d) return alert("Fill details!");
+        
+        if(!m || !d) return alert("කරුණාකර විස්තර සම්පූර්ණ කරන්න.");
+        let details = d;
+        if(m === "BankTransfer") {
+            if(!b) return alert("කරුණාකර බැංකුව තෝරන්න.");
+            details = "Bank: " + b + " | Acc: " + d;
+        }
+
         const s = await db.ref('users/' + currentUID).once('value');
         const lastW = s.val().lastWithdraw || 0;
-        if (Date.now() - lastW < 24 * 60 * 60 * 1000) return alert("දිනකට එක් වරක් පමණක් කළ හැක.");
+        if (Date.now() - lastW < 24 * 60 * 60 * 1000) return alert("දිනකට එක් වරක් පමණක් withdraw කළ හැක.");
 
-        await db.ref('requests').push({ name: uName, points: currentPoints, method: m, details: d, date: new Date().toLocaleString() });
+        await db.ref('requests').push({ name: uName, email: uEmail, points: currentPoints, method: m, details: details, date: new Date().toLocaleString() });
         await db.ref('users/' + currentUID + '/lastWithdraw').set(Date.now());
-        alert("Request Sent!"); hideWithdraw();
+
+        // Notify Admin
+        emailjs.send('service_6awotbe', 'template_ky1u766', {
+            subject: "Withdrawal Request - " + uName,
+            message: `User: ${uName}\nEmail: ${uEmail}\nPoints: ${currentPoints}\nMethod: ${m}\nDetails: ${details}`
+        });
+
+        // Notify User
+        emailjs.send('service_6awotbe', 'template_ky1u766', {
+            to_email: uEmail,
+            subject: "Withdrawal Received!",
+            message: "ඔබේ ඉල්ලීම අපට ලැබුණා. පැය 24ක් ඇතුළත මුදල් ලැබෙනු ඇත."
+        });
+
+        alert("ඉල්ලීම සාර්ථකයි! පැය 24ක් ඇතුළත මුදල් ලැබෙනු ඇත.");
+        hideWithdraw();
     }
 
     let captchaCode;
@@ -195,11 +253,10 @@
         const input = document.getElementById("userInput");
         if (input.value == captchaCode) {
             document.getElementById("successSnd").play();
-            // This is the manual task ad link
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
             await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
             input.value = ""; genCaptcha();
-        } else { alert("Incorrect Code!"); }
+        } else { alert("වැරදි කේතයකි!"); }
     }
 
     genCaptcha();
