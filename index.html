@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub AI | Neural Network Earning</title>
+    <title>EarnHub | Simple & Secure</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
@@ -13,142 +13,157 @@
 
     <style>
         :root {
-            --ai-neon: #00f2ff;
-            --ai-purple: #7000ff;
-            --ai-bg: #050510;
-            --glass: rgba(255, 255, 255, 0.03);
-            --neon-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            --primary: #2563eb;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --text: #1e293b;
         }
 
-        * { box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
-        body { background: var(--ai-bg); margin: 0; color: #e0e0e0; overflow-x: hidden; min-height: 100vh; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
 
-        /* AI Background Effects */
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 80%);
-            pointer-events: none; z-index: -1;
-        }
+        .container { width: 100%; max-width: 450px; margin: 0 auto; padding: 20px; }
 
-        .container { width: 100%; max-width: 450px; margin: auto; padding: 20px; }
-
-        /* AI Glass Card */
-        .ai-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 15px;
+        /* Clean White Cards */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
             padding: 25px;
-            text-align: center;
-            box-shadow: var(--neon-shadow);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            position: relative;
+            text-align: center;
         }
 
-        h1 { font-family: 'Orbitron', sans-serif; color: var(--ai-neon); text-shadow: var(--neon-shadow); font-size: 28px; margin: 10px 0; }
+        h1 { color: var(--primary); font-weight: 600; margin-bottom: 5px; }
+        p { color: #64748b; font-size: 14px; }
 
-        /* Inputs & Buttons */
-        input, select {
-            width: 100%; padding: 12px; background: rgba(0,0,0,0.4);
-            border: 1px solid var(--ai-purple); color: #fff; border-radius: 5px;
-            margin-bottom: 15px; text-align: center; outline: none;
+        /* Simple Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .ai-btn {
-            width: 100%; padding: 15px; background: transparent;
-            border: 2px solid var(--ai-neon); color: var(--ai-neon);
-            font-family: 'Orbitron', sans-serif; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-        }
+        .btn-primary { background: var(--primary); color: white; margin-top: 10px; }
+        .btn-primary:hover { background: #1d4ed8; }
+        
+        .btn-outline { background: white; border: 2px solid #e2e8f0; color: #475569; margin-top: 10px; }
 
-        .ai-btn:hover { background: var(--ai-neon); color: #000; box-shadow: 0 0 20px var(--ai-neon); }
-
-        /* Captcha Display */
+        /* Task & Captcha */
         .captcha-box {
-            font-family: 'Orbitron', sans-serif; font-size: 38px; color: #fff;
-            background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px;
-            border: 1px dashed var(--ai-neon); margin: 15px 0; letter-spacing: 8px;
+            font-size: 32px;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            letter-spacing: 5px;
+            color: #334155;
         }
 
-        /* Status Badges */
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* History List */
         .history-item {
-            background: rgba(255,255,255,0.05); padding: 15px;
-            border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--ai-purple);
-            text-align: left; font-size: 14px;
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .status-paid { color: #2ecc71; font-weight: bold; }
-        .status-wait { color: #f1c40f; font-weight: bold; }
+        .status-paid { color: var(--success); font-weight: 600; font-size: 13px; }
+        .status-wait { color: #f59e0b; font-weight: 600; font-size: 13px; }
 
         #loginScreen, #mainApp, #historyScreen, #withdrawScreen { display: none; }
     </style>
 </head>
 <body>
 
-<div class="bg-overlay"></div>
-
 <div class="container">
     
-    <div id="loginScreen" style="display: block; text-align: center; padding-top: 50px;">
-        <div style="font-size: 60px; filter: drop-shadow(0 0 10px var(--ai-neon));">🌀</div>
-        <h1>EARNHUB AI</h1>
-        <p style="color: var(--ai-purple); letter-spacing: 2px; margin-bottom: 40px;">NEURAL NETWORK INTERFACE</p>
-        
-        <div class="ai-card">
-            <p style="font-size: 14px; margin-bottom: 20px;">පද්ධතියට ඇතුළු වීමට ඔබගේ Google ගිණුම භාවිතා කරන්න</p>
-            <button class="ai-btn" onclick="signIn()">Authorize Access</button>
+    <div id="loginScreen" style="display: block; margin-top: 80px;">
+        <div class="card">
+            <div style="font-size: 40px;">💰</div>
+            <h1>EarnHub</h1>
+            <p>දිනපතා සරල වැඩ කර මුදල් උපයන්න</p>
+            <button class="btn btn-primary" onclick="signIn()" style="margin-top: 20px;">
+                Continue with Google
+            </button>
         </div>
     </div>
 
     <div id="mainApp">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--ai-neon);">CORE_DASHBOARD</h2>
-            <button onclick="signOut()" style="background:none; border:none; color:red; cursor:pointer;">LOGOUT</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 5px;">
+            <span style="font-weight: 600; color: var(--primary);">EarnHub Dashboard</span>
+            <button onclick="signOut()" style="border:none; background:none; color:#94a3b8; cursor:pointer;">Logout</button>
         </div>
 
-        <div class="ai-card">
-            <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                <span id="uName">USER: ---</span>
-                <span id="uPoints" style="color: var(--ai-neon); font-weight: bold;">0 CP</span>
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;">
+                    <small style="color: #64748b;">Operator</small>
+                    <div id="uName" style="font-weight: 600;">User Name</div>
+                </div>
+                <div style="text-align: right;">
+                    <small style="color: #64748b;">Balance</small>
+                    <div id="uPoints" style="color: var(--primary); font-weight: 600; font-size: 20px;">0 CP</div>
+                </div>
             </div>
         </div>
 
-        <div class="ai-card">
-            <small style="color: var(--ai-purple);">DATA VERIFICATION REQUIRED</small>
+        <div class="card">
+            <p style="margin-top: 0;">පහත කේතය නිවැරදිව ඇතුළත් කරන්න</p>
             <div class="captcha-box" id="captchaBox">----</div>
-            <input type="number" id="userInput" placeholder="ACCESS CODE">
-            <button class="ai-btn" onclick="handleTask()">Execute Task</button>
+            <input type="number" id="userInput" placeholder="කේතය මෙහි ලියන්න">
+            <button class="btn btn-primary" onclick="handleTask()">Submit & Earn 10 CP</button>
         </div>
 
-        <button class="ai-btn" style="border-color: var(--ai-purple); color: var(--ai-purple); margin-bottom: 10px;" onclick="switchScreen('withdrawScreen')">Request Payout</button>
-        <button class="ai-btn" style="border-color: #555; color: #888;" onclick="switchScreen('historyScreen')">Transaction History</button>
+        <button class="btn btn-primary" style="background: var(--success);" onclick="switchScreen('withdrawScreen')">Withdraw Money</button>
+        <button class="btn btn-outline" onclick="switchScreen('historyScreen')">My History</button>
     </div>
 
     <div id="withdrawScreen">
-        <h1>WITHDRAWAL</h1>
-        <div class="ai-card">
+        <div class="card">
+            <h2 style="margin-top: 0;">Withdraw</h2>
+            <p>ඔබේ මුදල් ලබාගැනීමේ ක්‍රමය තෝරන්න</p>
             <select id="payMethod">
                 <option value="EzCash">EzCash / mCash</option>
                 <option value="Reload">Mobile Reload</option>
                 <option value="Bank">Bank Transfer</option>
             </select>
-            <input type="text" id="payDetails" placeholder="Phone or Account Number">
-            <button class="ai-btn" onclick="submitWithdraw()">Confirm Withdrawal</button>
-            <p onclick="switchScreen('mainApp')" style="margin-top:15px; cursor:pointer; font-size:12px;">BACK TO TERMINAL</p>
+            <input type="text" id="payDetails" placeholder="දුරකථන අංකය හෝ බැංකු විස්තර">
+            <button class="btn btn-primary" onclick="submitWithdraw()">Confirm Request</button>
+            <p onclick="switchScreen('mainApp')" style="margin-top: 15px; cursor: pointer; text-decoration: underline;">Back to Home</p>
         </div>
     </div>
 
     <div id="historyScreen">
-        <h1>HISTORY</h1>
-        <div id="historyList"></div>
-        <button class="ai-btn" onclick="switchScreen('mainApp')">RETURN</button>
+        <div class="card" style="padding: 10px;">
+            <h2 style="margin: 15px 0;">Payment History</h2>
+            <div id="historyList">SCANNING...</div>
+            <button class="btn btn-outline" onclick="switchScreen('mainApp')" style="margin: 15px 0; width: 90%;">Back</button>
+        </div>
     </div>
 
 </div>
 
 <script>
-    // FIREBASE CONFIG
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -166,14 +181,12 @@
 
     let currentUID, currentPoints, uName, captchaCode;
 
-    // SCREEN SWITCHER
     function switchScreen(id) {
         ['loginScreen', 'mainApp', 'historyScreen', 'withdrawScreen'].forEach(s => document.getElementById(s).style.display = 'none');
         document.getElementById(id).style.display = 'block';
         if(id === 'historyScreen') loadHistory();
     }
 
-    // AUTH
     function signIn() { auth.signInWithPopup(provider); }
     function signOut() { auth.signOut(); location.reload(); }
 
@@ -181,7 +194,7 @@
         if (user) {
             currentUID = user.uid;
             uName = user.displayName;
-            document.getElementById("uName").innerText = "OPERATOR: " + uName.toUpperCase();
+            document.getElementById("uName").innerText = uName;
             switchScreen('mainApp');
             syncData();
             genCaptcha();
@@ -195,7 +208,6 @@
         });
     }
 
-    // CAPTCHA TASK
     function genCaptcha() {
         captchaCode = Math.floor(1000 + Math.random() * 9000);
         document.getElementById("captchaBox").innerText = captchaCode;
@@ -208,55 +220,42 @@
             await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
             document.getElementById("userInput").value = "";
             genCaptcha();
-        } else { alert("ACCESS DENIED: Invalid Code"); }
+        } else { alert("වැරදි කේතයකි!"); }
     }
 
-    // WITHDRAW
     async function submitWithdraw() {
-        const method = document.getElementById("payMethod").value;
         const details = document.getElementById("payDetails").value;
-        if(currentPoints < 500) return alert("MINIMUM 500 CP REQUIRED");
-        if(!details) return alert("ENTER DETAILS");
+        const method = document.getElementById("payMethod").value;
 
-        const newReq = {
-            uid: currentUID,
-            name: uName,
-            points: currentPoints,
-            method: method,
-            details: details,
-            date: new Date().toLocaleString(),
-            status: "Processing"
-        };
+        const s = await db.ref('users/' + currentUID).once('value');
+        const lastW = s.val().lastWithdraw || 0;
+        if(Date.now() - lastW < 86400000) return alert("දිනකට එක් වරක් පමණක් Withdrawal කළ හැක.");
 
-        await db.ref('requests').push(newReq);
-        alert("REQUEST SENT TO NEURAL CORE");
+        if(currentPoints < 500) return alert("අවම වශයෙන් 500 CP තිබිය යුතුය.");
+        if(!details) return alert("විස්තර ඇතුළත් කරන්න.");
+
+        await db.ref('requests').push({
+            uid: currentUID, name: uName, points: currentPoints,
+            method: method, details: details, date: new Date().toLocaleString(), status: "Processing"
+        });
+        await db.ref('users/' + currentUID + '/lastWithdraw').set(Date.now());
+        alert("සාර්ථකයි! ඉල්ලීම යොමු කරන ලදී.");
         switchScreen('mainApp');
     }
 
-    // HISTORY (Status: Paid update)
     async function loadHistory() {
         const listDiv = document.getElementById("historyList");
-        listDiv.innerHTML = "SCANNING DATABASE...";
+        listDiv.innerHTML = "පූරණය වෙමින් පවතී...";
         const snap = await db.ref('requests').orderByChild('uid').equalTo(currentUID).once('value');
-        
         listDiv.innerHTML = "";
         if(snap.exists()) {
             snap.forEach(child => {
                 const r = child.val();
-                const statusHtml = r.status === "Paid" ? 
-                    '<span class="status-paid">PAID ✅</span>' : 
-                    '<span class="status-wait">PROCESSING...</span>';
-                
-                listDiv.innerHTML += `
-                    <div class="history-item">
-                        <small>${r.date}</small><br>
-                        <strong>${r.points} CP via ${r.method}</strong><br>
-                        ${statusHtml}
-                    </div>`;
+                const statusHtml = r.status === "Paid" ? '<span class="status-paid">Paid ✅</span>' : '<span class="status-wait">Pending</span>';
+                listDiv.innerHTML += `<div class="history-item"><div><small>${r.date}</small><br><b>${r.points} CP</b></div>${statusHtml}</div>`;
             });
-        } else { listDiv.innerHTML = "NO TRANSACTIONS FOUND"; }
+        } else { listDiv.innerHTML = "වාර්තා කිසිවක් නැත."; }
     }
 </script>
-
 </body>
 </html>
