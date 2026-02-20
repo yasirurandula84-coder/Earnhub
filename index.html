@@ -200,28 +200,31 @@
     function signOut() { auth.signOut(); location.reload(); }
 
     auth.onAuthStateChanged(user => {
-        if (user) {
-            currentUID = user.uid; uName = user.displayName; uEmail = user.email;
-            document.getElementById("loginScreen").style.display = "none";
-            document.getElementById("mainDashboard").style.display = "block";
-            document.getElementById("topNav").style.display = "flex";
-            document.getElementById("uNameDisp").innerText = uName;
-            startSync();
-        }
-    });
+    if (user) {
+        currentUID = user.uid;
+        uName = user.displayName || "User"; // නම නැතිනම් 'User' ලෙස ගනී
+        uEmail = user.email || "No Email";
 
-    function startSync() {
-        db.ref('users/' + currentUID + '/points').on('value', s => {
-            currentPoints = s.val() || 0;
-            document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
+        // Database එකේ user ගේ විස්තර update කිරීම
+        db.ref('users/' + currentUID).update({
+            name: uName,
+            email: uEmail
         });
-        db.ref('users').orderByChild('points').limitToLast(5).on('value', s => {
-            let list = []; s.forEach(child => { list.push({ uid: child.key, n: child.val().name, p: child.val().points }); });
-            list.reverse();
-            let html = "";
-            list.forEach((u, i) => { if (u.uid === currentUID) userRank = i + 1; html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`; });
-            document.getElementById("leaderList").innerHTML = html;
-        });
+
+        document.getElementById("uName").innerText = uName;
+        switchScreen('mainApp');
+        syncData();
+        genCaptcha();
+    }
+});
+
+    // syncData ඇතුළත නම ලබාගන්නා ආකාරය
+db.ref('users/' + currentUID).on('value', s => {
+    const data = s.val();
+    document.getElementById("uName").innerText = data.name || "User";
+    currentPoints = data.points || 0;
+    document.getElementById("uPoints").innerText = currentPoints + " CP";
+});
     }
 
     async function loadUserHistory() {
