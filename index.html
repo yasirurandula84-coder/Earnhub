@@ -225,7 +225,7 @@ db.ref('users/' + currentUID).on('value', s => {
     currentPoints = data.points || 0;
     document.getElementById("uPoints").innerText = currentPoints + " CP";
 });
-    }
+    
 
     async function loadUserHistory() {
         const histDiv = document.getElementById("userHistoryList");
