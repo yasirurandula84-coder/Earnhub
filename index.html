@@ -202,28 +202,29 @@
     auth.onAuthStateChanged(user => {
     if (user) {
         currentUID = user.uid;
-        uName = user.displayName || "User"; // නම නැතිනම් 'User' ලෙස ගනී
+        uName = user.displayName || "User";
         uEmail = user.email || "No Email";
 
-        // Database එකේ user ගේ විස්තර update කිරීම
+        // 1. මුලින්ම User ගේ මූලික විස්තර Update කරනවා (Points මකන්නේ නැතිව)
         db.ref('users/' + currentUID).update({
             name: uName,
             email: uEmail
         });
 
-        document.getElementById("uName").innerText = uName;
+        // 2. දත්ත සජීවීව කියවීම (Listener එක මෙතනට දාන්න)
+        db.ref('users/' + currentUID).on('value', s => {
+            const data = s.val();
+            if(data) {
+                // මෙතනදී Database එකේ තියෙන නම පෙන්වනවා (Undefined ගැටලුව මගහරී)
+                document.getElementById("uName").innerText = data.name || uName;
+                currentPoints = data.points || 0;
+                document.getElementById("uPoints").innerText = currentPoints + " CP";
+            }
+        });
+
         switchScreen('mainApp');
-        syncData();
         genCaptcha();
     }
-});
-
-    // syncData ඇතුළත නම ලබාගන්නා ආකාරය
-db.ref('users/' + currentUID).on('value', s => {
-    const data = s.val();
-    document.getElementById("uName").innerText = data.name || "User";
-    currentPoints = data.points || 0;
-    document.getElementById("uPoints").innerText = currentPoints + " CP";
 });
     
 
