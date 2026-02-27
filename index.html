@@ -3,145 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub | Professional Tier System</title>
+    <title>EarnHub Elite | Pro Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        :root {
-            --primary: #4f46e5;
-            --success: #10b981;
-            --bg: #f3f4f6;
-            --white: #ffffff;
-        }
-
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg); color: #1f2937; margin: 0; }
-
-        .container { width: 100%; max-width: 450px; margin: 0 auto; padding: 20px; }
-
-        .card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Badge Styles */
-        .tier-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 5px;
-            color: #fff;
-        }
-        .bronze { background: linear-gradient(45deg, #cd7f32, #a0522d); }
-        .silver { background: linear-gradient(45deg, #bdc3c7, #7f8c8d); }
-        .gold { background: linear-gradient(45deg, #ffd700, #f39c12); box-shadow: 0 0 10px rgba(243, 156, 18, 0.4); }
-
-        h1 { color: var(--primary); margin: 0; font-size: 24px; }
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --success: #2ecc71; --warning: #f1c40f; --glass: rgba(255, 255, 255, 0.07); }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: radial-gradient(circle at top right, #1e1e2f, #0f0c29); min-height: 100vh; margin: 0; color: #fff; overflow-x: hidden; }
         
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
-            font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
-        .btn-primary { background: var(--primary); color: white; margin-top: 10px; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4); }
+        .navbar { width: 100%; padding: 15px 20px; display: flex; align-items: center; position: sticky; top: 0; background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .menu-btn { font-size: 24px; cursor: pointer; color: var(--primary); margin-right: 20px; }
+        
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #161625; transition: 0.3s; z-index: 2000; padding: 30px 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        .sidebar.active { left: 0; }
+        .sidebar h2 { font-size: 20px; color: var(--primary); margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .sidebar-item { padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; color: #ccc; }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar-item.active { background: var(--secondary); color: white; }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 1500; }
+        .overlay.active { display: block; }
 
-        .captcha-box {
-            font-size: 36px; font-weight: 600; background: #f9fafb;
-            padding: 20px; border-radius: 15px; margin: 20px 0;
-            border: 2px dashed #dee2e6; color: #374151; letter-spacing: 8px;
-        }
+        .app-container { width: 100%; max-width: 500px; margin: 20px auto; padding: 0 15px; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); padding: 25px 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; margin-bottom: 20px; }
+        
+        .btn-withdraw-main { width: 100%; padding: 18px; background: linear-gradient(45deg, #f1c40f, #e67e22); color: #000; font-size: 17px; font-weight: 800; border: none; border-radius: 15px; cursor: pointer; margin-bottom: 20px; transition: 0.3s; }
+        .btn-withdraw-main:hover { transform: scale(1.02); opacity: 0.9; }
+        
+        .captcha-display { font-size: 36px; font-weight: 800; letter-spacing: 8px; margin: 15px 0; color: #fff; text-shadow: 0 0 10px var(--primary); font-family: 'Courier New', monospace; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; }
+        input, select { width: 100%; padding: 14px; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: #fff; margin-bottom: 15px; outline: none; }
+        .btn-action { width: 100%; padding: 16px; border: none; border-radius: 12px; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-action:disabled { background: #555; cursor: not-allowed; }
 
-        input, select {
-            width: 100%; padding: 14px; border: 1px solid #e5e7eb;
-            border-radius: 10px; margin-bottom: 15px; outline: none; background: #fff;
-        }
-
-        .history-item {
-            text-align: left; padding: 15px; border-bottom: 1px solid #f3f4f6;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        #loginScreen, #mainApp, #historyScreen, #withdrawScreen { display: none; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 8px; font-size: 13px; }
+        .history-card { text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--success); }
+        
+        #loginScreen, #mainDashboard, #historySection { display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <div id="loginScreen" style="display: block; margin-top: 60px;">
-        <div class="card">
-            <div style="font-size: 50px; margin-bottom: 10px;">🌟</div>
-            <h1>EarnHub Pro</h1>
-            <p style="color: #6b7280; font-size: 14px;">පද්ධතියට ඇතුළු වී ලකුණු උපයන්න</p>
-            <button class="btn btn-primary" onclick="signIn()">Google සමග ලොග් වන්න</button>
-        </div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar" id="sidebar">
+        <h2>EarnHub Menu</h2>
+        <div class="sidebar-item active" onclick="showSection('dashboard')">🏠 Dashboard</div>
+        <div class="sidebar-item" onclick="showSection('history')">🕒 My Requests</div>
+        <div class="sidebar-item" style="color:#ff4757; margin-top: 50px;" onclick="signOut()">🚪 Logout</div>
     </div>
 
-    <div id="mainApp">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 style="font-size: 18px; margin: 0;">Dashboard</h2>
-            <button onclick="signOut()" style="border:none; background:none; color:#9ca3af; cursor:pointer;">Logout</button>
-        </div>
+    <div class="navbar" id="topNav" style="display: none;">
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
+        <div style="font-weight: 700; font-size: 18px;">EarnHub <span style="color:var(--primary);">Elite</span></div>
+    </div>
 
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div style="text-align: left;">
-                    <div id="uName" style="font-weight: 600; font-size: 18px;">---</div>
-                    <div id="uTier" class="tier-badge bronze">Bronze Member</div>
-                </div>
-                <div style="text-align: right;">
-                    <small style="color: #6b7280;">පවතින ලකුණු</small>
-                    <div id="uPoints" style="color: var(--primary); font-weight: 700; font-size: 22px;">0 CP</div>
-                </div>
+<div class="app-container">
+    <audio id="successSnd" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+
+    <div id="loginScreen" class="glass-card" style="display: block;">
+        <div style="font-size: 50px; margin-bottom: 10px;">🚀</div>
+        <h1>Welcome Back!</h1>
+        <p style="color: #ccc; font-size: 14px;">Log in to continue earning CP points.</p>
+        <button class="btn-action" style="background:white; color:#333; margin-top: 20px;" onclick="signIn()">
+            Sign in with Google
+        </button>
+    </div>
+
+    <div id="mainDashboard">
+        <button id="mainWithdrawBtn" class="btn-withdraw-main" onclick="handleWithdrawClick()">💰 WITHDRAW REWARD</button>
+
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <div style="text-align: left;"><small style="color: #888;">Worker</small><br><strong id="uNameDisp">...</strong></div>
+                <div style="text-align: right;"><small style="color: #888;">Balance</small><br><strong id="uPointsDisp" style="color:var(--primary);">0 CP</strong></div>
+            </div>
+
+            <div id="workSection">
+                <div class="captcha-display" id="captchaBox">----</div>
+                <input type="number" id="userInput" placeholder="Enter Security Code">
+                <button id="submitBtn" class="btn-action" onclick="handleTask()">Submit & Earn 10 CP</button>
+            </div>
+
+            <div id="withdrawPanel" style="display: none;">
+                <h3 style="color:var(--primary);">Withdraw Funds</h3>
+                <select id="payMethod" onchange="checkBankField()">
+                    <option value="" disabled selected>Select Payment Method</option>
+                    <option value="EzCash">EzCash / mCash</option>
+                    <option value="MobileReload">Mobile Reload</option>
+                    <option value="BankTransfer">Bank Transfer</option>
+                </select>
+                <select id="bankName" style="display:none;"><option value="" disabled selected>Select Bank</option><option value="BOC">BOC</option><option value="Peoples">People's Bank</option><option value="Sampath">Sampath</option></select>
+                <input type="text" id="payDetails" placeholder="Phone Number or Acc No">
+                <button id="requestBtn" class="btn-action" style="background:var(--success);" onclick="submitReq()">Submit Now</button>
+                <p onclick="hideWithdraw()" style="margin-top:15px; font-size:12px; color:#aaa; cursor:pointer;">Cancel</p>
             </div>
         </div>
 
-        <div class="card">
-            <small style="color: #6b7280;">පහත කේතය ඇතුළත් කරන්න</small>
-            <div class="captcha-box" id="captchaBox">----</div>
-            <input type="number" id="userInput" placeholder="Enter Code">
-            <button class="btn btn-primary" onclick="handleTask()">Submit & Earn</button>
-        </div>
-
-        <button class="btn btn-primary" style="background: var(--success);" onclick="switchScreen('withdrawScreen')">Withdraw Money</button>
-        <button class="btn" style="background: #fff; color: #4b5563; border: 1px solid #e5e7eb; margin-top: 10px;" onclick="switchScreen('historyScreen')">Payment History</button>
-    </div>
-
-    <div id="withdrawScreen">
-        <div class="card">
-            <h2>Withdraw</h2>
-            <select id="payMethod">
-                <option value="EzCash">EzCash / mCash</option>
-                <option value="Reload">Mobile Reload</option>
-                <option value="Bank">Bank Transfer</option>
-            </select>
-            <input type="text" id="payDetails" placeholder="ගෙවීම් ලැබිය යුතු විස්තර">
-            <button class="btn btn-primary" onclick="submitWithdraw()">Confirm Request</button>
-            <p onclick="switchScreen('mainApp')" style="margin-top:15px; cursor:pointer; font-size:13px; color: #6b7280;">ආපසු Dashboard එකට</p>
+        <div class="glass-card">
+            <h3 style="text-align: left; color:#f1c40f; margin-top: 0;">🏆 Top 5 Elite Leaders</h3>
+            <div id="leaderList">Loading leaderboard...</div>
         </div>
     </div>
 
-    <div id="historyScreen">
-        <div class="card" style="padding: 15px;">
-            <h2 style="margin-bottom: 15px;">Transactions</h2>
-            <div id="historyList"></div>
-            <button class="btn btn-primary" style="margin-top: 15px;" onclick="switchScreen('mainApp')">Back</button>
+    <div id="historySection">
+        <div class="glass-card">
+            <h2 style="text-align: left; margin-top: 0; color: var(--primary);">My Withdrawal History</h2>
+            <div id="userHistoryList">No requests found.</div>
+            <button class="btn-action" style="margin-top: 20px; background: rgba(255,255,255,0.05);" onclick="showSection('dashboard')">Back to Dashboard</button>
         </div>
     </div>
-
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
 <script>
     const firebaseConfig = {
@@ -158,56 +134,88 @@
     const db = firebase.database();
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
+    emailjs.init("CpK7Sb10QnKQlsqJa");
 
-    let currentUID, currentPoints, uName, captchaCode;
+    let currentUID, currentPoints, uName, uEmail, userRank = 99, captchaCode;
+    let isWorking = false; // Debounce flag
 
-    function switchScreen(id) {
-        ['loginScreen', 'mainApp', 'historyScreen', 'withdrawScreen'].forEach(s => document.getElementById(s).style.display = 'none');
-        document.getElementById(id).style.display = 'block';
-        if(id === 'historyScreen') loadHistory();
+    function toggleMenu() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("overlay").classList.toggle("active");
     }
 
-    function signIn() { auth.signInWithPopup(provider); }
-    function signOut() { auth.signOut(); location.reload(); }
+    function showSection(sec) {
+        document.getElementById("mainDashboard").style.display = (sec === 'dashboard') ? "block" : "none";
+        document.getElementById("historySection").style.display = (sec === 'history') ? "block" : "none";
+        if(sec === 'history') loadUserHistory();
+        toggleMenu();
+    }
 
-    auth.onAuthStateChanged(user => {
+    function signIn() { auth.signInWithPopup(provider).catch(e => alert(e.message)); }
+    function signOut() { auth.signOut().then(() => location.reload()); }
+
+    auth.onAuthStateChanged(async user => {
         if (user) {
-            currentUID = user.uid;
-            uName = user.displayName || "User";
-            
-            // Database එකට නම සහ Email update කිරීම (Undefined ගැටලුවට විසඳුම)
-            db.ref('users/' + currentUID).update({
-                name: uName,
-                email: user.email
-            });
+            currentUID = user.uid; uName = user.displayName; uEmail = user.email;
+            document.getElementById("loginScreen").style.display = "none";
+            document.getElementById("mainDashboard").style.display = "block";
+            document.getElementById("topNav").style.display = "flex";
+            document.getElementById("uNameDisp").innerText = uName;
 
-            document.getElementById("uName").innerText = uName;
-            switchScreen('mainApp');
-            syncData();
-            genCaptcha();
+            // Sync user data to DB
+            await db.ref('users/' + currentUID).update({ name: uName, email: uEmail });
+            startSync();
         }
     });
 
-    function syncData() {
-        db.ref('users/' + currentUID).on('value', s => {
-            const data = s.val() || {};
-            currentPoints = data.points || 0;
-            document.getElementById("uPoints").innerText = currentPoints + " CP";
-            updateBadge(currentPoints);
+    function startSync() {
+        db.ref('users/' + currentUID + '/points').on('value', s => {
+            currentPoints = s.val() || 0;
+            document.getElementById("uPointsDisp").innerText = currentPoints + " CP";
+        });
+
+        db.ref('users').orderByChild('points').limitToLast(5).on('value', s => {
+            let list = [];
+            s.forEach(child => { list.push({ uid: child.key, n: child.val().name, p: child.val().points || 0 }); });
+            list.sort((a, b) => b.p - a.p);
+            let html = "";
+            list.forEach((u, i) => {
+                if (u.uid === currentUID) userRank = i + 1;
+                html += `<div class="list-item"><span><b>${i+1}.</b> ${u.n}</span><strong>${u.p} CP</strong></div>`;
+            });
+            document.getElementById("leaderList").innerHTML = html;
         });
     }
 
-    function updateBadge(pts) {
-        const badge = document.getElementById("uTier");
-        if(pts >= 5000) {
-            badge.innerText = "Gold Elite 🏆";
-            badge.className = "tier-badge gold";
-        } else if(pts >= 1000) {
-            badge.innerText = "Silver Pro 🥈";
-            badge.className = "tier-badge silver";
-        } else {
-            badge.innerText = "Bronze Member 🥉";
-            badge.className = "tier-badge bronze";
+    async function handleTask() {
+        if (isWorking) return;
+        const input = document.getElementById("userInput");
+        const btn = document.getElementById("submitBtn");
+
+        if (input.value == captchaCode) {
+            isWorking = true;
+            btn.disabled = true;
+            btn.innerText = "Verifying...";
+
+            try {
+                // Open Ad
+                window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
+                
+                // Audio & Points Update
+                document.getElementById("successSnd").play().catch(e => {});
+                await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
+                
+                input.value = ""; 
+                genCaptcha();
+            } catch (e) {
+                alert("Error updating points. Please check internet connection.");
+            } finally {
+                isWorking = false;
+                btn.disabled = false;
+                btn.innerText = "Submit & Earn 10 CP";
+            }
+        } else { 
+            alert("Wrong Security Code! Please try again."); 
         }
     }
 
@@ -216,54 +224,77 @@
         document.getElementById("captchaBox").innerText = captchaCode;
     }
 
-    async function handleTask() {
-        const input = document.getElementById("userInput").value;
-        if(input == captchaCode) {
-            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            await db.ref('users/' + currentUID + '/points').transaction(p => (p || 0) + 10);
-            document.getElementById("userInput").value = "";
-            genCaptcha();
-        } else { alert("කේතය වැරදියි!"); }
+    function handleWithdrawClick() {
+        if (currentPoints < 500) alert("මුදල් ලබා ගැනීමට අවම වශයෙන් 500 CP තිබිය යුතුය.");
+        else if (userRank > 5) alert("සමාවන්න, දැනට මුදල් ලබාගත හැක්කේ Leaders Board හි ප්‍රථම ස්ථාන 5 දෙනාට පමණි.");
+        else {
+            document.getElementById("workSection").style.display = "none";
+            document.getElementById("withdrawPanel").style.display = "block";
+        }
     }
 
-    async function submitWithdraw() {
-        const details = document.getElementById("payDetails").value;
-        const method = document.getElementById("payMethod").value;
-
-        const s = await db.ref('users/' + currentUID).once('value');
-        const lastW = s.val().lastWithdraw || 0;
-        if(Date.now() - lastW < 86400000) return alert("දිනකට එක් වරක් පමණක් Withdrawal කළ හැක.");
-
-        if(currentPoints < 500) return alert("අවම වශයෙන් 500 CP තිබිය යුතුය.");
-        if(!details) return alert("විස්තර ඇතුළත් කරන්න.");
-
-        await db.ref('requests').push({
-            uid: currentUID, name: uName, points: currentPoints,
-            method: method, details: details, date: new Date().toLocaleString(), status: "Processing"
-        });
-        await db.ref('users/' + currentUID + '/lastWithdraw').set(Date.now());
-        alert("සාර්ථකයි!");
-        switchScreen('mainApp');
+    function hideWithdraw() {
+        document.getElementById("withdrawPanel").style.display = "none";
+        document.getElementById("workSection").style.display = "block";
     }
 
-    async function loadHistory() {
-        const listDiv = document.getElementById("historyList");
-        listDiv.innerHTML = "පූරණය වෙමින්...";
-        const snap = await db.ref('requests').orderByChild('uid').equalTo(currentUID).once('value');
-        listDiv.innerHTML = "";
-        if(snap.exists()) {
-            snap.forEach(child => {
-                const r = child.val();
-                const stClass = r.status === "Paid" ? "color:#10b981; font-weight:700;" : "color:#f59e0b; font-weight:700;";
-                const stText = r.status === "Paid" ? "Paid ✅" : "Pending";
-                listDiv.innerHTML += `
-                    <div class="history-item">
-                        <div><small>${r.date}</small><br><b>${r.points} CP</b></div>
-                        <div style="${stClass}">${stText}</div>
-                    </div>`;
+    async function submitReq() {
+        const m = document.getElementById("payMethod").value;
+        const b = document.getElementById("bankName").value;
+        const d = document.getElementById("payDetails").value;
+        const btn = document.getElementById("requestBtn");
+
+        if(!m || !d) return alert("කරුණාකර සියලු විස්තර පුරවන්න!");
+        
+        btn.disabled = true;
+        let finalDetails = (m === "BankTransfer") ? `Bank: ${b} | Acc: ${d}` : d;
+
+        try {
+            const s = await db.ref('users/' + currentUID).once('value');
+            const lastW = s.val().lastWithdraw || 0;
+            if (Date.now() - lastW < 24 * 60 * 60 * 1000) {
+                alert("දිනකට එක් වරක් පමණක් withdraw කළ හැක.");
+                return;
+            }
+
+            await db.ref('requests').push({ uid: currentUID, name: uName, points: currentPoints, method: m, details: finalDetails, date: new Date().toLocaleString() });
+            await db.ref('users/' + currentUID + '/lastWithdraw').set(Date.now());
+
+            emailjs.send('service_6awotbe', 'template_ky1u766', { subject: "Withdrawal - " + uName, message: `Points: ${currentPoints}\nMethod: ${m}\nDetails: ${finalDetails}` });
+            
+            alert("සාර්ථකයි! පැය 24ක් ඇතුළත ඔබගේ ගෙවීම් පරීක්ෂා කරනු ලැබේ.");
+            hideWithdraw();
+            showSection('history');
+        } catch (e) {
+            alert("Request failed. Try again.");
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    async function loadUserHistory() {
+        const histDiv = document.getElementById("userHistoryList");
+        histDiv.innerHTML = "Loading...";
+        const snapshot = await db.ref('requests').orderByChild('uid').equalTo(currentUID).once('value');
+        if (snapshot.exists()) {
+            let html = "";
+            snapshot.forEach(child => {
+                const req = child.val();
+                html += `<div class="history-card">
+                    <div style="font-size:11px; color:#888;">${req.date}</div>
+                    <div style="font-weight:700; margin:5px 0;">${req.method} - ${req.points} CP</div>
+                    <div style="font-size:11px; color:var(--success);">Status: Processing...</div>
+                </div>`;
             });
-        } else { listDiv.innerHTML = "කිසිදු වාර්තාවක් නැත."; }
+            histDiv.innerHTML = html;
+        } else { histDiv.innerHTML = "No requests found."; }
     }
+
+    function checkBankField() {
+        document.getElementById("bankName").style.display = (document.getElementById("payMethod").value === "BankTransfer") ? "block" : "none";
+    }
+
+    genCaptcha();
 </script>
 </body>
 </html>
