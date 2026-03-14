@@ -3,82 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Official Professional Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>EarnHub Elite | Secure Typing Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --success: #2ecc71; --warning: #f1c40f; --glass: rgba(255, 255, 255, 0.07); }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: radial-gradient(circle at top right, #1e1e2f, #0f0c29); min-height: 100vh; margin: 0; color: #fff; overflow-x: hidden; }
-        
-        .app-container { width: 100%; max-width: 480px; margin: 20px auto; padding: 0 15px; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px); padding: 25px 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        
-        /* Auth Styles */
-        input { width: 100%; padding: 14px; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: #fff; margin-bottom: 12px; outline: none; border: 1px solid transparent; transition: 0.3s; }
-        input:focus { border-color: var(--primary); background: rgba(255, 255, 255, 0.15); }
-        .btn-action { width: 100%; padding: 16px; border: none; border-radius: 12px; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
-        .btn-action:active { transform: scale(0.98); }
-        .link-btn { font-size: 13px; color: var(--primary); cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
-
-        /* Dashboard Styles */
-        .balance-box { font-size: 32px; font-weight: 800; color: var(--success); text-shadow: 0 0 15px rgba(46, 204, 113, 0.4); margin: 10px 0; }
-        .task-display { background: #161625; padding: 20px; border-radius: 15px; border: 1px dashed var(--primary); margin: 15px 0; font-weight: 600; letter-spacing: 0.5px; }
-        textarea { width: 100%; height: 100px; padding: 12px; border-radius: 12px; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.1); resize: none; margin-bottom: 15px; }
-        
-        #authSection, #mainDashboard { display: none; }
+        :root { --primary: #00d2ff; --bg: #0f0c29; --card: rgba(255, 255, 255, 0.08); }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; text-align: center; }
+        .app-container { max-width: 450px; margin: auto; padding: 20px; }
+        .glass-card { background: var(--card); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
+        .btn-primary { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; }
+        .btn-google { background: white; color: #333; }
+        .link-text { font-size: 13px; color: var(--primary); cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
+        #authSection, #dashboard, #verifyNotice { display: none; }
+        .task-box { background: #1a1a2e; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-weight: 600; color: var(--primary); border: 1px dashed var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div id="authSection" class="glass-card" style="display: block; margin-top: 60px;">
-        <h1 id="authTitle" style="margin-bottom: 10px;">Login</h1>
-        <p id="authSub" style="color: #aaa; font-size: 14px; margin-bottom: 25px;">Welcome to EarnHub Elite</p>
-
-        <div id="regFields" style="display: none;">
-            <input type="text" id="regName" placeholder="Your Full Name">
-        </div>
+    <div id="authSection" class="glass-card" style="display: block; margin-top: 50px;">
+        <h2 id="authTitle">Login</h2>
+        <div id="regFields" style="display: none;"><input type="text" id="regName" placeholder="Full Name"></div>
         <input type="email" id="authEmail" placeholder="Email Address">
         <input type="password" id="authPass" placeholder="Password">
-        
-        <button class="btn-action" id="mainAuthBtn" onclick="handleAuth()">Login to Account</button>
-        <button class="btn-action" style="background: #fff; color: #222;" onclick="signInWithGoogle()">Sign in with Google</button>
-        
-        <span class="link-btn" id="toggleLink" onclick="toggleAuth(true)">New here? Create an Account</span>
-        <span class="link-btn" id="resetBtn" onclick="forgotPassword()" style="color: #888;">Forgot Password?</span>
+        <button id="mainAuthBtn" class="btn btn-primary" onclick="handleAuth()">Login</button>
+        <button class="btn btn-google" onclick="signInWithGoogle()">Sign in with Google</button>
+        <span class="link-text" id="toggleLink" onclick="toggleAuth(true)">Register here</span>
+        <span class="link-text" onclick="resetPass()">Forgot Password?</span>
     </div>
 
-    <div id="mainDashboard">
+    <div id="verifyNotice" class="glass-card">
+        <h2>📧 Verify Your Email</h2>
+        <p>ඔබේ Email ලිපිනයට තහවුරු කිරීමේ ලින්ක් එකක් එවා ඇත. කරුණාකර එය පරීක්ෂා කර ලින්ක් එක click කරන්න.</p>
+        <button class="btn btn-primary" onclick="location.reload()">I Verified, Refresh Now</button>
+        <button class="btn btn-google" style="background:#ff4757; color:white;" onclick="signOut()">Logout</button>
+    </div>
+
+    <div id="dashboard">
         <div class="glass-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; text-align: left;">
-                <div>
-                    <small style="color: #888;">Worker</small><br>
-                    <strong id="uNameDisp">Loading...</strong>
-                </div>
-                <button onclick="logout()" style="background: rgba(255,0,0,0.1); color: #ff4757; border: 1px solid #ff4757; padding: 5px 12px; border-radius: 8px; cursor: pointer;">Logout</button>
-            </div>
-            <div class="balance-box" id="uPointsDisp">0 CP</div>
-            <p style="font-size: 12px; color: #888;">Minimum Withdraw: 500 CP</p>
+            <h3>Welcome, <span id="uNameDisp">...</span></h3>
+            <div id="uPoints" style="font-size: 32px; color: #2ecc71; font-weight: 800;">0 CP</div>
+            <button class="btn btn-primary" style="background:#ff4757; padding: 8px; margin-top:10px;" onclick="signOut()">Logout</button>
         </div>
 
         <div class="glass-card">
-            <h3 style="margin-top: 0; color: var(--warning);">Typing Task</h3>
-            <p style="font-size: 13px; color: #ccc;">පහත වාක්‍යය නිවැරදිව ටයිප් කරන්න:</p>
-            <div class="task-display" id="targetText">Loading Task...</div>
-            <textarea id="userInput" placeholder="මෙතන ටයිප් කරන්න..."></textarea>
-            <button class="btn-action" onclick="submitTask()">Submit & Earn 10 CP</button>
+            <div class="task-box" id="targetText">Loading...</div>
+            <textarea id="userInput" class="task-box" style="width:100%; color:white; border-style: solid;" placeholder="Start typing..."></textarea>
+            <button class="btn btn-primary" onclick="submitTask()">Submit & Earn 10 CP</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- Firebase Configuration ---
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -92,29 +74,14 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    // --- EmailJS Setup ---
-    emailjs.init("CpK7Sb10QnKQlsqJa");
-
     let isRegister = false;
-    const taskList = [
-        "Believe in yourself and all that you are",
-        "Success is a journey not a destination",
-        "Consistency is the key to big results",
-        "Type fast and earn more with EarnHub",
-        "The best way to predict future is to create it"
-    ];
 
-    // --- Auth Logic ---
     function toggleAuth(reg) {
         isRegister = reg;
         document.getElementById("authTitle").innerText = reg ? "Register" : "Login";
-        document.getElementById("mainAuthBtn").innerText = reg ? "Create Account" : "Login to Account";
         document.getElementById("regFields").style.display = reg ? "block" : "none";
-        document.getElementById("toggleLink").innerText = reg ? "Already have an account? Login" : "New here? Create an Account";
+        document.getElementById("toggleLink").innerText = reg ? "Login here" : "Register here";
         document.getElementById("toggleLink").onclick = () => toggleAuth(!reg);
-        document.getElementById("resetBtn").style.display = reg ? "none" : "block";
     }
 
     async function handleAuth() {
@@ -122,78 +89,64 @@
         const pass = document.getElementById("authPass").value;
         const name = document.getElementById("regName").value;
 
-        if(!email || !pass) return alert("Please enter email and password!");
-
         try {
             if (isRegister) {
-                if(!name) return alert("Please enter your name!");
                 const res = await auth.createUserWithEmailAndPassword(email, pass);
                 await res.user.updateProfile({ displayName: name });
-                await db.ref('users/' + res.user.uid).set({ name: name, points: 0, email: email });
-                
-                // Welcome Email
-                sendWelcomeMail(name, email);
-                alert("Account created! Welcome email sent.");
+                await db.ref('users/' + res.user.uid).set({ name: name, points: 0 });
+                // Firebase Verification Email යැවීම
+                await res.user.sendEmailVerification();
+                alert("Verification link sent to your email!");
             } else {
                 await auth.signInWithEmailAndPassword(email, pass);
             }
         } catch (e) { alert(e.message); }
     }
 
-    function sendWelcomeMail(name, email) {
-        // සටහන: මෙහි 'template_welcome' යනු ඔබ EmailJS හි සාදාගත යුතු අලුත් Template ID එකකි
-        emailjs.send('service_6awotbe', 'template_welcome', {
-            to_name: name,
-            to_email: email,
-            message: "EarnHub Elite වෙත ඔබව සාදරයෙන් පිළිගනිමු! දැන් ඔබට ටයිප් කර මුදල් ඉපයිය හැක."
-        });
-    }
-
-    function forgotPassword() {
+    function resetPass() {
         const email = document.getElementById("authEmail").value;
-        if(!email) return alert("Enter your email first!");
-        auth.sendPasswordResetEmail(email).then(() => alert("Reset link sent to your email!"));
+        if(!email) return alert("Enter email!");
+        auth.sendPasswordResetEmail(email).then(() => alert("Reset link sent!"));
     }
 
-    function signInWithGoogle() { auth.signInWithPopup(provider); }
-    function logout() { auth.signOut().then(() => location.reload()); }
+    function signInWithGoogle() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+    function signOut() { auth.signOut().then(() => location.reload()); }
 
-    // --- Core Functionality ---
     auth.onAuthStateChanged(user => {
         if (user) {
             document.getElementById("authSection").style.display = "none";
-            document.getElementById("mainDashboard").style.display = "block";
-            document.getElementById("uNameDisp").innerText = user.displayName || "Elite Member";
-            
-            db.ref('users/' + user.uid + '/points').on('value', s => {
-                document.getElementById("uPointsDisp").innerText = (s.val() || 0) + " CP";
-            });
-            nextTask();
+            // Check if email is verified
+            if (user.emailVerified || user.providerData[0].providerId === "google.com") {
+                document.getElementById("dashboard").style.display = "block";
+                document.getElementById("verifyNotice").style.display = "none";
+                document.getElementById("uNameDisp").innerText = user.displayName;
+                db.ref('users/' + user.uid + '/points').on('value', s => {
+                    document.getElementById("uPoints").innerText = (s.val() || 0) + " CP";
+                });
+                nextTask();
+            } else {
+                document.getElementById("verifyNotice").style.display = "block";
+                document.getElementById("dashboard").style.display = "none";
+            }
         } else {
             document.getElementById("authSection").style.display = "block";
-            document.getElementById("mainDashboard").style.display = "none";
         }
     });
 
+    const tasks = ["Practice makes perfect", "Success is near", "Type fast to earn"];
     function nextTask() {
-        document.getElementById("targetText").innerText = taskList[Math.floor(Math.random() * taskList.length)];
+        document.getElementById("targetText").innerText = tasks[Math.floor(Math.random() * tasks.length)];
         document.getElementById("userInput").value = "";
     }
 
     function submitTask() {
         const input = document.getElementById("userInput").value.trim();
         const target = document.getElementById("targetText").innerText.trim();
-
         if (input === target) {
-            // Ad Trigger
             window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            
             db.ref('users/' + auth.currentUser.uid + '/points').transaction(p => (p || 0) + 10);
-            alert("Success! +10 CP earned.");
             nextTask();
-        } else {
-            alert("Typed text is incorrect!");
-        }
+        } else { alert("Incorrect!"); }
     }
 </script>
 </body>
