@@ -3,64 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Secure Typing Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>EarnHub Elite | Pro Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <style>
-        :root { --primary: #00d2ff; --bg: #0f0c29; --card: rgba(255, 255, 255, 0.08); }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; text-align: center; }
-        .app-container { max-width: 450px; margin: auto; padding: 20px; }
-        .glass-card { background: var(--card); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
-        .btn-primary { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; }
-        .btn-google { background: white; color: #333; }
-        .link-text { font-size: 13px; color: var(--primary); cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
-        #authSection, #dashboard, #verifyNotice { display: none; }
-        .task-box { background: #1a1a2e; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-weight: 600; color: var(--primary); border: 1px dashed var(--primary); }
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --accent: #00ff88; --dark: #0f0c29; --glass: rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: 0.3s; }
+        body { background: var(--dark); color: white; margin: 0; padding-bottom: 70px; }
+        
+        .app-container { max-width: 500px; margin: auto; padding: 20px; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(15px); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        
+        /* Typography */
+        h2 { font-weight: 700; margin: 0; color: var(--primary); }
+        .balance { font-size: 36px; font-weight: 800; color: var(--accent); }
+        
+        /* Inputs & Buttons */
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: none; background: rgba(0,0,0,0.3); color: white; outline: none; }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+        .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; }
+        .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        /* Navigation Bar (Bottom) */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 12, 41, 0.95); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid var(--glass); z-index: 1000; }
+        .nav-item { color: #888; cursor: pointer; font-size: 14px; text-align: center; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+
+        /* Sections */
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Leaderboard Style */
+        .rank-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--primary); }
+        
+        #authSection { margin-top: 50px; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div id="authSection" class="glass-card" style="display: block; margin-top: 50px;">
-        <h2 id="authTitle">Login</h2>
+    <div id="authSection" class="glass-card">
+        <h2 id="authTitle">EarnHub Login</h2><br>
         <div id="regFields" style="display: none;"><input type="text" id="regName" placeholder="Full Name"></div>
         <input type="email" id="authEmail" placeholder="Email Address">
         <input type="password" id="authPass" placeholder="Password">
-        <button id="mainAuthBtn" class="btn btn-primary" onclick="handleAuth()">Login</button>
-        <button class="btn btn-google" onclick="signInWithGoogle()">Sign in with Google</button>
-        <span class="link-text" id="toggleLink" onclick="toggleAuth(true)">Register here</span>
-        <span class="link-text" onclick="resetPass()">Forgot Password?</span>
+        <button class="btn btn-main" onclick="handleAuth()">Continue</button>
+        <p onclick="toggleAuth(true)" id="toggleText" style="font-size: 13px; cursor: pointer;">Don't have an account? Register</p>
     </div>
 
-    <div id="verifyNotice" class="glass-card">
-        <h2>📧 Verify Your Email</h2>
-        <p>ඔබේ Email ලිපිනයට තහවුරු කිරීමේ ලින්ක් එකක් එවා ඇත. කරුණාකර එය පරීක්ෂා කර ලින්ක් එක click කරන්න.</p>
-        <button class="btn btn-primary" onclick="location.reload()">I Verified, Refresh Now</button>
-        <button class="btn btn-google" style="background:#ff4757; color:white;" onclick="signOut()">Logout</button>
-    </div>
-
-    <div id="dashboard">
-        <div class="glass-card">
-            <h3>Welcome, <span id="uNameDisp">...</span></h3>
-            <div id="uPoints" style="font-size: 32px; color: #2ecc71; font-weight: 800;">0 CP</div>
-            <button class="btn btn-primary" style="background:#ff4757; padding: 8px; margin-top:10px;" onclick="signOut()">Logout</button>
+    <div id="dashboard" style="display: none;">
+        
+        <div id="tab-home" class="section active">
+            <div class="glass-card">
+                <p style="margin:0; color: #aaa;">Your Balance</p>
+                <div class="balance" id="uPoints">0 CP</div>
+                <small id="uNameDisp">Elite User</small>
+            </div>
+            <div class="glass-card">
+                <h3>Typing Task</h3>
+                <div id="targetText" style="background:#000; padding:15px; border-radius:10px; margin-bottom:10px; font-weight:600; color:var(--primary);">Loading...</div>
+                <textarea id="userInput" placeholder="Type the text here..."></textarea>
+                <button class="btn btn-main" onclick="submitTask()">Submit & Earn 10 CP</button>
+            </div>
         </div>
 
-        <div class="glass-card">
-            <div class="task-box" id="targetText">Loading...</div>
-            <textarea id="userInput" class="task-box" style="width:100%; color:white; border-style: solid;" placeholder="Start typing..."></textarea>
-            <button class="btn btn-primary" onclick="submitTask()">Submit & Earn 10 CP</button>
+        <div id="tab-rank" class="section">
+            <div class="glass-card">
+                <h2>Top Earners</h2><br>
+                <div id="leaderboardList">Loading...</div>
+            </div>
         </div>
+
+        <div id="tab-cash" class="section">
+            <div class="glass-card">
+                <h2>Withdraw Cash</h2><br>
+                <p style="font-size: 13px; color: #ccc;">Minimum payout: 500 CP</p>
+                <input type="number" id="cashAmount" placeholder="Amount (Points)">
+                <input type="text" id="payMethod" placeholder="Payment Method (EasyCash/Bank)">
+                <input type="text" id="payDetails" placeholder="Account Number / Phone">
+                <button class="btn btn-main" style="background: #2ecc71;" onclick="requestWithdraw()">Request Withdrawal</button>
+            </div>
+            <button class="btn" style="background: #ff4757; color: white;" onclick="signOut()">Logout</button>
+        </div>
+
     </div>
 </div>
 
+<nav class="nav-bar" id="bottomNav" style="display: none;">
+    <div class="nav-item active" onclick="showTab('home', this)">Task</div>
+    <div class="nav-item" onclick="showTab('rank', this)">Top List</div>
+    <div class="nav-item" onclick="showTab('cash', this)">Withdraw</div>
+</nav>
+
 <script>
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -74,80 +116,110 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
-    let isRegister = false;
+    let isReg = false;
+
+    // Tab Switching Logic
+    function showTab(tabId, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        el.classList.add('active');
+        if(tabId === 'rank') loadLeaderboard();
+    }
 
     function toggleAuth(reg) {
-        isRegister = reg;
-        document.getElementById("authTitle").innerText = reg ? "Register" : "Login";
-        document.getElementById("regFields").style.display = reg ? "block" : "none";
-        document.getElementById("toggleLink").innerText = reg ? "Login here" : "Register here";
-        document.getElementById("toggleLink").onclick = () => toggleAuth(!reg);
+        isReg = reg;
+        document.getElementById('authTitle').innerText = reg ? "Create Account" : "EarnHub Login";
+        document.getElementById('regFields').style.display = reg ? "block" : "none";
+        document.getElementById('toggleText').innerText = reg ? "Already have an account? Login" : "Don't have an account? Register";
     }
 
     async function handleAuth() {
-        const email = document.getElementById("authEmail").value;
-        const pass = document.getElementById("authPass").value;
-        const name = document.getElementById("regName").value;
-
+        const email = document.getElementById('authEmail').value;
+        const pass = document.getElementById('authPass').value;
         try {
-            if (isRegister) {
+            if(isReg) {
+                const name = document.getElementById('regName').value;
                 const res = await auth.createUserWithEmailAndPassword(email, pass);
-                await res.user.updateProfile({ displayName: name });
-                await db.ref('users/' + res.user.uid).set({ name: name, points: 0 });
-                // Firebase Verification Email යැවීම
+                await res.user.updateProfile({displayName: name});
+                await db.ref('users/' + res.user.uid).set({name: name, points: 0});
                 await res.user.sendEmailVerification();
-                alert("Verification link sent to your email!");
+                alert("Account Created! Check email for verification link.");
             } else {
                 await auth.signInWithEmailAndPassword(email, pass);
             }
-        } catch (e) { alert(e.message); }
+        } catch(e) { alert(e.message); }
     }
-
-    function resetPass() {
-        const email = document.getElementById("authEmail").value;
-        if(!email) return alert("Enter email!");
-        auth.sendPasswordResetEmail(email).then(() => alert("Reset link sent!"));
-    }
-
-    function signInWithGoogle() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
-    function signOut() { auth.signOut().then(() => location.reload()); }
 
     auth.onAuthStateChanged(user => {
-        if (user) {
-            document.getElementById("authSection").style.display = "none";
-            // Check if email is verified
-            if (user.emailVerified || user.providerData[0].providerId === "google.com") {
-                document.getElementById("dashboard").style.display = "block";
-                document.getElementById("verifyNotice").style.display = "none";
-                document.getElementById("uNameDisp").innerText = user.displayName;
-                db.ref('users/' + user.uid + '/points').on('value', s => {
-                    document.getElementById("uPoints").innerText = (s.val() || 0) + " CP";
-                });
-                nextTask();
-            } else {
-                document.getElementById("verifyNotice").style.display = "block";
-                document.getElementById("dashboard").style.display = "none";
-            }
+        if(user && (user.emailVerified || user.providerData[0].providerId === "google.com")) {
+            document.getElementById('authSection').style.display = "none";
+            document.getElementById('dashboard').style.display = "block";
+            document.getElementById('bottomNav').style.display = "flex";
+            document.getElementById('uNameDisp').innerText = user.displayName;
+            db.ref('users/' + user.uid + '/points').on('value', s => {
+                document.getElementById('uPoints').innerText = (s.val() || 0) + " CP";
+            });
+            nextTask();
+        } else if(user && !user.emailVerified) {
+            alert("Please verify your email first!");
+            auth.signOut();
         } else {
-            document.getElementById("authSection").style.display = "block";
+            document.getElementById('authSection').style.display = "block";
+            document.getElementById('dashboard').style.display = "none";
+            document.getElementById('bottomNav').style.display = "none";
         }
     });
 
-    const tasks = ["Practice makes perfect", "Success is near", "Type fast to earn"];
+    // Top List (Leaderboard) Logic
+    function loadLeaderboard() {
+        const lb = document.getElementById('leaderboardList');
+        db.ref('users').orderByChild('points').limitToLast(10).on('value', snap => {
+            let html = "";
+            let users = [];
+            snap.forEach(child => { users.push(child.val()); });
+            users.reverse().forEach((u, i) => {
+                html += `<div class="rank-item"><span>${i+1}. ${u.name}</span><strong>${u.points} CP</strong></div>`;
+            });
+            lb.innerHTML = html || "No data yet.";
+        });
+    }
+
+    // Task Logic
+    const tasks = ["Keep moving forward", "Success is hard work", "Type and earn today", "Believe in your hustle"];
     function nextTask() {
-        document.getElementById("targetText").innerText = tasks[Math.floor(Math.random() * tasks.length)];
-        document.getElementById("userInput").value = "";
+        document.getElementById('targetText').innerText = tasks[Math.floor(Math.random()*tasks.length)];
+        document.getElementById('userInput').value = "";
     }
 
     function submitTask() {
-        const input = document.getElementById("userInput").value.trim();
-        const target = document.getElementById("targetText").innerText.trim();
-        if (input === target) {
-            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
+        if(document.getElementById('userInput').value.trim() === document.getElementById('targetText').innerText) {
             db.ref('users/' + auth.currentUser.uid + '/points').transaction(p => (p || 0) + 10);
+            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
             nextTask();
-        } else { alert("Incorrect!"); }
+        } else { alert("Wrong text!"); }
     }
+
+    // Withdrawal Logic
+    function requestWithdraw() {
+        const pts = parseInt(document.getElementById('cashAmount').value);
+        const currentPts = parseInt(document.getElementById('uPoints').innerText);
+        if(pts >= 500 && currentPts >= pts) {
+            const data = {
+                uid: auth.currentUser.uid,
+                name: auth.currentUser.displayName,
+                amount: pts,
+                method: document.getElementById('payMethod').value,
+                details: document.getElementById('payDetails').value,
+                status: 'pending'
+            };
+            db.ref('requests').push(data);
+            db.ref('users/' + auth.currentUser.uid + '/points').transaction(p => p - pts);
+            alert("Withdrawal request sent!");
+        } else { alert("Minimum 500 CP required / Insufficient balance."); }
+    }
+
+    function signOut() { auth.signOut().then(() => location.reload()); }
 </script>
 </body>
 </html>
