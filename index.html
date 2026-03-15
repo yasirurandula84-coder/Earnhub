@@ -3,106 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnHub Elite | Pro Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>EarnHub | Professional Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --accent: #00ff88; --dark: #0f0c29; --glass: rgba(255, 255, 255, 0.1); }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: 0.3s; }
-        body { background: var(--dark); color: white; margin: 0; padding-bottom: 70px; }
-        
-        .app-container { max-width: 500px; margin: auto; padding: 20px; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(15px); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-        
-        /* Typography */
-        h2 { font-weight: 700; margin: 0; color: var(--primary); }
-        .balance { font-size: 36px; font-weight: 800; color: var(--accent); }
-        
-        /* Inputs & Buttons */
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: none; background: rgba(0,0,0,0.3); color: white; outline: none; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; display: block; text-align: center; text-decoration: none; }
-        .btn-main { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; }
-        .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
+        :root {
+            --bg: #050510;
+            --accent: #00d2ff;
+            --purple: #9d50bb;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
-        /* Navigation Bar (Bottom) */
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 12, 41, 0.95); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid var(--glass); z-index: 1000; }
-        .nav-item { color: #888; cursor: pointer; font-size: 14px; text-align: center; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
+        body {
+            background: var(--bg);
+            background: radial-gradient(circle at bottom left, #1a1a2e, #050510);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        /* Sections */
-        .section { display: none; animation: fadeIn 0.5s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 40px 0;
+            animation: fadeIn 1s ease-out;
+        }
 
-        /* Leaderboard Style */
-        .rank-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--primary); }
-        
-        #authSection { margin-top: 50px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Balance Display */
+        .balance-box {
+            font-size: 45px;
+            font-weight: 700;
+            margin: 15px 0;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        /* Cyber Inputs */
+        input, select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 15px;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 210, 255, 0.2); }
+
+        /* Neon Button */
+        .btn-neon {
+            background: linear-gradient(45deg, var(--accent), var(--purple));
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.4s;
+            letter-spacing: 1px;
+        }
+
+        .btn-neon:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+        }
+
+        .user-info { font-size: 14px; color: #888; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div id="authSection" class="glass-card">
-        <h2 id="authTitle">EarnHub Login</h2><br>
-        <div id="regFields" style="display: none;"><input type="text" id="regName" placeholder="Full Name"></div>
-        <input type="email" id="authEmail" placeholder="Email Address">
-        <input type="password" id="authPass" placeholder="Password">
-        <button class="btn btn-main" onclick="handleAuth()">Continue</button>
-        <p onclick="toggleAuth(true)" id="toggleText" style="font-size: 13px; cursor: pointer;">Don't have an account? Register</p>
+<div class="container">
+    <div class="glass-card">
+        <h1>EARNHUB</h1>
+        <p class="user-info" id="uName">Loading User...</p>
+        <div class="balance-box"><span id="uPoints">0</span> <small style="font-size: 18px;">CP</small></div>
+        <p style="font-size: 12px; color: #aaa;">ඔබේ උපයන මුදල මෙතැනින් පෙන්වයි</p>
     </div>
 
-    <div id="dashboard" style="display: none;">
+    <div class="glass-card">
+        <h2 style="font-size: 18px;">WITHDRAW CASH</h2>
+        <input type="number" id="cashAmount" placeholder="Amount (Minimum 500)">
         
-        <div id="tab-home" class="section active">
-            <div class="glass-card">
-                <p style="margin:0; color: #aaa;">Your Balance</p>
-                <div class="balance" id="uPoints">0 CP</div>
-                <small id="uNameDisp">Elite User</small>
-            </div>
-            <div class="glass-card">
-                <h3>Typing Task</h3>
-                <div id="targetText" style="background:#000; padding:15px; border-radius:10px; margin-bottom:10px; font-weight:600; color:var(--primary);">Loading...</div>
-                <textarea id="userInput" placeholder="Type the text here..."></textarea>
-                <button class="btn btn-main" onclick="submitTask()">Submit & Earn 10 CP</button>
-            </div>
-        </div>
+        <select id="payMethod">
+            <option value="Reload">Dialog / Mobitel Reload</option>
+            <option value="EzCash">EzCash / mCash</option>
+            <option value="Bank">Bank Transfer</option>
+        </select>
 
-        <div id="tab-rank" class="section">
-            <div class="glass-card">
-                <h2>Top Earners</h2><br>
-                <div id="leaderboardList">Loading...</div>
-            </div>
-        </div>
-
-        <div id="tab-cash" class="section">
-            <div class="glass-card">
-                <h2>Withdraw Cash</h2><br>
-                <p style="font-size: 13px; color: #ccc;">Minimum payout: 500 CP</p>
-                <input type="number" id="cashAmount" placeholder="Amount (Points)">
-                <input type="text" id="payMethod" placeholder="Payment Method (EasyCash/Bank)">
-                <input type="text" id="payDetails" placeholder="Account Number / Phone">
-                <button class="btn btn-main" style="background: #2ecc71;" onclick="requestWithdraw()">Request Withdrawal</button>
-            </div>
-            <button class="btn" style="background: #ff4757; color: white;" onclick="signOut()">Logout</button>
-        </div>
-
+        <input type="text" id="payDetails" placeholder="Phone Number / Bank Info">
+        
+        <button class="btn-neon" onclick="requestWithdraw()">CLAIM REWARD</button>
     </div>
+
+    <button onclick="auth.signOut().then(() => location.reload())" style="background:none; border:none; color:#555; cursor:pointer; text-decoration:underline;">Logout Account</button>
 </div>
 
-<nav class="nav-bar" id="bottomNav" style="display: none;">
-    <div class="nav-item active" onclick="showTab('home', this)">Task</div>
-    <div class="nav-item" onclick="showTab('rank', this)">Top List</div>
-    <div class="nav-item" onclick="showTab('cash', this)">Withdraw</div>
-</nav>
-
 <script>
-    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCBW21NQG7100ZQ_phXtVPiY-IWRzNCGu0",
         authDomain: "earn-money-600d9.firebaseapp.com",
@@ -116,110 +150,47 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
-    let isReg = false;
-
-    // Tab Switching Logic
-    function showTab(tabId, el) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('tab-' + tabId).classList.add('active');
-        el.classList.add('active');
-        if(tabId === 'rank') loadLeaderboard();
-    }
-
-    function toggleAuth(reg) {
-        isReg = reg;
-        document.getElementById('authTitle').innerText = reg ? "Create Account" : "EarnHub Login";
-        document.getElementById('regFields').style.display = reg ? "block" : "none";
-        document.getElementById('toggleText').innerText = reg ? "Already have an account? Login" : "Don't have an account? Register";
-    }
-
-    async function handleAuth() {
-        const email = document.getElementById('authEmail').value;
-        const pass = document.getElementById('authPass').value;
-        try {
-            if(isReg) {
-                const name = document.getElementById('regName').value;
-                const res = await auth.createUserWithEmailAndPassword(email, pass);
-                await res.user.updateProfile({displayName: name});
-                await db.ref('users/' + res.user.uid).set({name: name, points: 0});
-                await res.user.sendEmailVerification();
-                alert("Account Created! Check email for verification link.");
-            } else {
-                await auth.signInWithEmailAndPassword(email, pass);
-            }
-        } catch(e) { alert(e.message); }
-    }
 
     auth.onAuthStateChanged(user => {
-        if(user && (user.emailVerified || user.providerData[0].providerId === "google.com")) {
-            document.getElementById('authSection').style.display = "none";
-            document.getElementById('dashboard').style.display = "block";
-            document.getElementById('bottomNav').style.display = "flex";
-            document.getElementById('uNameDisp').innerText = user.displayName;
-            db.ref('users/' + user.uid + '/points').on('value', s => {
-                document.getElementById('uPoints').innerText = (s.val() || 0) + " CP";
+        if (user) {
+            document.getElementById('uName').innerText = user.displayName || "Gamer";
+            db.ref('users/' + user.uid + '/points').on('value', snap => {
+                document.getElementById('uPoints').innerText = snap.val() || 0;
             });
-            nextTask();
-        } else if(user && !user.emailVerified) {
-            alert("Please verify your email first!");
-            auth.signOut();
         } else {
-            document.getElementById('authSection').style.display = "block";
-            document.getElementById('dashboard').style.display = "none";
-            document.getElementById('bottomNav').style.display = "none";
+            // Login නැත්නම් redirect කරන්න පුළුවන්
+            window.location.href = "login.html"; 
         }
     });
 
-    // Top List (Leaderboard) Logic
-    function loadLeaderboard() {
-        const lb = document.getElementById('leaderboardList');
-        db.ref('users').orderByChild('points').limitToLast(10).on('value', snap => {
-            let html = "";
-            let users = [];
-            snap.forEach(child => { users.push(child.val()); });
-            users.reverse().forEach((u, i) => {
-                html += `<div class="rank-item"><span>${i+1}. ${u.name}</span><strong>${u.points} CP</strong></div>`;
-            });
-            lb.innerHTML = html || "No data yet.";
-        });
-    }
-
-    // Task Logic
-    const tasks = ["Keep moving forward", "Success is hard work", "Type and earn today", "Believe in your hustle"];
-    function nextTask() {
-        document.getElementById('targetText').innerText = tasks[Math.floor(Math.random()*tasks.length)];
-        document.getElementById('userInput').value = "";
-    }
-
-    function submitTask() {
-        if(document.getElementById('userInput').value.trim() === document.getElementById('targetText').innerText) {
-            db.ref('users/' + auth.currentUser.uid + '/points').transaction(p => (p || 0) + 10);
-            window.open('https://www.effectivegatecpm.com/bfifb4kf8?key=4848fcef5dd96ae01528e28c2c90fd4f', '_blank');
-            nextTask();
-        } else { alert("Wrong text!"); }
-    }
-
-    // Withdrawal Logic
     function requestWithdraw() {
         const pts = parseInt(document.getElementById('cashAmount').value);
+        const method = document.getElementById('payMethod').value;
+        const details = document.getElementById('payDetails').value;
         const currentPts = parseInt(document.getElementById('uPoints').innerText);
-        if(pts >= 500 && currentPts >= pts) {
-            const data = {
-                uid: auth.currentUser.uid,
-                name: auth.currentUser.displayName,
-                amount: pts,
-                method: document.getElementById('payMethod').value,
-                details: document.getElementById('payDetails').value,
-                status: 'pending'
-            };
-            db.ref('requests').push(data);
-            db.ref('users/' + auth.currentUser.uid + '/points').transaction(p => p - pts);
-            alert("Withdrawal request sent!");
-        } else { alert("Minimum 500 CP required / Insufficient balance."); }
-    }
 
-    function signOut() { auth.signOut().then(() => location.reload()); }
+        if(!pts || pts < 500) return alert("අවම 500 CP ඇතුළත් කරන්න!");
+        if(!details) return alert("කරුණාකර ගෙවීම් විස්තර ඇතුළත් කරන්න!");
+        if(currentPts < pts) return alert("ඔබ සතුව ප්‍රමාණවත් CP නැත!");
+
+        const data = {
+            name: auth.currentUser.displayName || "User",
+            amount: pts,
+            method: method,
+            details: details,
+            status: 'pending',
+            secret: 'DEXTER_ADMIN_99', // Admin පැනල් එකට පෙනෙන්න මේක අනිවාර්යයි
+            timestamp: Date.now()
+        };
+
+        db.ref('requests').push(data).then(() => {
+            db.ref('users/' + auth.currentUser.uid + '/points').set(currentPts - pts);
+            alert("සාර්ථකයි! පැය 24ක් ඇතුළත ගෙවීම් ලැබෙනු ඇත.");
+            document.getElementById('cashAmount').value = "";
+            document.getElementById('payDetails').value = "";
+        }).catch(e => alert("Error: " + e.message));
+    }
 </script>
+
 </body>
 </html>
